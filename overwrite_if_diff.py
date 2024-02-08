@@ -3,8 +3,13 @@
 # one that exists in the destination; or if the file doesn't exist in the destination
 # at all, then it will also create a copy;
 
-# Create your first dictionary, which corresponds to the source drive, 
-# which will store the full filepaths as keys and their timestamps as values;
+# Used for file and path operations;
+import os
+# Used for timestamp conversion;
+from datetime import datetime
+
+# Create your first dictionary, which corresponds to the source, and which 
+# will store the full filepaths as keys and their timestamps as values;
 dictionary1 = {}
 
 # Create your second dictionary, the format whereof will be the same as the first;
