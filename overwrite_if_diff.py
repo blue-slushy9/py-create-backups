@@ -19,21 +19,35 @@ dictionary2 = {}
 def timeStamp(path):
     # Use os.stat to get file metadata;
     stat = os.stat(path)
-    
+    # Convert timestamp to datetime object, 'stat.st_mtime' is the time of the
+    # last file modification;
+    timestamp = datetime.fromtimestamp(stat.st_mtime)
+    return timestamp
 
 # This function will be called on every file in the source and destination,
 # it takes a filepath as its argument;
 def lastWriteTime(path, dict):
     for item in path:
-        if item == dir:
+        if os.path.isdir(path):
+            # Call the function recursively on the subdirectory;
             lastWriteTime(item)
         else:
+            # Call the timeStamp function on the file;
             dict[item] = timeStamp(item)
+    return dict
 
+# DEBUG/TEST
+#path = ".\\test_dir1"
+
+#dict = dictionary1
+
+lastWriteTime(".\\test_dir1", dictionary1)
 
 print(dictionary1)
 
-print(dictionary2)
+#print(dictionary1)
+
+#print(dictionary2)
 
 # Use this for the destination, if the file does not exist there then we copy 
 # it from the source;
