@@ -16,7 +16,9 @@ dictionary1 = {}
 dictionary2 = {}
 
 # Define function that will retrieve the timestamp;
-def timeStamp($path):
+def timeStamp(path):
+    # Use os.stat to get file metadata;
+    stat = os.stat(path)
     
 
 # This function will be called on every file in the source and destination,
@@ -33,3 +35,7 @@ print(dictionary1)
 
 print(dictionary2)
 
+# Use this for the destination, if the file does not exist there then we copy 
+# it from the source;
+#if not os.path.exists(file_path):
+#    {code that copies file}
