@@ -28,22 +28,27 @@ def timeStamp(path):
 # it takes a filepath as its argument;
 def lastWriteTime(path, dict):
     for item in path:
-        if os.path.isdir(path):
+        #print(item)
+        if os.path.isdir(item):
             # Call the function recursively on the subdirectory;
-            lastWriteTime(item)
+            print(item)
+            #lastWriteTime(item, dict)
         else:
             # Call the timeStamp function on the file;
+            #print(item)
             dict[item] = timeStamp(item)
     return dict
 
 # DEBUG/TEST
-#path = ".\\test_dir1"
+path = ".\\test_dir1"
 
-#dict = dictionary1
+dict = dictionary1
 
-lastWriteTime(".\\test_dir1", dictionary1)
+lastWriteTime(path, dict)
 
-print(dictionary1)
+#lastWriteTime(".\\test_dir1", dictionary1)
+
+#print(dictionary1)
 
 #print(dictionary1)
 
