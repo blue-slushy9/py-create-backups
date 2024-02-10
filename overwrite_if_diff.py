@@ -15,16 +15,30 @@ dictionary1 = {}
 # Create your second dictionary, the format whereof will be the same as the first;
 dictionary2 = {}
 
+# DEBUG/TEST
+path_string = ".//test_dir1"
+
+# Convert the path string into a path object;
+path_obj = os.path.abspath(path_string)
+
+dict = dictionary1
+
+'''
 # This will create an items object that can be looped through;
 items = os.listdir(directory_path)
 # Now loop through it;
 for item in items:
     print(item)
-
+'''
 # This function will be called on every file in the source and destination,
 # it takes a filepath as its argument;
 def loop_thru_dir(path, dict):
-    for item in path:
+    # This will create an items object that can be looped through;
+    items = os.listdir(path)
+    # Now loop through it;
+    for item in items:
+        #print(item)
+    #for item in path:
         #print(item)
         if os.path.isdir(item):
             # Call the function recursively on the subdirectory;
@@ -35,7 +49,7 @@ def loop_thru_dir(path, dict):
             print(f'file: {item}')
             #dict[item] = get_timestamp(item)
     return dict
-
+'''
 # DEBUG/TEST
 path_string = ".\\test_dir1"
 
@@ -43,9 +57,10 @@ path_string = ".\\test_dir1"
 path_obj = os.path.abspath(path_string)
 
 dict = dictionary1
-
+'''
 loop_thru_dir(path_obj, dict)
 
+print(dict)
 '''
 # Define function that will retrieve the timestamp;
 def get_timestamp(path):
