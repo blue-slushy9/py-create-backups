@@ -35,15 +35,19 @@ for item in items:
 def loop_thru_dir(path, dict):
     # This will create an items object that can be looped through;
     items = os.listdir(path)
+    # 'items' is a list that contains only strings, 
+    #print(items)
     # Now loop through it;
     for item in items:
         print(item)
-    #for item in path:
+        # Reset the path variable after every iteration;
+        path = path
         #print(item)
         # Update the path variable to include the item name;
-        #path = path+item
-        print(path)
-        if os.path.isdir(item):
+        new_path = path+"/"+item
+        print(new_path)
+        # os.path.isdir() expects a path as argument, not a string;
+        if os.path.isdir(new_path):
             # Call the function recursively on the subdirectory;
             print(f'dir: {item}')
             #lastWriteTime(item, dict)
