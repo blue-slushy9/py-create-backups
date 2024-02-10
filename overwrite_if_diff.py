@@ -15,8 +15,40 @@ dictionary1 = {}
 # Create your second dictionary, the format whereof will be the same as the first;
 dictionary2 = {}
 
+# This will create an items object that can be looped through;
+items = os.listdir(directory_path)
+# Now loop through it;
+for item in items:
+    print(item)
+
+# This function will be called on every file in the source and destination,
+# it takes a filepath as its argument;
+def loop_thru_dir(path, dict):
+    for item in path:
+        #print(item)
+        if os.path.isdir(item):
+            # Call the function recursively on the subdirectory;
+            print(f'dir: {item}')
+            #lastWriteTime(item, dict)
+        else:
+            # Call the get_timestamp function on the file;
+            print(f'file: {item}')
+            #dict[item] = get_timestamp(item)
+    return dict
+
+# DEBUG/TEST
+path_string = ".\\test_dir1"
+
+# Convert the path string into a path object;
+path_obj = os.path.abspath(path_string)
+
+dict = dictionary1
+
+loop_thru_dir(path_obj, dict)
+
+'''
 # Define function that will retrieve the timestamp;
-def timeStamp(path):
+def get_timestamp(path):
     # Use os.stat to get file metadata;
     stat = os.stat(path)
     # Convert timestamp to datetime object, 'stat.st_mtime' is the time of the
@@ -26,7 +58,7 @@ def timeStamp(path):
 
 # This function will be called on every file in the source and destination,
 # it takes a filepath as its argument;
-def lastWriteTime(path, dict):
+def loop_thru_dir(path, dict):
     for item in path:
         #print(item)
         if os.path.isdir(item):
@@ -34,9 +66,9 @@ def lastWriteTime(path, dict):
             print(item)
             #lastWriteTime(item, dict)
         else:
-            # Call the timeStamp function on the file;
+            # Call the get_timestamp function on the file;
             #print(item)
-            dict[item] = timeStamp(item)
+            dict[item] = get_timestamp(item)
     return dict
 
 # DEBUG/TEST
@@ -44,7 +76,7 @@ path = ".\\test_dir1"
 
 dict = dictionary1
 
-lastWriteTime(path, dict)
+loop_thru_dir(path, dict)
 
 #lastWriteTime(".\\test_dir1", dictionary1)
 
@@ -58,3 +90,4 @@ lastWriteTime(path, dict)
 # it from the source;
 #if not os.path.exists(file_path):
 #    {code that copies file}
+'''
