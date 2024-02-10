@@ -8,32 +8,23 @@ import os
 # Used for timestamp conversion;
 from datetime import datetime
 
-# Create your first dictionary, which corresponds to the source, and which 
-# will store the full filepaths as keys and their timestamps as values;
-dictionary1 = {}
 
-# Create your second dictionary, the format whereof will be the same as the first;
-dictionary2 = {}
 
-# DEBUG/TEST
-path_string = ".//test_dir1"
 
-# Convert the path string into a path object;
-path_obj = os.path.abspath(path_string)
 
-dict = dictionary1
+# Define function that will retrieve the timestamp;
+def get_timestamp(path):
+    # Use os.stat to get file metadata;
+    stat = os.stat(path)
+    # Convert timestamp to datetime object, 'stat.st_mtime' is the time of the
+    # last file modification;
+    timestamp = datetime.fromtimestamp(stat.st_mtime)
+    return timestamp
 
-'''
-# This will create an items object that can be looped through;
-items = os.listdir(directory_path)
-# Now loop through it;
-for item in items:
-    print(item)
-'''
 # This function will be called on every file in the source and destination,
 # it takes a filepath as its argument;
 def loop_thru_dir(path, dict):
-    # This will create an items object that can be looped through;
+    # This will create an items object (list) that can be looped through;
     items = os.listdir(path)
     # 'items' is a list that contains only strings, 
     #print(items)
@@ -50,12 +41,43 @@ def loop_thru_dir(path, dict):
         if os.path.isdir(new_path):
             # Call the function recursively on the subdirectory;
             print(f'dir: {item}')
-            #lastWriteTime(item, dict)
+            loop_thru_dir(new_path, dict)
         else:
             # Call the get_timestamp function on the file;
             print(f'file: {item}')
-            #dict[item] = get_timestamp(item)
+            dict[new_path] = get_timestamp(new_path)
     return dict
+
+# DICTIONARY1 BLOCK
+
+# DEBUG/TEST
+path_string = ".//test_dir1"
+
+# Convert the path string into a path object;
+path_obj = os.path.abspath(path_string)
+
+# Create your first dictionary, which corresponds to the source, and which 
+# will store the full filepaths as keys and their timestamps as values;
+dictionary1 = {}
+# Define dictionary1, the source;
+dict1 = dictionary1
+loop_thru_dir(path_obj, dict)
+print(dict1)
+
+# DICTIONARY2 BLOCK
+
+# DEBUG/TEST
+path_string = ".//test_dir1"
+
+# Convert the path string into a path object;
+path_obj = os.path.abspath(path_string)
+# Create your second dictionary, the format whereof will be the same as the first;
+dictionary2 = {}
+# Define dictionary2, the destination;
+dict2 = dictionary2
+loop_thru_dir(path_obj, dict2)
+print(dict2)
+
 '''
 # DEBUG/TEST
 path_string = ".\\test_dir1"
@@ -64,11 +86,7 @@ path_string = ".\\test_dir1"
 path_obj = os.path.abspath(path_string)
 
 dict = dictionary1
-'''
-loop_thru_dir(path_obj, dict)
 
-print(dict)
-'''
 # Define function that will retrieve the timestamp;
 def get_timestamp(path):
     # Use os.stat to get file metadata;
