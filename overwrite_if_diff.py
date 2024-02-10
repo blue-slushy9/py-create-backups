@@ -37,9 +37,12 @@ def loop_thru_dir(path, dict):
     items = os.listdir(path)
     # Now loop through it;
     for item in items:
-        #print(item)
+        print(item)
     #for item in path:
         #print(item)
+        # Update the path variable to include the item name;
+        #path = path+item
+        print(path)
         if os.path.isdir(item):
             # Call the function recursively on the subdirectory;
             print(f'dir: {item}')
