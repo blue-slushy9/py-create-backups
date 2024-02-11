@@ -17,8 +17,8 @@ def get_timestamp(path):
     timestamp = datetime.fromtimestamp(stat.st_mtime)
     return timestamp
 
-# This function will be called on every file in the source and destination,
-# it takes a filepath as its argument;
+# This function will be called on every file in the source and destination to
+# build the respective dictionaries;
 def loop_thru_dir(path, dict):
     # This will create an items object (list) that can be looped through;
     items = os.listdir(path)
@@ -31,46 +31,63 @@ def loop_thru_dir(path, dict):
         path = path
         #print(item)
         # Update the path variable to include the item name;
-        new_path = path+"/"+item
-        print(new_path)
+        full_path = path+"/"+item
+        print(full_path)
         # os.path.isdir() expects a path as argument, not a string;
-        if os.path.isdir(new_path):
+        if os.path.isdir(full_path):
             # Call the function recursively on the subdirectory;
             print(f'dir: {item}')
-            loop_thru_dir(new_path, dict)
+            loop_thru_dir(full_path, dict)
         else:
             # Call the get_timestamp function on the file;
             print(f'file: {item}')
-            dict[new_path] = get_timestamp(new_path)
+            # Going to try the below to get the dictionaries to match;
+            #dict[path] = get_timestamp(new_path) # didn't work
+            ''' This might not be necessary, we can use the 'item' variable;
+            split_path = full_path.split("//")
+            filename = split_path[-1]
+            print(filename)
+            '''
+            dict[full_path] = get_timestamp(full_path)
     return dict
+
+# Define function that will copy and/or overwrite the files as needed;
+def overwrite(dict1, dict2, path1, path2):
+    for key in dict1:
+        split_key = key.split(path1)
+        print(path1)
+        print(split_key[0])
 
 # DICTIONARY1 BLOCK
 # Define the path as a string, which will be converted to a list below;
-path_string = ".//test_dir1"
+path_string1 = ".//test_dir1//"
 # Convert the path string into a path object (list);
-path_obj = os.path.abspath(path_string)
+path_obj1 = os.path.abspath(path_string1)
 # Create your first dictionary, which corresponds to the source, and which 
 # will store the full filepaths as keys and their timestamps as values;
 #dictionary1 = {}
 # Define dictionary1, the source;
 #dict1 = dictionary1
 dict1 = {}
-loop_thru_dir(path_obj, dict1)
+loop_thru_dir(path_obj1, dict1)
 print(dict1)
 
 # DICTIONARY2 BLOCK
 # Define the path as a string, which will be converted to a list below;
-path_string = ".//test_dir2"
+path_string2 = ".//test_dir2//"
 # Convert the path string into a path object;
-path_obj = os.path.abspath(path_string)
+path_obj2 = os.path.abspath(path_string2)
 # Create your second dictionary, the format whereof will be the same as the first;
 #dictionary2 = {}
 # Define dictionary2, the destination;
 #dict2 = dictionary2
 dict2 = {}
 # Call the main function of this program;
-loop_thru_dir(path_obj, dict2)
+loop_thru_dir(path_obj2, dict2)
 print(dict2)
+
+# Call the overwrite function;
+overwrite(dict1, dict2, path_string1, path_string2)
 
 '''
 # DEBUG/TEST
