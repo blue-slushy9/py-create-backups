@@ -61,7 +61,7 @@ def overwrite(dict1, dict2, path1, path2):
 
 # DICTIONARY1 BLOCK
 # Define the path as a string, which will be converted to a list below;
-path_string1 = ".//test_dir1//"
+path_string1 = ".\\test_dir1\\"
 # Convert the path string into a path object (list);
 path_obj1 = os.path.abspath(path_string1)
 # Create your first dictionary, which corresponds to the source, and which 
@@ -75,7 +75,7 @@ print(dict1)
 
 # DICTIONARY2 BLOCK
 # Define the path as a string, which will be converted to a list below;
-path_string2 = ".//test_dir2//"
+path_string2 = ".\\test_dir2\\"
 # Convert the path string into a path object;
 path_obj2 = os.path.abspath(path_string2)
 # Create your second dictionary, the format whereof will be the same as the first;
@@ -86,6 +86,12 @@ dict2 = {}
 # Call the main function of this program;
 loop_thru_dir(path_obj2, dict2)
 print(dict2)
+
+# Update the path_string variable to remove the leading '.';
+path_string1 = path_string1.pop(0)
+path_string2 = path_string2.pop(0)
+print(path_string1)
+print(path_string2)
 
 # Call the overwrite function;
 overwrite(dict1, dict2, path_string1, path_string2)
