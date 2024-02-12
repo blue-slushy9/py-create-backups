@@ -31,7 +31,7 @@ def loop_thru_dir(path, dict):
         path = path
         #print(item)
         # Update the path variable to include the item name;
-        full_path = path+"/"+item
+        full_path = path+"\\"+item
         print(full_path)
         # os.path.isdir() expects a path as argument, not a string;
         if os.path.isdir(full_path):
@@ -54,9 +54,10 @@ def loop_thru_dir(path, dict):
 # Define function that will copy and/or overwrite the files as needed;
 def overwrite(dict1, dict2, path1, path2):
     for key in dict1:
+        print(f'Key: {key}')
         split_key = key.split(path1)
-        print(path1)
-        print(split_key[0])
+        print(f'Path: {path1}')
+        print(f'Split: {split_key[0]}')
 
 # DICTIONARY1 BLOCK
 # Define the path as a string, which will be converted to a list below;
