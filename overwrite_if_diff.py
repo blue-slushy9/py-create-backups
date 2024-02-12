@@ -57,7 +57,11 @@ def overwrite(dict1, dict2, path1, path2):
         print(f'Key: {key}')
         split_key = key.split(path1)
         print(f'Path: {path1}')
-        print(f'Split: {split_key[0]}')
+        print(f'Split: {split_key[1]}')
+        # Check for the existence of each dict1 key in dict2;
+        if key not in dict2:
+            
+
 
 # DICTIONARY1 BLOCK
 # Define the path as a string, which will be converted to a list below;
@@ -87,9 +91,11 @@ dict2 = {}
 loop_thru_dir(path_obj2, dict2)
 print(dict2)
 
-# Update the path_string variable to remove the leading '.';
-path_string1 = path_string1.pop(0)
-path_string2 = path_string2.pop(0)
+# Use the replace() method to update the path_string variables to remove the
+# leading '.'s;
+path_string1 = path_string1.replace('.', '')
+path_string2 = path_string2.replace('.', '')
+# DEBUG
 print(path_string1)
 print(path_string2)
 
