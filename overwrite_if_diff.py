@@ -61,7 +61,23 @@ def overwrite(dict1, dict2, path1, path2):
         # Check for the existence of each dict1 key in dict2;
         if key not in dict2:
             
+''' Gemini code
+# shutil is a collection of high-level utilities for performing common file 
+# and directory operations. It provides convenient functions for tasks like 
+# copying, moving, deleting, archiving, and working with file permissions;
+# copy2 is a method therein that 
+from shutil import copy2
 
+# Define source and destination paths
+source_file = "/path/to/source/file.txt"
+destination_file = "/path/to/destination/file.txt"
+
+# Copy the file
+shutil.copy(source_file, destination_file)
+
+# Optionally, copy while preserving metadata
+shutil.copy2(source_file, destination_file)
+'''
 
 # DICTIONARY1 BLOCK
 # Define the path as a string, which will be converted to a list below;
