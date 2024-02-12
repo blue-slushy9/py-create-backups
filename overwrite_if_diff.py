@@ -7,6 +7,9 @@
 import os
 # Used for timestamp conversion;
 from datetime import datetime
+# copy2 attempts to preserve as much metadata as possible, e.g. timestamps;
+# copytree is used to copy entire directories and their contents;
+from shutil import copy2, copytree
 
 # Define function that will retrieve the timestamp;
 def get_timestamp(path):
@@ -58,14 +61,21 @@ def overwrite(dict1, dict2, path1, path2):
         split_key = key.split(path1)
         print(f'Path: {path1}')
         print(f'Split: {split_key[1]}')
+        dir = split_key[1]
+        print(f'split_key[1]: {dir}')
         # Check for the existence of each dict1 key in dict2;
-        if key not in dict2:
+        if dir not in dict2:
+            key2 = key.replace(path1, path2)
+            print(key2)
+            shutil.copytree(key, key2, copy_function=shutil.copy2)
+
             
 ''' Gemini code
 # shutil is a collection of high-level utilities for performing common file 
 # and directory operations. It provides convenient functions for tasks like 
 # copying, moving, deleting, archiving, and working with file permissions;
-# copy2 is a method therein that 
+# copy2 is a method therein that is specifically designed for copying files 
+# while attempting to preserve as much file metadata as possible, e.g. timestamps;
 from shutil import copy2
 
 # Define source and destination paths
@@ -77,6 +87,9 @@ shutil.copy(source_file, destination_file)
 
 # Optionally, copy while preserving metadata
 shutil.copy2(source_file, destination_file)
+
+# Copy the directory tree with metadata preservation
+shutil.copytree(source_dir, destination_dir, copy_function=shutil.copy2)
 '''
 
 # DICTIONARY1 BLOCK
