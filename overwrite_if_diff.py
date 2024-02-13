@@ -74,29 +74,6 @@ def overwrite(dict1, dict2, path1, path2):
             print(f'key2: {key2}')
             copytree(key, key2, copy_function=copy2)
 
-            
-''' Gemini code
-# shutil is a collection of high-level utilities for performing common file 
-# and directory operations. It provides convenient functions for tasks like 
-# copying, moving, deleting, archiving, and working with file permissions;
-# copy2 is a method therein that is specifically designed for copying files 
-# while attempting to preserve as much file metadata as possible, e.g. timestamps;
-from shutil import copy2
-
-# Define source and destination paths
-source_file = "/path/to/source/file.txt"
-destination_file = "/path/to/destination/file.txt"
-
-# Copy the file
-shutil.copy(source_file, destination_file)
-
-# Optionally, copy while preserving metadata
-shutil.copy2(source_file, destination_file)
-
-# Copy the directory tree with metadata preservation
-shutil.copytree(source_dir, destination_dir, copy_function=shutil.copy2)
-'''
-
 # DICTIONARY1 BLOCK
 # Define the path as a string, which will be converted to a list below;
 path_string1 = ".\\test_dir1\\"
@@ -139,55 +116,30 @@ print(path_string2)
 overwrite(dict1, dict2, path_string1, path_string2)
 
 '''
-# DEBUG/TEST
-path_string = ".\\test_dir1"
-
-# Convert the path string into a path object;
-path_obj = os.path.abspath(path_string)
-
-dict = dictionary1
-
-# Define function that will retrieve the timestamp;
-def get_timestamp(path):
-    # Use os.stat to get file metadata;
-    stat = os.stat(path)
-    # Convert timestamp to datetime object, 'stat.st_mtime' is the time of the
-    # last file modification;
-    timestamp = datetime.fromtimestamp(stat.st_mtime)
-    return timestamp
-
-# This function will be called on every file in the source and destination,
-# it takes a filepath as its argument;
-def loop_thru_dir(path, dict):
-    for item in path:
-        #print(item)
-        if os.path.isdir(item):
-            # Call the function recursively on the subdirectory;
-            print(item)
-            #lastWriteTime(item, dict)
-        else:
-            # Call the get_timestamp function on the file;
-            #print(item)
-            dict[item] = get_timestamp(item)
-    return dict
-
-# DEBUG/TEST
-path = ".\\test_dir1"
-
-dict = dictionary1
-
-loop_thru_dir(path, dict)
-
-#lastWriteTime(".\\test_dir1", dictionary1)
-
-#print(dictionary1)
-
-#print(dictionary1)
-
-#print(dictionary2)
-
 # Use this for the destination, if the file does not exist there then we copy 
 # it from the source;
 #if not os.path.exists(file_path):
 #    {code that copies file}
+
+
+# GEMINI CODE;
+# shutil is a collection of high-level utilities for performing common file 
+# and directory operations. It provides convenient functions for tasks like 
+# copying, moving, deleting, archiving, and working with file permissions;
+# copy2 is a method therein that is specifically designed for copying files 
+# while attempting to preserve as much file metadata as possible, e.g. timestamps;
+from shutil import copy2
+
+# Define source and destination paths
+source_file = "/path/to/source/file.txt"
+destination_file = "/path/to/destination/file.txt"
+
+# Copy the file
+shutil.copy(source_file, destination_file)
+
+# Optionally, copy while preserving metadata
+shutil.copy2(source_file, destination_file)
+
+# Copy the directory tree with metadata preservation
+shutil.copytree(source_dir, destination_dir, copy_function=shutil.copy2)
 '''
