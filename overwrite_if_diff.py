@@ -35,7 +35,7 @@ def loop_thru_dir(path, dict):
         #print(item)
         # Update the path variable to include the item name;
         full_path = path+"\\"+item
-        print(full_path)
+        print(f'full_path: {full_path}')
         # os.path.isdir() expects a path as argument, not a string;
         if os.path.isdir(full_path):
             # Call the function recursively on the subdirectory;
@@ -51,7 +51,12 @@ def loop_thru_dir(path, dict):
             filename = split_path[-1]
             print(filename)
             '''
+            # We might need a step here that ensures directory names have only
+            # one backslash, maybe the process of creates a dictionary key
+            # is somehow creating the two backslashes, even though filepaths
+            # are printing correctly up to this point;
             dict[full_path] = get_timestamp(full_path)
+            print(f'dict: {dict}')
     return dict
 
 # Define function that will copy and/or overwrite the files as needed;
