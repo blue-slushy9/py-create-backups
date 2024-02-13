@@ -9,7 +9,9 @@ import os
 from datetime import datetime
 # copy2 attempts to preserve as much metadata as possible, e.g. timestamps;
 # copytree is used to copy entire directories and their contents;
-from shutil import copy2, copytree
+# NOTE: was not able to import shutil, had to run 'pip install shutil';
+#from shutil import copy2, copytree
+import shutil
 
 # Define function that will retrieve the timestamp;
 def get_timestamp(path):
