@@ -4,14 +4,12 @@
 # at all, then it will also create a copy;
 
 # Used for file and path operations;
-import os
+import os # At end of program, maybe import only the modules actually used?
 # Used for timestamp conversion;
 from datetime import datetime
 # copy2 attempts to preserve as much metadata as possible, e.g. timestamps;
 # copytree is used to copy entire directories and their contents;
-# NOTE: was not able to import shutil, had to run 'pip install shutil';
-#from shutil import copy2, copytree
-import shutil
+from shutil import copy2, copytree
 
 # Define function that will retrieve the timestamp;
 def get_timestamp(path):
@@ -68,8 +66,8 @@ def overwrite(dict1, dict2, path1, path2):
         # Check for the existence of each dict1 key in dict2;
         if dir not in dict2:
             key2 = key.replace(path1, path2)
-            print(key2)
-            shutil.copytree(key, key2, copy_function=shutil.copy2)
+            print(f'key2: {key2}')
+            copytree(key, key2, copy_function=copy2)
 
             
 ''' Gemini code
@@ -99,6 +97,7 @@ shutil.copytree(source_dir, destination_dir, copy_function=shutil.copy2)
 path_string1 = ".\\test_dir1\\"
 # Convert the path string into a path object (list);
 path_obj1 = os.path.abspath(path_string1)
+print(f'path_obj1: {path_obj1}')
 # Create your first dictionary, which corresponds to the source, and which 
 # will store the full filepaths as keys and their timestamps as values;
 #dictionary1 = {}
@@ -106,13 +105,14 @@ path_obj1 = os.path.abspath(path_string1)
 #dict1 = dictionary1
 dict1 = {}
 loop_thru_dir(path_obj1, dict1)
-print(dict1)
+print(f'dict1: {dict1}')
 
 # DICTIONARY2 BLOCK
 # Define the path as a string, which will be converted to a list below;
 path_string2 = ".\\test_dir2\\"
 # Convert the path string into a path object;
 path_obj2 = os.path.abspath(path_string2)
+print(f'path_obj2: {path_obj2}')
 # Create your second dictionary, the format whereof will be the same as the first;
 #dictionary2 = {}
 # Define dictionary2, the destination;
@@ -120,7 +120,7 @@ path_obj2 = os.path.abspath(path_string2)
 dict2 = {}
 # Call the main function of this program;
 loop_thru_dir(path_obj2, dict2)
-print(dict2)
+print(f'dict2: {dict2}')
 
 # Use the replace() method to update the path_string variables to remove the
 # leading '.'s;
