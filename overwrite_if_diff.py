@@ -73,7 +73,9 @@ def double_to_single(dict):
     return dict
 
 # Define function that will copy and/or overwrite the files as needed;
+# Arguments: source, destination, source directory, destination directory;
 def overwrite(dict1, dict2, path1, path2):
+    # key is the full filepath;
     for key in dict1:
         print(f'Key: {key}')
         split_key = key.split(path1)
@@ -81,11 +83,19 @@ def overwrite(dict1, dict2, path1, path2):
         print(f'Split: {split_key[1]}')
         dir = split_key[1]
         print(f'split_key[1]: {dir}')
-        # Check for the existence of each dict1 key in dict2;
+        # Check for the existence of each dict1 key in dict2, if it doesn't
+        # exist then we will copy it to the destination;
         if dir not in dict2:
+            # Replace source directory name with destination directory name;
             key2 = key.replace(path1, path2)
+            # DEBUG
             print(f'key2: {key2}')
+            # Copy the entire directory and its contents to the destination;
+            # Arguments: source filepath, destination filepath, copy method;
             copytree(key, key2, copy_function=copy2)
+        # Else, if the directory does exist in the destination...
+        else:
+            
 
 # DICTIONARY1 BLOCK
 # Define the path as a string, which will be converted to a list below;
