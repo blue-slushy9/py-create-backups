@@ -1,7 +1,7 @@
-# This script is intended to copy files from two almost identical drives or 
-# directories, on the condition that the file in the source is newer than the
-# one that exists in the destination; or if the file doesn't exist in the destination
-# at all, then it will also create a copy;
+# NOTES
+
+# MIGHT NEED TO USE DIRECTORIES AS DICTIONARY KEYS, SUBDIRECTORIES AND FILES
+# AS SUB-KEYS, AND TIMESTAMPS AS VALUES;
 
 # MIGHT NEED TO USE 1+ TEMPORARY TEXT FILES INSTEAD OF DICTIONARIES!
 
@@ -12,7 +12,13 @@ from datetime import datetime
 # copy2 attempts to preserve as much metadata as possible, e.g. timestamps;
 # copytree is used to copy entire directories and their contents;
 from shutil import copy2, copytree
+'''
+# Define source directory, should be in the same directory as the Python file;
+source = '.\\test_dir1\\'
 
+# Define destination directory, should be in same directory as Python file;
+destination = '.\\test_dir2\\'
+'''
 # Define function that will retrieve the timestamp;
 def get_timestamp(path):
     # Use os.stat to get file metadata;
@@ -59,7 +65,7 @@ def loop_thru_dir(path, dict):
             # are printing correctly up to this point;
             dict[full_path] = get_timestamp(full_path)
             #print(dict.key())
-            print(f'dict_entry: {dict}')
+            #print(f'dict_entry: {dict}')
     return dict
 
 '''
@@ -79,10 +85,10 @@ def double_to_single(dict):
 def overwrite(dict1, dict2, path1, path2):
     # key is the full filepath;
     for key in dict1:
-        print(f'Key: {key}')
+        print(f'key: {key}')
         split_key = key.split(path1)
-        print(f'Path: {path1}')
-        print(f'Split: {split_key[1]}')
+        print(f'path1: {path1}')
+        print(f'split_key[1]: {split_key[1]}')
         # Assign the full filepath only up to the last directory to dir1;
         dir1 = (split_key[0]+path1)
         # DEBUG
@@ -144,10 +150,12 @@ print(f'dict2: {dict2}')
 path_string1 = path_string1.replace('.', '')
 path_string2 = path_string2.replace('.', '')
 # DEBUG
-print(path_string1)
-print(path_string2)
+print(f'path_string1: {path_string1}')
+print(f'path_string2: {path_string2}')
 
 # Call the overwrite function;
+# Arguments: source dictionary, destination dictionary, 
+# source parent-directory name, destination parent-directory name;
 overwrite(dict1, dict2, path_string1, path_string2)
 
 '''
