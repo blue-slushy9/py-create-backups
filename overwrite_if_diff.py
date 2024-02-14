@@ -62,15 +62,17 @@ def loop_thru_dir(path, dict):
             print(f'dict_entry: {dict}')
     return dict
 
+'''
 # MIGHT NOT WORK
 # Define function that replaces all '\\'s with '\'s in the dictionaries;
 def double_to_single(dict):
     for key in dict:
-        print(f'pre-key: {key}')
+        #print(f'pre-key: {key}')
         # Apparently a single backslash isn't recognized even in a raw string?
         #key = key.replace(r'\\', r'\')
-        print(f'post-key: {key}')
+        #print(f'post-key: {key}')
     return dict
+'''
 
 # Define function that will copy and/or overwrite the files as needed;
 # Arguments: source, destination, source directory, destination directory;
@@ -94,7 +96,7 @@ def overwrite(dict1, dict2, path1, path2):
             # Arguments: source filepath, destination filepath, copy method;
             copytree(key, key2, copy_function=copy2)
         # Else, if the directory does exist in the destination...
-        else:
+        #else:
             
 
 # DICTIONARY1 BLOCK
@@ -110,7 +112,7 @@ print(f'path_obj1: {path_obj1}')
 #dict1 = dictionary1
 dict1 = {}
 loop_thru_dir(path_obj1, dict1)
-dict1 = double_to_single(dict1)
+#dict1 = double_to_single(dict1)
 print(f'dict1: {dict1}')
 
 # DICTIONARY2 BLOCK
@@ -126,7 +128,7 @@ print(f'path_obj2: {path_obj2}')
 dict2 = {}
 # Call the main function of this program;
 loop_thru_dir(path_obj2, dict2)
-dict2 = double_to_single(dict2)
+#dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}')
 
 # Use the replace() method to update the path_string variables to remove the
