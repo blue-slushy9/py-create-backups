@@ -3,6 +3,8 @@
 # one that exists in the destination; or if the file doesn't exist in the destination
 # at all, then it will also create a copy;
 
+# MIGHT NEED TO USE 1+ TEMPORARY TEXT FILES INSTEAD OF DICTIONARIES!
+
 # Used for file and path operations;
 import os # At end of program, maybe import only the modules actually used?
 # Used for timestamp conversion;
@@ -65,7 +67,8 @@ def loop_thru_dir(path, dict):
 def double_to_single(dict):
     for key in dict:
         print(f'pre-key: {key}')
-        key = key.replace(r'//', r'/')
+        # Apparently a single backslash isn't recognized even in a raw string?
+        #key = key.replace(r'\\', r'\')
         print(f'post-key: {key}')
     return dict
 
@@ -97,7 +100,7 @@ print(f'path_obj1: {path_obj1}')
 #dict1 = dictionary1
 dict1 = {}
 loop_thru_dir(path_obj1, dict1)
-dict2 = double_to_single(dict1)
+dict1 = double_to_single(dict1)
 print(f'dict1: {dict1}')
 
 # DICTIONARY2 BLOCK
