@@ -83,18 +83,26 @@ def overwrite(dict1, dict2, path1, path2):
         split_key = key.split(path1)
         print(f'Path: {path1}')
         print(f'Split: {split_key[1]}')
-        dir = split_key[1]
-        print(f'split_key[1]: {dir}')
+        # Assign the full filepath only up to the last directory to dir1;
+        dir1 = (split_key[0]+path1)
+        # DEBUG
+        print(f'dir1: {dir1}')
+        # Create a nearly identical filepath, except we replace the source
+        # parent directory name with the destination parent directory name;
+        dir2 = dir1.replace(path1, path2)
+        # DEBUG
+        print(f'dir2: {dir2}')
         # Check for the existence of each dict1 key in dict2, if it doesn't
         # exist then we will copy it to the destination;
-        if dir not in dict2:
-            # Replace source directory name with destination directory name;
-            key2 = key.replace(path1, path2)
+        if dir2 not in dict2:
+            # Replace source parent directory name with destination parent 
+            # directory name;
+            #dir2 = dir1.replace(path1, path2)
             # DEBUG
-            print(f'key2: {key2}')
+            #print(f'dir2: {dir2}')
             # Copy the entire directory and its contents to the destination;
             # Arguments: source filepath, destination filepath, copy method;
-            copytree(key, key2, copy_function=copy2)
+            copytree(dir1, dir2, copy_function=copy2)
         # Else, if the directory does exist in the destination...
         #else:
             
