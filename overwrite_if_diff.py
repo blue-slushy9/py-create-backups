@@ -56,7 +56,17 @@ def loop_thru_dir(path, dict):
             # is somehow creating the two backslashes, even though filepaths
             # are printing correctly up to this point;
             dict[full_path] = get_timestamp(full_path)
-            print(f'dict: {dict}')
+            #print(dict.key())
+            print(f'dict_entry: {dict}')
+    return dict
+
+# MIGHT NOT WORK
+# Define function that replaces all '\\'s with '\'s in the dictionaries;
+def double_to_single(dict):
+    for key in dict:
+        print(f'pre-key: {key}')
+        key = key.replace(r'//', r'/')
+        print(f'post-key: {key}')
     return dict
 
 # Define function that will copy and/or overwrite the files as needed;
@@ -87,6 +97,7 @@ print(f'path_obj1: {path_obj1}')
 #dict1 = dictionary1
 dict1 = {}
 loop_thru_dir(path_obj1, dict1)
+dict2 = double_to_single(dict1)
 print(f'dict1: {dict1}')
 
 # DICTIONARY2 BLOCK
@@ -102,6 +113,7 @@ print(f'path_obj2: {path_obj2}')
 dict2 = {}
 # Call the main function of this program;
 loop_thru_dir(path_obj2, dict2)
+dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}')
 
 # Use the replace() method to update the path_string variables to remove the
