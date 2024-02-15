@@ -1,8 +1,16 @@
-# NOTES
+# NOTES - newest to oldest;
 
+# 2/15/24
+# Since copytree uses other methods which I do not control, perhaps I will
+# have to use it only for copying entire directories (including root node)
+# from the source to the destination; for other objects, e.g. files, I may
+# have to use other methods in the OS library, e.g. os.walk(); 
+
+# 2/14/24
 # MIGHT NEED TO USE DIRECTORIES AS DICTIONARY KEYS, SUBDIRECTORIES AND FILES
 # AS SUB-KEYS, AND TIMESTAMPS AS VALUES;
 
+# 2/13/24
 # MIGHT NEED TO USE 1+ TEMPORARY TEXT FILES INSTEAD OF DICTIONARIES!
 
 # Used for file and path operations;
