@@ -24,13 +24,13 @@ from datetime import datetime
 # copy2 attempts to preserve as much metadata as possible, e.g. timestamps;
 # copytree is used to copy entire directories and their contents;
 from shutil import copy2, copytree
-'''
+
 # Define source directory, should be in the same directory as the Python file;
 source = '.\\test_dir1\\'
 
 # Define destination directory, should be in same directory as Python file;
 destination = '.\\test_dir2\\'
-'''
+
 # Define function that will retrieve the timestamp;
 def get_timestamp(path):
     # Use os.stat to get file metadata;
@@ -41,10 +41,11 @@ def get_timestamp(path):
     return timestamp
 
 # This function will be called on every file in the source and destination to
-# build the respective dictionaries;
-def loop_thru_dir(path, dict):
+# build the respective dictionaries; 
+# Arguments: full filepath of source, name of source, dictionary to be built;
+def loop_thru_dir(fullpath, path, dict):
     # This will create an items object (list) that can be looped through;
-    items = os.listdir(path)
+    items = os.listdir(fullpath)
     # 'items' is a list that contains only strings, 
     #print(items)
     # Now loop through it;
@@ -52,22 +53,22 @@ def loop_thru_dir(path, dict):
         # DEBUG
         print(f'item: {item}')
         # Reset the path variable after every iteration;
-        path = path
+        fullpath = fullpath
         #print(item)
         # Update the path variable to include the item name;
-        full_path = path+"\\"+item
+        new_fullpath = fullpath+"\\"+item
         # DEBUG
-        print(f'full_path: {full_path}')
+        print(f'new_fullpath: {new_fullpath}')
         # os.path.isdir() expects a path as argument, not a string;
-        if os.path.isdir(full_path):
+        if os.path.isdir(new_fullpath):
             # Call the function recursively on the subdirectory;
             print(f'dir: {item}')
             # Create an inner key that matches the name of the directory;
-            dict[full_path] = item
+            dict[new_fullpath] = item
             # DEBUG
-            print(f'item_in_dict: {dict[full_path]}')
+            print(f'item_in_dict: {dict[new_fullpath]}')
             # Call function recursively on subdirectory;
-            loop_thru_dir(full_path, dict)
+            loop_thru_dir(new_fullpath, item, dict)
         else:
             # Call the get_timestamp function on the file;
             print(f'file: {item}')
@@ -82,7 +83,7 @@ def loop_thru_dir(path, dict):
             # one backslash, maybe the process of creates a dictionary key
             # is somehow creating the two backslashes, even though filepaths
             # are printing correctly up to this point;
-            dict[full_path] = get_timestamp(full_path)
+            dict[fullpath] = get_timestamp(fullpath)
             #print(dict.key())
             #print(f'dict_entry: {dict}')
     return dict
@@ -137,6 +138,7 @@ def overwrite(dict1, dict2, path1, path2):
 path_string1 = ".\\test_dir1\\"
 # Convert the path string into a path object (list);
 path_obj1 = os.path.abspath(path_string1)
+# DEBUG - prints out entire filepath;
 print(f'path_obj1: {path_obj1}')
 # Create your first dictionary, which corresponds to the source, and which 
 # will store the full filepaths as keys and their timestamps as values;
@@ -144,7 +146,11 @@ print(f'path_obj1: {path_obj1}')
 # Define dictionary1, the source;
 #dict1 = dictionary1
 dict1 = {}
-loop_thru_dir(path_obj1, dict1)
+dict1[source] = None
+# DEBUG
+print(f'dict1: {dict1}')
+# Arguments: full filepath of source, name of source, dictionary to be built;
+loop_thru_dir(path_obj1, source, dict1)
 #dict1 = double_to_single(dict1)
 print(f'dict1: {dict1}')
 
@@ -153,14 +159,18 @@ print(f'dict1: {dict1}')
 path_string2 = ".\\test_dir2\\"
 # Convert the path string into a path object;
 path_obj2 = os.path.abspath(path_string2)
+# DEBUG - prints out entire filepath;
 print(f'path_obj2: {path_obj2}')
 # Create your second dictionary, the format whereof will be the same as the first;
 #dictionary2 = {}
 # Define dictionary2, the destination;
 #dict2 = dictionary2
 dict2 = {}
+dict2[destination] = None
+# DEBUG
+print(f'dict2: {dict2}')
 # Call the main function of this program;
-loop_thru_dir(path_obj2, dict2)
+loop_thru_dir(path_obj2, destination, dict2)
 #dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}')
 
