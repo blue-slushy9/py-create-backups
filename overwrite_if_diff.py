@@ -1,6 +1,10 @@
 # NOTES - newest to oldest;
 
 # 2/15/24
+# Maybe I can just add the filepaths beginning at the source and destination
+# directories to the dictionaries? The full filepaths clutter it up and are
+# unnecessary, though they are needed for running the OS methods;
+
 # Since copytree uses other methods which I do not control, perhaps I will
 # have to use it only for copying entire directories (including root node)
 # from the source to the destination; for other objects, e.g. files, I may
@@ -45,17 +49,24 @@ def loop_thru_dir(path, dict):
     #print(items)
     # Now loop through it;
     for item in items:
-        print(item)
+        # DEBUG
+        print(f'item: {item}')
         # Reset the path variable after every iteration;
         path = path
         #print(item)
         # Update the path variable to include the item name;
         full_path = path+"\\"+item
+        # DEBUG
         print(f'full_path: {full_path}')
         # os.path.isdir() expects a path as argument, not a string;
         if os.path.isdir(full_path):
             # Call the function recursively on the subdirectory;
             print(f'dir: {item}')
+            # Create an inner key that matches the name of the directory;
+            dict[full_path] = item
+            # DEBUG
+            print(f'item_in_dict: {dict[full_path]}')
+            # Call function recursively on subdirectory;
             loop_thru_dir(full_path, dict)
         else:
             # Call the get_timestamp function on the file;
