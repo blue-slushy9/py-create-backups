@@ -43,7 +43,7 @@ def get_timestamp(path):
 # This function will be called on every file in the source and destination to
 # build the respective dictionaries; 
 # Arguments: full filepath of source, name of source, dictionary to be built;
-def loop_thru_dir(fullpath, path, dict):
+def loop_thru_dir(fullpath, name, dict):
     # This will create an items object (list) that can be looped through;
     items = os.listdir(fullpath)
     # 'items' is a list that contains only strings, 
@@ -88,18 +88,6 @@ def loop_thru_dir(fullpath, path, dict):
             #print(f'dict_entry: {dict}')
     return dict
 
-'''
-# MIGHT NOT WORK
-# Define function that replaces all '\\'s with '\'s in the dictionaries;
-def double_to_single(dict):
-    for key in dict:
-        #print(f'pre-key: {key}')
-        # Apparently a single backslash isn't recognized even in a raw string?
-        #key = key.replace(r'\\', r'\')
-        #print(f'post-key: {key}')
-    return dict
-'''
-
 # Define function that will copy and/or overwrite the files as needed;
 # Arguments: source, destination, source directory, destination directory;
 def overwrite(dict1, dict2, path1, path2):
@@ -108,7 +96,7 @@ def overwrite(dict1, dict2, path1, path2):
         print(f'key: {key}')
         split_key = key.split(path1)
         print(f'path1: {path1}')
-        print(f'split_key[1]: {split_key[1]}')
+        #print(f'split_key[1]: {split_key[1]}')
         # Assign the full filepath only up to the last directory to dir1;
         dir1 = (split_key[0]+path1)
         # DEBUG
@@ -146,12 +134,12 @@ print(f'path_obj1: {path_obj1}')
 # Define dictionary1, the source;
 #dict1 = dictionary1
 dict1 = {}
-dict1[source] = None
+#dict1[source] = None
 # DEBUG
-print(f'dict1: {dict1}')
+#print(f'dict1: {dict1}')
 # Arguments: full filepath of source, name of source, dictionary to be built;
 loop_thru_dir(path_obj1, source, dict1)
-#dict1 = double_to_single(dict1)
+# DEBUG
 print(f'dict1: {dict1}')
 
 # DICTIONARY2 BLOCK
@@ -166,10 +154,10 @@ print(f'path_obj2: {path_obj2}')
 # Define dictionary2, the destination;
 #dict2 = dictionary2
 dict2 = {}
-dict2[destination] = None
+#dict2[destination] = None
 # DEBUG
-print(f'dict2: {dict2}')
-# Call the main function of this program;
+#print(f'dict2: {dict2}')
+# Arguments: full filepath of source, name of source, dictionary to be built;
 loop_thru_dir(path_obj2, destination, dict2)
 #dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}')
@@ -192,6 +180,17 @@ overwrite(dict1, dict2, path_string1, path_string2)
 # it from the source;
 #if not os.path.exists(file_path):
 #    {code that copies file}
+
+
+# MIGHT NOT WORK
+# Define function that replaces all '\\'s with '\'s in the dictionaries;
+def double_to_single(dict):
+    for key in dict:
+        #print(f'pre-key: {key}')
+        # Apparently a single backslash isn't recognized even in a raw string?
+        #key = key.replace(r'\\', r'\')
+        #print(f'post-key: {key}')
+    return dict
 
 
 # GEMINI CODE;
