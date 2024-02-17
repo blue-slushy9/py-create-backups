@@ -1,5 +1,13 @@
 # Need to test this part of my create_backups.py program;
 
+# NOTES
+
+# 2/16/2024
+# Might need to create the dictionary keys for subdirectories first,
+# THEN create the keys for the files; the problem I am having with the code
+# I got from GPT for creating inner dictionary keys is that the dictionary
+# itself does not actually exist yet, so it can't create the inner keys;
+
 import os
 
 # This function will be called on every file in the source and destination to
@@ -38,9 +46,29 @@ def loop_thru_dir(fullpath, name, dict):
         else:
             # DEBUG
             print(f'file: {item}')
-            # DEBUG
-            dict[new_fullpath][new_fullpath] = {}
-            dict[new_fullpath][new_fullpath] = ''
+
+            # GPT code;
+            # Split the full path to create a list of directories and the filename
+            new_fullpath_split = new_fullpath.split('\\')
+
+            # Initialize the dictionary with the first level of keys
+            print(f'dict: {dict}')
+            current_dict = dict
+            print(f'current_dict: {current_dict}')
+            for component in new_fullpath_split[:-1]:
+                # 'setdefault' checks whether 'component' exists in the
+                # dictionary, if it does then it returns the value; if it does
+                # not exist, then it creates a new key-value pair with the key
+                # 'component' (variable value) & in this case the value '{}';
+                current_dict = current_dict.setdefault(component, {})
+
+            # Assign the value to the innermost key
+            current_dict[new_fullpath_split[-1]] = {}
+
+            # Print the updated dictionary
+            print(f'current_dict: {current_dict}')
+            # /GPT code;
+
             # Going to try the below to get the dictionaries to match;
             #dict[path] = get_timestamp(new_path) # didn't work
             ''' This might not be necessary, we can use the 'item' variable;
@@ -97,6 +125,24 @@ print(f'dict2: {dict2}')
 
 
 '''
+# GPT code for creating inner nested-dictionary keys;
+
+# Split the full path to create a list of directories and the filename
+path_components = new_fullpath.split('\\')
+
+# Initialize the dictionary with the first level of keys
+current_dict = my_dict
+for component in path_components[:-1]:
+    current_dict = current_dict.setdefault(component, {})
+
+# Assign the value to the innermost key
+current_dict[path_components[-1]] = ''
+
+# Print the updated dictionary
+print(my_dict)
+
+
+
 #source = ".\\test_dir1\\"
 
 destination = ".\\test_dir2"
