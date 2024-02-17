@@ -3,6 +3,13 @@
 # NOTES
 
 # 2/17/2024
+# At line 71:
+# NOTE: this line is splitting the full filepath at every slash,
+# which we don't really want; rather, I think we need to split
+# the string only at the last slash, because we need to keep as
+# much of the full filepath intact as possible, since we will need
+# it for the overwrite process;
+
 # GPT suggests using the os.path module for managing the filepaths issue
 # across different operating systems;
 
@@ -15,7 +22,7 @@
 import os
 
 #input block
-oper_sys = input("Are you on Windows, macOS, or Linux?\n")
+oper_sys = input("Are you on Windows, macOS, Linux, or other?\n")
 oper_sys = oper_sys.lower()
 if oper_sys == "windows":
     slashes = "\\\\"
@@ -28,7 +35,7 @@ print(slashes)
 # This function will be called on every file in the source and destination to
 # build the respective dictionaries; 
 # Arguments: full filepath of source, name of source, dictionary to be built;
-def loop_thru_dir(fullpath, name, dict):
+def find_dirs(fullpath, name, dict):
     # This will create an items object (list) that can be looped through;
     items = os.listdir(fullpath)
     # 'items' is a list that contains only strings, 
@@ -53,11 +60,49 @@ def loop_thru_dir(fullpath, name, dict):
             print(f'dir: {item}')
             # Create an inner key that matches the name of the subdirectory,
             # with a blank value;
+            
+            # GPT code;
+            # Split the full path to create a list of directories and the filename;
+            # NOTE: this line is splitting the full filepath at every slash,
+            # which we don't really want; rather, I think we need to split
+            # the string only at the last slash, because we need to keep as
+            # much of the full filepath intact as possible, since we will need
+            # it for the overwrite process;
+            new_fullpath_split = new_fullpath.split(slashes)
+
+            # Initialize the dictionary with the first level of keys
+            print(f'dict: {dict}')
+            # current_dict points to the same location in memory as dict,
+            # i.e. the original object is modified, not a copy thereof;
+            current_dict = dict
+            print(f'current_dict: {current_dict}')
+            # component is simply the strings between the slashes,
+            # i.e. the directory names;
+            for component in new_fullpath_split[:-1]:
+                # 'setdefault' checks whether 'component' exists in the
+                # dictionary, if it does then it returns the value; if it does
+                # not exist, then it creates a new key-value pair with the key
+                # 'component' (variable value) & in this case the value '{}';
+                current_dict = current_dict.setdefault(component, {})
+
+            # Assign the value to the innermost key
+            current_dict[new_fullpath_split[-1]] = {}
+
+            # Print the updated dictionary
+            print(f'current_dict: {current_dict}')
+            print(f'dict: {dict}')
+            # /GPT code;
+
+
+            ''' SHIT CODE
             dict[new_fullpath] = ''
             # DEBUG
             print(f'item_in_dict: {dict[new_fullpath]}')
             # Call the function recursively on the subdirectory;
-            loop_thru_dir(new_fullpath, item, dict[new_fullpath])
+            find_dirs(new_fullpath, item, dict[new_fullpath])
+            '''
+        ''' Going to try building out the dictionaries with the directories
+            and subdirectories first, then all of the files;
         else:
             # DEBUG
             print(f'file: {item}')
@@ -86,15 +131,11 @@ def loop_thru_dir(fullpath, name, dict):
 
             # Going to try the below to get the dictionaries to match;
             #dict[path] = get_timestamp(new_path) # didn't work
-            ''' This might not be necessary, we can use the 'item' variable;
-            split_path = full_path.split("//")
-            filename = split_path[-1]
-            print(filename)
-            '''
             # Call the get_timestamp function on the file;
             #dict[fullpath] = get_timestamp(fullpath)
             #print(dict.key())
             #print(f'dict_entry: {dict}')
+            '''
     return dict
 
 # DICTIONARY1 BLOCK
@@ -114,7 +155,7 @@ dict1 = {}
 # DEBUG
 #print(f'dict1: {dict1}')
 # Arguments: full filepath of source, name of source, dictionary to be built;
-loop_thru_dir(path_obj1, source, dict1)
+find_dirs(path_obj1, source, dict1)
 # DEBUG
 print(f'dict1: {dict1}')
 
@@ -134,7 +175,7 @@ dict2 = {}
 # DEBUG
 #print(f'dict2: {dict2}')
 # Arguments: full filepath of source, name of source, dictionary to be built;
-loop_thru_dir(path_obj2, destination, dict2)
+find_dirs(path_obj2, destination, dict2)
 #dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}')
 
