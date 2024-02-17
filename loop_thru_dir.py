@@ -2,6 +2,10 @@
 
 # NOTES
 
+# 2/17/2024
+# GPT suggests using the os.path module for managing the filepaths issue
+# across different operating systems;
+
 # 2/16/2024
 # Might need to create the dictionary keys for subdirectories first,
 # THEN create the keys for the files; the problem I am having with the code
@@ -9,6 +13,17 @@
 # itself does not actually exist yet, so it can't create the inner keys;
 
 import os
+
+#input block
+oper_sys = input("Are you on Windows, macOS, or Linux?\n")
+oper_sys = oper_sys.lower()
+if oper_sys == "windows":
+    slashes = "\\\\"
+else:
+    slashes = "/"
+    #return slashes
+# DEBUG
+print(slashes)
 
 # This function will be called on every file in the source and destination to
 # build the respective dictionaries; 
@@ -28,7 +43,7 @@ def loop_thru_dir(fullpath, name, dict):
         print(f'After fullpath: {fullpath}')
         #print(item)
         # Update the fullpath variable to include the item name;
-        new_fullpath = fullpath+"\\"+item
+        new_fullpath = fullpath+slashes+item
         # DEBUG
         print(f'new_fullpath: {new_fullpath}')
         # If full filepath points to a directory...
@@ -49,7 +64,7 @@ def loop_thru_dir(fullpath, name, dict):
 
             # GPT code;
             # Split the full path to create a list of directories and the filename
-            new_fullpath_split = new_fullpath.split('\\')
+            new_fullpath_split = new_fullpath.split(slashes)
 
             # Initialize the dictionary with the first level of keys
             print(f'dict: {dict}')
@@ -84,7 +99,7 @@ def loop_thru_dir(fullpath, name, dict):
 
 # DICTIONARY1 BLOCK
 # Define the path as a string, which will be converted to a list below;
-source = ".\\test_dir1\\"
+source = ("."+slashes+"test_dir1"+slashes)
 # Convert the path string into a path object (list);
 path_obj1 = os.path.abspath(source)
 # DEBUG - prints out entire filepath;
@@ -105,7 +120,7 @@ print(f'dict1: {dict1}')
 
 # DICTIONARY2 BLOCK
 # Define the path as a string, which will be converted to a list below;
-destination = ".\\test_dir2\\"
+destination = ("."+slashes+"test_dir2"+slashes)
 # Convert the path string into a path object;
 path_obj2 = os.path.abspath(destination)
 # DEBUG - prints out entire filepath;
