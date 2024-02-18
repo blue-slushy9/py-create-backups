@@ -2,6 +2,12 @@
 
 # NOTES
 
+# 2/18/24
+# Maybe it's not necessary to have the full filepath as the outer key,
+# that part is already stored in a variable outside of the dictionary,
+# so I could just append whatever dictionary keys are being used to the end of
+# that filepath?;
+
 # 2/17/2024
 # At line 71:
 # NOTE: this line is splitting the full filepath at every slash,
@@ -21,14 +27,42 @@
 
 import os
 
-#input block
-oper_sys = input("Are you on Windows, macOS, Linux, or other?\n")
-oper_sys = oper_sys.lower()
-if oper_sys == "windows":
-    slashes = "\\\\"
-else:
-    slashes = "/"
-    #return slashes
+# source input block
+def src_input():
+    source = input("Please enter the name of your source directory only, no slashes:\n")
+    src_correct = input(f"You have entered {source}, is this correct? [Y/n]\n")
+    src_correct = src_correct.lower()
+    if src_correct == 'y':
+        print(f"Okay, {source} will be the source directory.\n")
+    else:
+        src_input()
+    return source
+# DEBUG
+print(f"source: {source}")
+
+# source input block
+def dst_input():
+    destination = input("Please enter the name of your destination directory only, no slashes:\n")
+    dst_correct = input(f"You have entered {destination}, is this correct? [Y/n]\n")
+    dst_correct = dst_correct.lower()
+    if dst_correct == 'y':
+        print(f"Okay, {destination} will be the source directory.\n")
+    else:
+        dst_input()
+    return destination
+# DEBUG
+print(f"destination: {destination}")
+    
+
+# OS input block
+def os_input():
+    oper_sys = input("Are you on Windows, macOS, Linux, or other?\n")
+    oper_sys = oper_sys.lower()
+    if oper_sys == "windows":
+        slashes = "\\\\"
+    else:
+        slashes = "/"
+        return slashes
 # DEBUG
 print(slashes)
 
@@ -77,16 +111,21 @@ def find_dirs(fullpath, name, dict):
             current_dict = dict
             print(f'current_dict: {current_dict}')
             # component is simply the strings between the slashes,
-            # i.e. the directory names;
-            for component in new_fullpath_split[:-1]:
-                # 'setdefault' checks whether 'component' exists in the
-                # dictionary, if it does then it returns the value; if it does
-                # not exist, then it creates a new key-value pair with the key
-                # 'component' (variable value) & in this case the value '{}';
-                current_dict = current_dict.setdefault(component, {})
+            # i.e. the directory names; NOTE: '[:-1]' goes through ALL
+            # components from the first to the second-to-last; 
+            #for component in new_fullpath_split[-1]:
+            # Assign last directory name in filepath to the variable;
+            component = new_fullpath_split[-1]
+            # 'setdefault' checks whether 'component' exists in the
+            # dictionary, if it does then it returns the value; if it does
+            # not exist, then it creates a new key-value pair with the key
+            # 'component' (variable value) & in this case the value '{}';
+            current_dict = current_dict.setdefault(component, {})
 
+            # NOTE: This turned out to be redundant code, does almost the same
+            # thing as the preceding line;
             # Assign the value to the innermost key
-            current_dict[new_fullpath_split[-1]] = {}
+            #current_dict[new_fullpath_split[-1]] = {}
 
             # Print the updated dictionary
             print(f'current_dict: {current_dict}')
@@ -140,17 +179,17 @@ def find_dirs(fullpath, name, dict):
 
 # DICTIONARY1 BLOCK
 # Define the path as a string, which will be converted to a list below;
-source = ("."+slashes+"test_dir1"+slashes)
+src_path = ("."+slashes+source+slashes)
 # Convert the path string into a path object (list);
-path_obj1 = os.path.abspath(source)
+src_path_obj1 = os.path.abspath(src_path)
 # DEBUG - prints out entire filepath;
-print(f'path_obj1: {path_obj1}')
+print(f'path_obj1: {src_path_obj1}')
 # Create your first dictionary, which corresponds to the source, and which 
 # will store the full filepaths as keys and their timestamps as values;
 #dictionary1 = {}
 # Define dictionary1, the source;
 #dict1 = dictionary1
-dict1 = {}
+dict1[source] = {}
 #dict1[source] = None
 # DEBUG
 #print(f'dict1: {dict1}')
@@ -170,7 +209,7 @@ print(f'path_obj2: {path_obj2}')
 #dictionary2 = {}
 # Define dictionary2, the destination;
 #dict2 = dictionary2
-dict2 = {}
+dict2[destination] = {}
 #dict2[destination] = None
 # DEBUG
 #print(f'dict2: {dict2}')
