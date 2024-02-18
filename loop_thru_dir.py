@@ -3,6 +3,12 @@
 # NOTES
 
 # 2/18/24
+
+# source and destination input functions are acting strangely, if i enter the
+# directory names wrong the first time and try to re-run the function using
+# the Y/n functionality, the source variable does not get updated to the
+# correct value, might have to do with the placement of the return statement?;
+
 # Maybe it's not necessary to have the full filepath as the outer key,
 # that part is already stored in a variable outside of the dictionary,
 # so I could just append whatever dictionary keys are being used to the end of
@@ -27,33 +33,6 @@
 
 import os
 
-# source input block
-def src_input():
-    source = input("Please enter the name of your source directory only, no slashes:\n")
-    src_correct = input(f"You have entered {source}, is this correct? [Y/n]\n")
-    src_correct = src_correct.lower()
-    if src_correct == 'y':
-        print(f"Okay, {source} will be the source directory.\n")
-    else:
-        src_input()
-    return source
-# DEBUG
-print(f"source: {source}")
-
-# source input block
-def dst_input():
-    destination = input("Please enter the name of your destination directory only, no slashes:\n")
-    dst_correct = input(f"You have entered {destination}, is this correct? [Y/n]\n")
-    dst_correct = dst_correct.lower()
-    if dst_correct == 'y':
-        print(f"Okay, {destination} will be the source directory.\n")
-    else:
-        dst_input()
-    return destination
-# DEBUG
-print(f"destination: {destination}")
-    
-
 # OS input block
 def os_input():
     oper_sys = input("Are you on Windows, macOS, Linux, or other?\n")
@@ -63,8 +42,42 @@ def os_input():
     else:
         slashes = "/"
         return slashes
+
+slashes = os_input()
 # DEBUG
 print(slashes)
+
+# source input block
+def src_input():
+    source = input("Please enter the name of your source directory only, no slashes:\n")
+    src_correct = input(f"You have entered {source}, is this correct? [Y/n]\n")
+    src_correct = src_correct.lower()
+    if src_correct == 'y':
+        print(f"Okay, {source} will be the source directory.\n")
+        #return source
+    else:
+        src_input()
+    return source
+
+source = src_input()
+# DEBUG
+print(f"source: {source}")
+
+# destination input block
+def dst_input():
+    destination = input("Please enter the name of your destination directory only, no slashes:\n")
+    dst_correct = input(f"You have entered {destination}, is this correct? [Y/n]\n")
+    dst_correct = dst_correct.lower()
+    if dst_correct == 'y':
+        print(f"Okay, {destination} will be the destination directory.\n")
+        return destination
+    else:
+        dst_input()
+
+destination = dst_input()
+# DEBUG
+print(f"destination: {destination}")
+    
 
 # This function will be called on every file in the source and destination to
 # build the respective dictionaries; 
@@ -116,6 +129,7 @@ def find_dirs(fullpath, name, dict):
             #for component in new_fullpath_split[-1]:
             # Assign last directory name in filepath to the variable;
             component = new_fullpath_split[-1]
+            print(f'component: {component}')
             # 'setdefault' checks whether 'component' exists in the
             # dictionary, if it does then it returns the value; if it does
             # not exist, then it creates a new key-value pair with the key
@@ -181,40 +195,42 @@ def find_dirs(fullpath, name, dict):
 # Define the path as a string, which will be converted to a list below;
 src_path = ("."+slashes+source+slashes)
 # Convert the path string into a path object (list);
-src_path_obj1 = os.path.abspath(src_path)
+src_path_obj = os.path.abspath(src_path)
 # DEBUG - prints out entire filepath;
-print(f'path_obj1: {src_path_obj1}')
+print(f'src_path_obj1: {src_path_obj}')
 # Create your first dictionary, which corresponds to the source, and which 
 # will store the full filepaths as keys and their timestamps as values;
 #dictionary1 = {}
 # Define dictionary1, the source;
 #dict1 = dictionary1
+dict1 = {}
 dict1[source] = {}
 #dict1[source] = None
 # DEBUG
 #print(f'dict1: {dict1}')
 # Arguments: full filepath of source, name of source, dictionary to be built;
-find_dirs(path_obj1, source, dict1)
+find_dirs(src_path_obj, source, dict1)
 # DEBUG
 print(f'dict1: {dict1}')
 
 # DICTIONARY2 BLOCK
 # Define the path as a string, which will be converted to a list below;
-destination = ("."+slashes+"test_dir2"+slashes)
+dst_path = ("."+slashes+destination+slashes)
 # Convert the path string into a path object;
-path_obj2 = os.path.abspath(destination)
+dst_path_obj = os.path.abspath(destination)
 # DEBUG - prints out entire filepath;
-print(f'path_obj2: {path_obj2}')
+print(f'dst_path_obj: {dst_path_obj}')
 # Create your second dictionary, the format whereof will be the same as the first;
 #dictionary2 = {}
 # Define dictionary2, the destination;
 #dict2 = dictionary2
+dict2 = {}
 dict2[destination] = {}
 #dict2[destination] = None
 # DEBUG
 #print(f'dict2: {dict2}')
 # Arguments: full filepath of source, name of source, dictionary to be built;
-find_dirs(path_obj2, destination, dict2)
+find_dirs(dst_path_obj, destination, dict2)
 #dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}')
 
