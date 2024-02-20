@@ -99,7 +99,7 @@ def find_dirs(fullpath, name, dict):
         print(f'After fullpath: {fullpath}')
         #print(item)
         # Update the fullpath variable to include the item name;
-        new_fullpath = os.path.abspath(fullpath+item)
+        new_fullpath = os.path.abspath(fullpath+slashes+item)
         #new_fullpath = fullpath+slashes+item
         # DEBUG
         print(f'new_fullpath: {new_fullpath}')
@@ -134,6 +134,10 @@ def find_dirs(fullpath, name, dict):
             # Assign last directory name in filepath to the variable;
             component = new_fullpath_split[-1]
             '''
+            current_dict = dict
+            # component is simply the strings between the slashes,
+            # i.e. the directory names; 'os.path.basename()' returns the last
+            # component in the filepath, in this case the directory name;
             component = os.path.basename(item)
             print(f'component: {component}')
             # 'setdefault' checks whether 'component' exists in the
@@ -198,7 +202,7 @@ def find_dirs(fullpath, name, dict):
     return dict
 
 # DICTIONARY1 BLOCK
-src_path = './test_dir1'
+src_path = './A'
 src_abs_path = os.path.abspath(src_path)
 # Define the path as a string, which will be converted to a list below;
 #src_path = 
@@ -222,7 +226,7 @@ find_dirs(src_abs_path, source, dict1)
 print(f'dict1: {dict1}')
 
 # DICTIONARY2 BLOCK
-dst_path = './test_dir2'
+dst_path = './B'
 dst_abs_path = os.path.abspath(dst_path)
 # Define the path as a string, which will be converted to a list below;
 #dst_path = ("."+slashes+destination+slashes)
