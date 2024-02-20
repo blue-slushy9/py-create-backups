@@ -33,7 +33,6 @@
 
 import os
 
-'''
 # OS input block
 def os_input():
     oper_sys = input("Are you on Windows, macOS, Linux, or other?\n")
@@ -42,12 +41,11 @@ def os_input():
         slashes = "\\\\"
     else:
         slashes = "/"
-        return slashes
+    return slashes
 
 slashes = os_input()
 # DEBUG
 print(slashes)
-'''
 
 # source input block
 def src_input():
@@ -101,7 +99,7 @@ def find_dirs(fullpath, name, dict):
         print(f'After fullpath: {fullpath}')
         #print(item)
         # Update the fullpath variable to include the item name;
-        new_fullpath = os.path.abspath(item)
+        new_fullpath = os.path.abspath(fullpath+item)
         #new_fullpath = fullpath+slashes+item
         # DEBUG
         print(f'new_fullpath: {new_fullpath}')
