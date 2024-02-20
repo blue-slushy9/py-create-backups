@@ -33,6 +33,7 @@
 
 import os
 
+'''
 # OS input block
 def os_input():
     oper_sys = input("Are you on Windows, macOS, Linux, or other?\n")
@@ -46,6 +47,7 @@ def os_input():
 slashes = os_input()
 # DEBUG
 print(slashes)
+'''
 
 # source input block
 def src_input():
@@ -54,10 +56,11 @@ def src_input():
     src_correct = src_correct.lower()
     if src_correct == 'y':
         print(f"Okay, {source} will be the source directory.\n")
-        #return source
+        return source
     else:
-        src_input()
-    return source
+        # Return the value obtained from the recursive call;
+        return src_input()
+        
 
 source = src_input()
 # DEBUG
@@ -72,7 +75,8 @@ def dst_input():
         print(f"Okay, {destination} will be the destination directory.\n")
         return destination
     else:
-        dst_input()
+        # Return the value obtained from the recursive call;
+        return dst_input()
 
 destination = dst_input()
 # DEBUG
@@ -97,7 +101,8 @@ def find_dirs(fullpath, name, dict):
         print(f'After fullpath: {fullpath}')
         #print(item)
         # Update the fullpath variable to include the item name;
-        new_fullpath = fullpath+slashes+item
+        new_fullpath = os.path.abspath(item)
+        #new_fullpath = fullpath+slashes+item
         # DEBUG
         print(f'new_fullpath: {new_fullpath}')
         # If full filepath points to a directory...
@@ -115,7 +120,8 @@ def find_dirs(fullpath, name, dict):
             # the string only at the last slash, because we need to keep as
             # much of the full filepath intact as possible, since we will need
             # it for the overwrite process;
-            new_fullpath_split = new_fullpath.split(slashes)
+            '''
+            new_fullpath_split = new_fullpath.split(item)
 
             # Initialize the dictionary with the first level of keys
             print(f'dict: {dict}')
@@ -129,6 +135,8 @@ def find_dirs(fullpath, name, dict):
             #for component in new_fullpath_split[-1]:
             # Assign last directory name in filepath to the variable;
             component = new_fullpath_split[-1]
+            '''
+            component = os.path.basename(item)
             print(f'component: {component}')
             # 'setdefault' checks whether 'component' exists in the
             # dictionary, if it does then it returns the value; if it does
@@ -192,12 +200,14 @@ def find_dirs(fullpath, name, dict):
     return dict
 
 # DICTIONARY1 BLOCK
+src_path = './test_dir1'
+src_abs_path = os.path.abspath(src_path)
 # Define the path as a string, which will be converted to a list below;
-src_path = ("."+slashes+source+slashes)
+#src_path = 
 # Convert the path string into a path object (list);
-src_path_obj = os.path.abspath(src_path)
+#src_path_obj = os.path.abspath(src_path)
 # DEBUG - prints out entire filepath;
-print(f'src_path_obj1: {src_path_obj}')
+print(f'src_path_obj1: {src_abs_path}')
 # Create your first dictionary, which corresponds to the source, and which 
 # will store the full filepaths as keys and their timestamps as values;
 #dictionary1 = {}
@@ -209,17 +219,19 @@ dict1[source] = {}
 # DEBUG
 #print(f'dict1: {dict1}')
 # Arguments: full filepath of source, name of source, dictionary to be built;
-find_dirs(src_path_obj, source, dict1)
+find_dirs(src_abs_path, source, dict1)
 # DEBUG
 print(f'dict1: {dict1}')
 
 # DICTIONARY2 BLOCK
+dst_path = './test_dir2'
+dst_abs_path = os.path.abspath(dst_path)
 # Define the path as a string, which will be converted to a list below;
-dst_path = ("."+slashes+destination+slashes)
+#dst_path = ("."+slashes+destination+slashes)
 # Convert the path string into a path object;
-dst_path_obj = os.path.abspath(destination)
+#dst_path_obj = os.path.abspath(destination)
 # DEBUG - prints out entire filepath;
-print(f'dst_path_obj: {dst_path_obj}')
+print(f'dst_abs_path: {dst_abs_path}')
 # Create your second dictionary, the format whereof will be the same as the first;
 #dictionary2 = {}
 # Define dictionary2, the destination;
@@ -230,7 +242,7 @@ dict2[destination] = {}
 # DEBUG
 #print(f'dict2: {dict2}')
 # Arguments: full filepath of source, name of source, dictionary to be built;
-find_dirs(dst_path_obj, destination, dict2)
+find_dirs(dst_abs_path, destination, dict2)
 #dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}')
 
