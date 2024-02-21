@@ -2,8 +2,16 @@
 
 # NOTES
 
-# 2/18/24
+# 2/20/2024
+# Copying entire directories should be the last step, individual files in
+# the source and destination directories, as well as their subdirectories that
+# already exist in both, should be compared and copied first as needed;
 
+# As for copying files, obviously if a file exists in A but not B, then it
+# should be copied; if it already exists in both, then you compare the
+# timestamps first to see if the copy in B needs to be overwritten or not;
+
+# 2/18/24
 # source and destination input functions are acting strangely, if i enter the
 # directory names wrong the first time and try to re-run the function using
 # the Y/n functionality, the source variable does not get updated to the
@@ -32,6 +40,7 @@
 # itself does not actually exist yet, so it can't create the inner keys;
 
 import os
+from shutil import copytree
 
 # OS input block
 def os_input():
@@ -216,12 +225,16 @@ print(f'src_path_obj1: {src_abs_path}')
 # Define dictionary1, the source;
 #dict1 = dictionary1
 dict1 = {}
+# Create subdictionary for the source directory;
 dict1[source] = {}
+# For clarity, create a second variable that points to dict1[source];
+subdict1 = dict1[source]
 #dict1[source] = None
 # DEBUG
 #print(f'dict1: {dict1}')
-# Arguments: full filepath of source, name of source, dictionary to be built;
-find_dirs(src_abs_path, source, dict1)
+# Arguments: full path of source directory, name of source directory, 
+# dictionary to be built;
+find_dirs(src_abs_path, source, dict1[source])
 # DEBUG
 print(f'dict1: {dict1}')
 
@@ -240,14 +253,33 @@ print(f'dst_abs_path: {dst_abs_path}')
 #dict2 = dictionary2
 dict2 = {}
 dict2[destination] = {}
+# For clarity, create a second variable that points to dict2[destination];
+subdict2 = dict2[destination]
 #dict2[destination] = None
 # DEBUG
 #print(f'dict2: {dict2}')
-# Arguments: full filepath of source, name of source, dictionary to be built;
-find_dirs(dst_abs_path, destination, dict2)
+# Arguments: full path of destination directory, name of destination directory,
+# dictionary to be built;
+find_dirs(dst_abs_path, destination, subdict2)
 #dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}')
 
+
+# COPYTREE BLOCK
+# Define function that will copy entire directories as needed;
+# Arguments: full path of source directory, full path of destination directory;
+def copy_dirs(src, dst):
+    for dir in subdict1:
+        print(f'subdict1-dir: {dir}')
+        if dir not in subdict2:
+            new_src = (src+slashes+dir)
+            print(f'new_src: {new_src}')
+            new_dst = (dst+slashes+dir)
+            print(f'new_dst: {new_dst}')
+            copytree(new_src, new_dst)
+
+# Call the function;
+copy_dirs(src_abs_path, dst_abs_path)
 
 '''
 # GPT code for creating inner nested-dictionary keys;
