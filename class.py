@@ -49,6 +49,17 @@ def dst_input():
 
 # Define a class;
 class user_inputs:
+    def __init__(self, oper_sys, source, destination):
+        self.oper_sys = oper_sys
+        self.source = source
+        self.destination = destination
+
+    def os_input(self):
+
+
+'''
+# Define a class;
+class user_inputs:
     # Constructor (initializer) method, automatically invoked when an object
     # of a class is created; its primary purpose is to initialize the
     # attributes (variables) or properties of the object, which in turn define
@@ -71,6 +82,7 @@ class user_inputs:
     def call_dst_input(self):
         destination = dst_input()
         return destination
+'''
 
 # Create an instance of the user_inputs class;
 instance = user_inputs()
