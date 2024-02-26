@@ -1,5 +1,39 @@
 # Just need to create a class object for the three input functions;
 
+# Parent class
+class UserInputs:
+    def __init__(self, oper_sys, source, destination):
+        self.oper_sys = oper_sys
+        self.source = source
+        self.destination = destination
+
+    def input(self):
+
+
+    def dirs_input(self):
+        if 
+        dir = input(f'Please enter the name of your {} directory now:\n')
+
+# Child classes
+class OS(UserInputs):
+    def __init__(self, OS):
+        super().__init__(OS="")
+        self.OS = OS
+
+    def 
+
+class Source(UserInputs):
+    def __init__(self, source):
+        super().__init__(source="")
+        self.source = source
+
+class Destination(UserInputs):
+    def __init__(self, destination):
+        super().__init__(destination="")
+        self.destination = destination
+
+
+'''
 class UserInputs:
     def __init__(self, oper_sys, source, destination):
         self.oper_sys = oper_sys
@@ -58,7 +92,7 @@ print(slashes)
 print(source)
 print(destination)
 
-'''
+
 # Create an instance of the user_inputs class;
 instance = UserInputs()
 # Call the functions we embedded in the class, assign output to variables;
