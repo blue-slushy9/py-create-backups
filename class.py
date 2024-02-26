@@ -2,34 +2,45 @@
 
 # Parent class
 class UserInputs:
-    def __init__(self, oper_sys, source, destination):
-        self.oper_sys = oper_sys
-        self.source = source
-        self.destination = destination
+    def __init__(self): #, oper_sys, source, destination):
+        self.oper_sys = None
+        self.source = None
+        self.destination = None
 
     def input(self):
-
-
-    def dirs_input(self):
-        if 
-        dir = input(f'Please enter the name of your {} directory now:\n')
+        spam = input(f'Please enter the name of your {spam} directory now:\n')
+        correct = input(f'You have entered {spam}, is this correct? [Y/n]\n')
+        correct = correct.lower()
+        if correct == 'y':
+            print(f"Okay, {spam} will be the {spam} directory.\n")
+            return spam
+        else:
+            # Return the value to be obtained from a recursive call;
+            return self.input()
 
 # Child classes
-class OS(UserInputs):
-    def __init__(self, OS):
-        super().__init__(OS="")
-        self.OS = OS
+class OperSys(UserInputs):
+    def __init__(self, oper_sys):
+        super().__init__()
+        self.oper_sys = oper_sys
 
-    def 
-
+    def input(self):
+        oper_sys = input(f'Are you on Windows, macOS, Linux, or other?\n')
+        oper_sys = oper_sys.lower()
+        if oper_sys == 'windows':
+            slashes = "\\"
+        else:
+            slashes = "/"
+        return slashes
+    
 class Source(UserInputs):
     def __init__(self, source):
-        super().__init__(source="")
+        super().__init__()
         self.source = source
 
 class Destination(UserInputs):
     def __init__(self, destination):
-        super().__init__(destination="")
+        super().__init__()
         self.destination = destination
 
 
