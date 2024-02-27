@@ -3,9 +3,10 @@
 # Parent class
 class UserInputs:
     def __init__(self): #, oper_sys, source, destination):
-        self.oper_sys = None
-        self.source = None
-        self.destination = None
+        #self.oper_sys = None
+        #self.source = None
+        #self.destination = None
+        self.spam = None
 
     def input(self):
         spam = input(f'Please enter the name of your {spam} directory now:\n')
@@ -43,6 +44,24 @@ class Destination(UserInputs):
         super().__init__()
         self.destination = destination
 
+# Create instance of class OperSys
+my_oper_sys = OperSys(oper_sys=None)
+
+slashes = my_oper_sys.input()
+# DEBUG
+print(f'slashes: {slashes}')
+
+# Create instance of class Source
+my_source = Source(source=None)
+source = my_source.input()
+# DEBUG
+print(f'source: {source}')
+
+# Create instance of class Destination
+my_destination = Destination(destination=None)
+destination = my_destination.input()
+# DEBUG
+print(f'destination: {destination}')
 
 '''
 class UserInputs:
