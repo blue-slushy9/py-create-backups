@@ -2,19 +2,22 @@
 
 # Parent class
 class UserInputs:
-    def __init__(self): #, oper_sys, source, destination):
+    def __init__(self, spam): #, oper_sys, source, destination):
         #self.oper_sys = None
         #self.source = None
-        #self.destination = None
-        self.spam = None
+        #self.destination = None\
+        # spam specifies whether it is the source or destination
+        self.spam = spam
+        # eggs specifies the name of the source or destination directory
+        self.eggs = None
 
     def input(self):
-        spam = input(f'Please enter the name of your {spam} directory now:\n')
-        correct = input(f'You have entered {spam}, is this correct? [Y/n]\n')
+        self.eggs = input(f'Please enter the name of your {self.spam} directory now:\n')
+        correct = input(f'You have entered {self.eggs}, is this correct? [Y/n]\n')
         correct = correct.lower()
         if correct == 'y':
-            print(f"Okay, {spam} will be the {spam} directory.\n")
-            return spam
+            print(f"Okay, {self.eggs} will be the {self.spam} directory.\n")
+            return self.eggs
         else:
             # Return the value to be obtained from a recursive call;
             return self.input()
