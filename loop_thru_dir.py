@@ -248,8 +248,8 @@ def find_dirs(fullpath, name, dict):
     return dict
 
 # DICTIONARY1 BLOCK
-src_path = './A'
-src_abs_path = os.path.abspath(src_path)
+src_local_path = ('.'+slashes+source)
+src_abs_path = os.path.abspath(src_local_path)
 # Define the path as a string, which will be converted to a list below;
 #src_path = 
 # Convert the path string into a path object (list);
@@ -276,7 +276,7 @@ find_dirs(src_abs_path, source, subdict1)
 print(f'dict1: {dict1}')
 
 # DICTIONARY2 BLOCK
-dst_path = './B'
+dst_path = ('.'+slashes+destination)
 dst_abs_path = os.path.abspath(dst_path)
 # Define the path as a string, which will be converted to a list below;
 #dst_path = ("."+slashes+destination+slashes)
