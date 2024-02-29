@@ -1,37 +1,47 @@
-# Just need to create a class object for the three input functions;
+# Just need to create a class object for the three input functions
 
 # Parent class
 class UserInputs:
-    def __init__(self, spam): #, oper_sys, source, destination):
-        #self.oper_sys = None
-        #self.source = None
-        #self.destination = None\
-        # spam specifies whether it is the source or destination
+    def __init__(self, spam):
+        # spam specifies whether it is the source or destination, the function
+        # call itself will pass 'source' or 'destination' string to the method;
         self.spam = spam
-        # eggs specifies the name of the source or destination directory
+        # eggs specifies the name of the source or destination directory,
+        # it is set to None because it will be defined via user input;
         self.eggs = None
 
     def input(self):
+        # eggs will take the user input, spam will be part of the prompt them 
+        # for the name of the source or destination;
         self.eggs = input(f'Please enter the name of your {self.spam} directory now:\n')
+        # The correct variable is there to prevent user error, e.g. typos
         correct = input(f'You have entered {self.eggs}, is this correct? [Y/n]\n')
+        # Control for erratic capitalization
         correct = correct.lower()
         if correct == 'y':
+            # Example output: 'A will be the source directory'
             print(f"Okay, {self.eggs} will be the {self.spam} directory.\n")
             return self.eggs
         else:
-            # Return the value to be obtained from a recursive call;
+            # Return the value to be obtained from a recursive call
             return self.input()
 
 # Child classes
 class OperSys(UserInputs):
-    def __init__(self, oper_sys):
-        super().__init__()
+    def __init__(self, spam, oper_sys):
+        # We need spam in the superclass initializer even if we're not going
+        # to use it in the child class ?
+        super().__init__(spam)
+        # We pass the initial value of oper_sys in the method call,
+        # which is None because we need the user input for its actual value;
         self.oper_sys = oper_sys
 
     def input(self):
+        # Now its value gets updated from None
         oper_sys = input(f'Are you on Windows, macOS, Linux, or other?\n')
         oper_sys = oper_sys.lower()
         if oper_sys == 'windows':
+            # We will need the slashes for our filepaths later on
             slashes = "\\"
         else:
             slashes = "/"
@@ -39,29 +49,34 @@ class OperSys(UserInputs):
     
 class Source(UserInputs):
     def __init__(self, source):
-        super().__init__()
+        super().__init__(source)
+        # source is defined in the method call
         self.source = source
 
 class Destination(UserInputs):
     def __init__(self, destination):
-        super().__init__()
+        super().__init__(destination)
+        # destination is defined in the method call
         self.destination = destination
 
 # Create instance of class OperSys
-my_oper_sys = OperSys(oper_sys=None)
-
+my_oper_sys = OperSys(oper_sys=None, spam=None)
+# slashes will be needed for our filepaths later on, either backslashes or
+# forward slashes;
 slashes = my_oper_sys.input()
 # DEBUG
 print(f'slashes: {slashes}')
 
 # Create instance of class Source
-my_source = Source(source=None)
+my_source = Source(source='source')
+# Call input method to get name of source directory from user
 source = my_source.input()
 # DEBUG
 print(f'source: {source}')
 
 # Create instance of class Destination
-my_destination = Destination(destination=None)
+my_destination = Destination(destination='destination')
+# Call input method to get name of destination directory from user
 destination = my_destination.input()
 # DEBUG
 print(f'destination: {destination}')
