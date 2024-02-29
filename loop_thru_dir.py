@@ -2,6 +2,10 @@
 
 # NOTES
 
+# 2/28/24 
+# Got my classes to work, so going to try adding them here now;
+# RESULTS: worked!
+
 # 2/20/2024
 # Copying entire directories should be the last step, individual files in
 # the source and destination directories, as well as their subdirectories that
@@ -42,53 +46,86 @@
 import os
 from shutil import copytree
 
-# OS input block
-def os_input():
-    oper_sys = input("Are you on Windows, macOS, Linux, or other?\n")
-    oper_sys = oper_sys.lower()
-    if oper_sys == "windows":
-        slashes = "\\\\"
-    else:
-        slashes = "/"
-    return slashes
+# Parent class
+class UserInputs:
+    def __init__(self, spam):
+        # spam specifies whether it is the source or destination, the function
+        # call itself will pass 'source' or 'destination' string to the method;
+        self.spam = spam
+        # eggs specifies the name of the source or destination directory,
+        # it is set to None because it will be defined via user input;
+        self.eggs = None
 
-slashes = os_input()
-# DEBUG
-print(slashes)
+    def input(self):
+        # eggs will take the user input, spam will be part of the prompt them 
+        # for the name of the source or destination;
+        self.eggs = input(f'Please enter the name of your {self.spam} directory now:\n')
+        # The correct variable is there to prevent user error, e.g. typos
+        correct = input(f'You have entered {self.eggs}, is this correct? [Y/n]\n')
+        # Control for erratic capitalization
+        correct = correct.lower()
+        if correct == 'y':
+            # Example output: 'A will be the source directory'
+            print(f"Okay, {self.eggs} will be the {self.spam} directory.\n")
+            return self.eggs
+        else:
+            # Return the value to be obtained from a recursive call
+            return self.input()
 
-# source input block
-def src_input():
-    source = input("Please enter the name of your source directory only, no slashes:\n")
-    src_correct = input(f"You have entered {source}, is this correct? [Y/n]\n")
-    src_correct = src_correct.lower()
-    if src_correct == 'y':
-        print(f"Okay, {source} will be the source directory.\n")
-        return source
-    else:
-        # Return the value obtained from the recursive call;
-        return src_input()
-        
+# Child classes
+class OperSys(UserInputs):
+    def __init__(self, spam, oper_sys):
+        # We need spam in the superclass initializer even if we're not going
+        # to use it in the child class ?
+        super().__init__(spam)
+        # We pass the initial value of oper_sys in the method call,
+        # which is None because we need the user input for its actual value;
+        self.oper_sys = oper_sys
 
-source = src_input()
-# DEBUG
-print(f"source: {source}")
-
-# destination input block
-def dst_input():
-    destination = input("Please enter the name of your destination directory only, no slashes:\n")
-    dst_correct = input(f"You have entered {destination}, is this correct? [Y/n]\n")
-    dst_correct = dst_correct.lower()
-    if dst_correct == 'y':
-        print(f"Okay, {destination} will be the destination directory.\n")
-        return destination
-    else:
-        # Return the value obtained from the recursive call;
-        return dst_input()
-
-destination = dst_input()
-# DEBUG
-print(f"destination: {destination}")
+    def input(self):
+        # Now its value gets updated from None
+        oper_sys = input(f'Are you on Windows, macOS, Linux, or other?\n')
+        oper_sys = oper_sys.lower()
+        if oper_sys == 'windows':
+            # We will need the slashes for our filepaths later on
+            slashes = "\\"
+        else:
+            slashes = "/"
+        return slashes
     
+class Source(UserInputs):
+    def __init__(self, source):
+        super().__init__(source)
+        # source is defined in the method call
+        self.source = source
+
+class Destination(UserInputs):
+    def __init__(self, destination):
+        super().__init__(destination)
+        # destination is defined in the method call
+        self.destination = destination
+
+# Create instance of class OperSys
+my_oper_sys = OperSys(oper_sys=None, spam=None)
+# slashes will be needed for our filepaths later on, either backslashes or
+# forward slashes;
+slashes = my_oper_sys.input()
+# DEBUG
+print(f'slashes: {slashes}')
+
+# Create instance of class Source
+my_source = Source(source='source')
+# Call input method to get name of source directory from user
+source = my_source.input()
+# DEBUG
+print(f'source: {source}')
+
+# Create instance of class Destination
+my_destination = Destination(destination='destination')
+# Call input method to get name of destination directory from user
+destination = my_destination.input()
+# DEBUG
+print(f'destination: {destination}') 
 
 # This function will be called on every file in the source and destination to
 # build the respective dictionaries; 
@@ -234,7 +271,7 @@ subdict1 = dict1[source]
 #print(f'dict1: {dict1}')
 # Arguments: full path of source directory, name of source directory, 
 # dictionary to be built;
-find_dirs(src_abs_path, source, dict1[source])
+find_dirs(src_abs_path, source, subdict1)
 # DEBUG
 print(f'dict1: {dict1}')
 
@@ -282,6 +319,56 @@ def copy_dirs(src, dst):
 copy_dirs(src_abs_path, dst_abs_path)
 
 '''
+# Old input functions code, refactored with classes
+
+# OS input block
+def os_input():
+    oper_sys = input("Are you on Windows, macOS, Linux, or other?\n")
+    oper_sys = oper_sys.lower()
+    if oper_sys == "windows":
+        slashes = "\\\\"
+    else:
+        slashes = "/"
+    return slashes
+
+slashes = os_input()
+# DEBUG
+print(slashes)
+
+# source input block
+def src_input():
+    source = input("Please enter the name of your source directory only, no slashes:\n")
+    src_correct = input(f"You have entered {source}, is this correct? [Y/n]\n")
+    src_correct = src_correct.lower()
+    if src_correct == 'y':
+        print(f"Okay, {source} will be the source directory.\n")
+        return source
+    else:
+        # Return the value obtained from the recursive call;
+        return src_input()
+        
+
+source = src_input()
+# DEBUG
+print(f"source: {source}")
+
+# destination input block
+def dst_input():
+    destination = input("Please enter the name of your destination directory only, no slashes:\n")
+    dst_correct = input(f"You have entered {destination}, is this correct? [Y/n]\n")
+    dst_correct = dst_correct.lower()
+    if dst_correct == 'y':
+        print(f"Okay, {destination} will be the destination directory.\n")
+        return destination
+    else:
+        # Return the value obtained from the recursive call;
+        return dst_input()
+
+destination = dst_input()
+# DEBUG
+print(f"destination: {destination}")
+
+
 # GPT code for creating inner nested-dictionary keys;
 
 # Split the full path to create a list of directories and the filename
