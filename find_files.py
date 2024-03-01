@@ -269,9 +269,19 @@ def find_dirs(fullpath, name, dict):
     return dict
 
 # This function will fill in the keys (subdirectories) with their files;
-def find_files():
-    for dir in dict1:
-        dir =  
+# Arguments: source dictionary, destination dictionary, source absolute file-
+# path;
+def find_files(src_subdict, dst_subdict, src_abs_path):
+    # Loop through dictionary sub-keys, we don't need the outer keys because
+    # those are constants;
+    for subdir in src_subdict:
+        # Check if the subdict exists in destination dictionary
+        if subdir in dst_subdict:
+
+        # For each key, prepend its full filepath
+        subdir_fullpath = (src_abs_path+slashes+subdir)
+        # DEBUG
+        print(subdir_fullpath)
 
 ''' old code for the find_files function from the main program file;
 else:
@@ -351,7 +361,10 @@ find_dirs(dst_abs_path, destination, subdict2)
 #dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}')
 
+# FIND FILES BLOCK
+find_files(dict1, dict2, src_abs_path)
 
+'''
 # COPYTREE BLOCK
 # Define function that will copy entire directories as needed;
 # Arguments: full path of source directory, full path of destination directory;
@@ -368,7 +381,7 @@ def copy_dirs(src, dst):
 # Call the function;
 copy_dirs(src_abs_path, dst_abs_path)
 
-'''
+
 # Old input functions code, refactored with classes
 
 # OS input block
