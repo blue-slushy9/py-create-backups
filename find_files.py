@@ -3,12 +3,22 @@
 # NOTES
 
 # 2/29/24
+
+# Maybe I need to create a class for the find_dirs and the find_files
+# functions since they are so similar ?
+
 # What are the broad steps the program should follow? 
 # 1) Create dictionaries of source and destination directories and contents;
+
 # 2) The files and subdirectories which already exist in both source and
-# destination should be conditionally overwritten, based on their timestamps;
-# 3) Finally, the files and subdirectories in the source that do not already
-# exist in the destination should be copied;
+# destination should be conditionally overwritten, based on the file time-
+# stamps---we don't use directory timestamps because we want granular control;
+
+# 3) The files in source that do not already exist in destination should be
+# copied into their respective parent directories;
+
+# 4) Finally the subdirectories that exist in source but not destination 
+# should be copied wholesale, for which we use the copytree method;
 
 # 2/28/24 
 # Got my classes to work, so going to try adding them here now;
@@ -257,6 +267,35 @@ def find_dirs(fullpath, name, dict):
             #print(f'dict_entry: {dict}')
             '''
     return dict
+
+# This function will fill in the keys (subdirectories) with their files;
+def find_files():
+    for dir in dict1:
+        dir =  
+
+''' old code for the find_files function from the main program file;
+else:
+            # Call the get_timestamp function on the file;
+            print(f'file: {item}')
+            # Going to try the below to get the dictionaries to match;
+            #dict[path] = get_timestamp(new_path) # didn't work
+            This might not be necessary, we can use the 'item' variable;
+            split_path = full_path.split("//")
+            filename = split_path[-1]
+            print(filename)
+            
+            # We might need a step here that ensures directory names have only
+            # one backslash, maybe the process of creates a dictionary key
+            # is somehow creating the two backslashes, even though filepaths
+            # are printing correctly up to this point;
+            dict[fullpath] = get_timestamp(fullpath)
+            #print(dict.key())
+            #print(f'dict_entry: {dict}')
+    return dict
+'''
+
+
+# FUNCTION CALLS
 
 # DICTIONARY1 BLOCK
 src_local_path = ('.'+slashes+source)

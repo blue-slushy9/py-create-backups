@@ -120,7 +120,7 @@ def overwrite(dict1, dict2, path1, path2):
         # Else, if the directory does exist in the destination...
         #else:
             
-
+'''
 # DICTIONARY1 BLOCK
 # Define the path as a string, which will be converted to a list below;
 path_string1 = ".\\test_dir1\\"
@@ -181,7 +181,7 @@ overwrite(dict1, dict2, path_string1, path_string2)
 #if not os.path.exists(file_path):
 #    {code that copies file}
 
-
+'''
 # MIGHT NOT WORK
 # Define function that replaces all '\\'s with '\'s in the dictionaries;
 def double_to_single(dict):
@@ -191,7 +191,7 @@ def double_to_single(dict):
         #key = key.replace(r'\\', r'\')
         #print(f'post-key: {key}')
     return dict
-
+'''
 
 # GEMINI CODE;
 # shutil is a collection of high-level utilities for performing common file 
