@@ -180,6 +180,9 @@ def find_dirs(fullpath, name, dict):
             # Assign last directory name in filepath to the variable;
             component = new_fullpath_split[-1]
             '''
+            # current_dict points to the same location in memory as dict,
+            # i.e. the original object is modified, not a copy thereof;
+            # using current_dict improves clarity and readability;
             current_dict = dict
             # component is simply the strings between the slashes,
             # i.e. the directory names; 'os.path.basename()' returns the last
