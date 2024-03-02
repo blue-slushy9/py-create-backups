@@ -275,14 +275,35 @@ def find_files(src_subdict, dst_subdict, src_abs_path):
     # Loop through dictionary sub-keys, we don't need the outer keys because
     # those are constants;
     for subdir in src_subdict:
-        # Check if the subdict exists in destination dictionary
-        if subdir in dst_subdict:
-
+        print(subdir)
+        # Check if the subdir exists in destination dictionary
+        if subdir in dst_subdict: 
+            # For each key, prepend its full filepath
+            subdir_fullpath = (src_abs_path+slashes+subdir)   
+            # This will create an items object (list) that can be looped through;
+            items = os.listdir(subdir_fullpath)
+            # 'items' is a list that contains only strings, 
+            print(f'items: {items}')
+            # Now loop through it;
+            for item in items:
+                # DEBUG
+                print(f'item: {item}')
+                # Reset the fullpath variable after every iteration;
+                print(f'Before subdir_fullpath: {subdir_fullpath}')
+                subdir_fullpath = subdir_fullpath
+                print(f'After subdir_fullpath: {subdir_fullpath}')
+                #print(item)
+                # Update the fullpath variable to include the item name;
+                new_subdir_fullpath = os.path.abspath(subdir_fullpath+slashes+item)
+                #new_fullpath = fullpath+slashes+item
+                # DEBUG
+                print(f'new_fullpath: {new_subdir_fullpath}')
+'''
         # For each key, prepend its full filepath
         subdir_fullpath = (src_abs_path+slashes+subdir)
         # DEBUG
         print(subdir_fullpath)
-
+'''
 ''' old code for the find_files function from the main program file;
 else:
             # Call the get_timestamp function on the file;
@@ -362,7 +383,8 @@ find_dirs(dst_abs_path, destination, subdict2)
 print(f'dict2: {dict2}')
 
 # FIND FILES BLOCK
-find_files(dict1, dict2, src_abs_path)
+find_files(subdict1, subdict2, src_abs_path)
+print("end of file test")
 
 '''
 # COPYTREE BLOCK
