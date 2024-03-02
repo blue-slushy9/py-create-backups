@@ -2,6 +2,13 @@
 
 # NOTES
 
+# 3/2/24
+
+# BUG: the find_dirs() function only goes one level deep into the directory
+# structure, the sub-subdirectory 'a1a/' is not being added to the source
+# dictionary---need to fix this before moving forward to the find_files()
+# function;
+
 # 2/29/24
 
 # Maybe I need to create a class for the find_dirs and the find_files
@@ -156,6 +163,7 @@ def find_dirs(fullpath, name, dict):
     # Now loop through it;
     for item in items:
         # DEBUG
+        print('\n# FIND_DIRS() BLOCK')
         print(f'item: {item}')
         # Reset the fullpath variable after every iteration;
         print(f'Before fullpath: {fullpath}')
@@ -266,6 +274,7 @@ def find_dirs(fullpath, name, dict):
             #print(dict.key())
             #print(f'dict_entry: {dict}')
             '''
+    print('# /FIND_DIRS() BLOCK\n')
     return dict
 
 # This function will fill in the keys (subdirectories) with their files;
