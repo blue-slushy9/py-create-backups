@@ -143,14 +143,14 @@ my_source = Source(source='source')
 # Call input method to get name of source directory from user
 source = my_source.input()
 # DEBUG
-print(f'source: {source}')
+print(f'source: {source}\n')
 
 # Create instance of class Destination
 my_destination = Destination(destination='destination')
 # Call input method to get name of destination directory from user
 destination = my_destination.input()
 # DEBUG
-print(f'destination: {destination}') 
+print(f'destination: {destination}\n') 
 
 # This function will be called on every file in the source and destination to
 # build the respective dictionaries; 
@@ -180,6 +180,15 @@ def find_dirs(fullpath, name, dict):
         if os.path.isdir(new_fullpath):
             # DEBUG
             print(f'dir: {item}')
+            # This will create an items object (list) that can be looped through;
+            new_items = os.listdir(new_fullpath)
+            print(f'new_items: {new_items}')
+            for new_item in new_items:
+                subdir_fullpath = (new_fullpath+slashes+new_item)
+                print(f'subdir_fullpath: {subdir_fullpath}')
+                    #if os.path.isdir(subdir_fullpath):
+
+
             # Create an inner key that matches the name of the subdirectory,
             # with a blank value;
             
@@ -284,6 +293,8 @@ def find_files(src_subdict, dst_subdict, src_abs_path):
     # Loop through dictionary sub-keys, we don't need the outer keys because
     # those are constants;
     for subdir in src_subdict:
+        # DEBUG
+        print('\n# FIND_FILES() BLOCK')
         print(subdir)
         # Check if the subdir exists in destination dictionary
         if subdir in dst_subdict: 
@@ -307,6 +318,8 @@ def find_files(src_subdict, dst_subdict, src_abs_path):
                 #new_fullpath = fullpath+slashes+item
                 # DEBUG
                 print(f'new_fullpath: {new_subdir_fullpath}')
+    # DEBUG
+    print('# /FIND_FILES() BLOCK\n')
 '''
         # For each key, prepend its full filepath
         subdir_fullpath = (src_abs_path+slashes+subdir)
