@@ -1,0 +1,15 @@
+# This is just to help me visualize the dictionary structures i am trying to
+# create in this program;
+
+dict1
+
+{'A': 
+       {
+       'blih.txt': '',
+       'blah.txt': '',
+       'blahblah.txt': '',
+       'bleh.txt': '',
+       'a1a': {},
+       'blahblahblah.txt': ''
+       }
+}

@@ -2,6 +2,13 @@
 
 # NOTES
 
+# 3/2/24
+
+# BUG: the find_dirs() function only goes one level deep into the directory
+# structure, the sub-subdirectory 'a1a/' is not being added to the source
+# dictionary---need to fix this before moving forward to the find_files()
+# function;
+
 # 2/29/24
 
 # Maybe I need to create a class for the find_dirs and the find_files
@@ -136,14 +143,14 @@ my_source = Source(source='source')
 # Call input method to get name of source directory from user
 source = my_source.input()
 # DEBUG
-print(f'source: {source}')
+print(f'source: {source}\n')
 
 # Create instance of class Destination
 my_destination = Destination(destination='destination')
 # Call input method to get name of destination directory from user
 destination = my_destination.input()
 # DEBUG
-print(f'destination: {destination}') 
+print(f'destination: {destination}\n') 
 
 # This function will be called on every file in the source and destination to
 # build the respective dictionaries; 
@@ -156,6 +163,7 @@ def find_dirs(fullpath, name, dict):
     # Now loop through it;
     for item in items:
         # DEBUG
+        print('\n# FIND_DIRS() BLOCK')
         print(f'item: {item}')
         # Reset the fullpath variable after every iteration;
         print(f'Before fullpath: {fullpath}')
@@ -172,9 +180,47 @@ def find_dirs(fullpath, name, dict):
         if os.path.isdir(new_fullpath):
             # DEBUG
             print(f'dir: {item}')
-            # Create an inner key that matches the name of the subdirectory,
-            # with a blank value;
-            
+            dict[item] = '' 
+            print(f'dict: {dict}')
+            # This will create an items object (list) that can be looped through;
+            new_items = os.listdir(new_fullpath)
+            print(f'new_items: {new_items}')
+            for new_item in new_items:
+                subdir_fullpath = (new_fullpath+slashes+new_item)
+                print(f'subdir_fullpath: {subdir_fullpath}')
+                if os.path.isdir(subdir_fullpath):
+                    # Create an inner key that matches the name of the 
+                    # subdirectory, with a None value;
+                    dict[item] = ''
+                    print(f'dict: {dict}')
+                    # current_dict points to the same location in memory as dict,
+                    # i.e. the original object is modified, not a copy thereof;
+                    # using current_dict improves clarity and readability;
+                    current_dict = dict
+                    # component is simply the strings between the slashes,
+                    # i.e. the directory names; 'os.path.basename()' returns the last
+                    # component in the filepath, in this case the directory name;
+                    component = os.path.basename(new_item)
+                    print(f'component: {component}')
+                    # 'setdefault' checks whether 'component' exists in the
+                    # dictionary, if it does then it returns the value; if it does
+                    # not exist, then it creates a new key-value pair with the key
+                    # 'component' (variable value) & in this case the value '{}';
+                    current_dict = current_dict.setdefault(component, {})
+
+                    # Print the updated dictionary
+                    print(f'current_dict: {current_dict}')
+                    print(f'dict: {dict}')
+                else:
+                    dict[item][new_item] = ''
+        else:
+            dict[item] = '' 
+    print('# /FIND_DIRS() BLOCK\n')
+    return dict
+
+
+''' 
+            SHIT CODE            
             # GPT code;
             # Split the full path to create a list of directories and the filename;
             # NOTE: this line is splitting the full filepath at every slash,
@@ -182,7 +228,7 @@ def find_dirs(fullpath, name, dict):
             # the string only at the last slash, because we need to keep as
             # much of the full filepath intact as possible, since we will need
             # it for the overwrite process;
-            '''
+            
             new_fullpath_split = new_fullpath.split(item)
 
             # Initialize the dictionary with the first level of keys
@@ -197,41 +243,19 @@ def find_dirs(fullpath, name, dict):
             #for component in new_fullpath_split[-1]:
             # Assign last directory name in filepath to the variable;
             component = new_fullpath_split[-1]
-            '''
-            # current_dict points to the same location in memory as dict,
-            # i.e. the original object is modified, not a copy thereof;
-            # using current_dict improves clarity and readability;
-            current_dict = dict
-            # component is simply the strings between the slashes,
-            # i.e. the directory names; 'os.path.basename()' returns the last
-            # component in the filepath, in this case the directory name;
-            component = os.path.basename(item)
-            print(f'component: {component}')
-            # 'setdefault' checks whether 'component' exists in the
-            # dictionary, if it does then it returns the value; if it does
-            # not exist, then it creates a new key-value pair with the key
-            # 'component' (variable value) & in this case the value '{}';
-            current_dict = current_dict.setdefault(component, {})
-
-            # NOTE: This turned out to be redundant code, does almost the same
-            # thing as the preceding line;
-            # Assign the value to the innermost key
-            #current_dict[new_fullpath_split[-1]] = {}
-
-            # Print the updated dictionary
-            print(f'current_dict: {current_dict}')
-            print(f'dict: {dict}')
-            # /GPT code;
-
-
-            ''' SHIT CODE
+ 
             dict[new_fullpath] = ''
             # DEBUG
             print(f'item_in_dict: {dict[new_fullpath]}')
             # Call the function recursively on the subdirectory;
             find_dirs(new_fullpath, item, dict[new_fullpath])
-            '''
-        ''' Going to try building out the dictionaries with the directories
+            
+            # NOTE: This turned out to be redundant code, does almost the same
+            # thing as the preceding line;
+            # Assign the value to the innermost key
+            #current_dict[new_fullpath_split[-1]] = {}
+           
+        Going to try building out the dictionaries with the directories
             and subdirectories first, then all of the files;
         else:
             # DEBUG
@@ -265,8 +289,7 @@ def find_dirs(fullpath, name, dict):
             #dict[fullpath] = get_timestamp(fullpath)
             #print(dict.key())
             #print(f'dict_entry: {dict}')
-            '''
-    return dict
+'''
 
 # This function will fill in the keys (subdirectories) with their files;
 # Arguments: source dictionary, destination dictionary, source absolute file-
@@ -275,14 +298,39 @@ def find_files(src_subdict, dst_subdict, src_abs_path):
     # Loop through dictionary sub-keys, we don't need the outer keys because
     # those are constants;
     for subdir in src_subdict:
-        # Check if the subdict exists in destination dictionary
-        if subdir in dst_subdict:
-
+        # DEBUG
+        print('\n# FIND_FILES() BLOCK')
+        print(subdir)
+        # Check if the subdir exists in destination dictionary
+        if subdir in dst_subdict: 
             # For each key, prepend its full filepath
-            subdir_fullpath = (src_abs_path+slashes+subdir)
-            # DEBUG
-            print(subdir_fullpath)
-
+            subdir_fullpath = (src_abs_path+slashes+subdir)   
+            # This will create an items object (list) that can be looped through;
+            items = os.listdir(subdir_fullpath)
+            # 'items' is a list that contains only strings, 
+            print(f'items: {items}')
+            # Now loop through it;
+            for item in items:
+                # DEBUG
+                print(f'item: {item}')
+                # Reset the fullpath variable after every iteration;
+                print(f'Before subdir_fullpath: {subdir_fullpath}')
+                subdir_fullpath = subdir_fullpath
+                print(f'After subdir_fullpath: {subdir_fullpath}')
+                #print(item)
+                # Update the fullpath variable to include the item name;
+                new_subdir_fullpath = os.path.abspath(subdir_fullpath+slashes+item)
+                #new_fullpath = fullpath+slashes+item
+                # DEBUG
+                print(f'new_fullpath: {new_subdir_fullpath}')
+    # DEBUG
+    print('# /FIND_FILES() BLOCK\n')
+'''
+        # For each key, prepend its full filepath
+        subdir_fullpath = (src_abs_path+slashes+subdir)
+        # DEBUG
+        print(subdir_fullpath)
+'''
 ''' old code for the find_files function from the main program file;
 else:
             # Call the get_timestamp function on the file;
@@ -333,7 +381,7 @@ subdict1 = dict1[source]
 # dictionary to be built;
 find_dirs(src_abs_path, source, subdict1)
 # DEBUG
-print(f'dict1: {dict1}')
+print(f'dict1: {dict1}\n')
 
 # DICTIONARY2 BLOCK
 dst_path = ('.'+slashes+destination)
@@ -362,7 +410,8 @@ find_dirs(dst_abs_path, destination, subdict2)
 print(f'dict2: {dict2}')
 
 # FIND FILES BLOCK
-find_files(dict1, dict2, src_abs_path)
+find_files(subdict1, subdict2, src_abs_path)
+print("end of file test")
 
 '''
 # COPYTREE BLOCK
