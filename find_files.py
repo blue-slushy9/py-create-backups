@@ -278,10 +278,10 @@ def find_files(src_subdict, dst_subdict, src_abs_path):
         # Check if the subdict exists in destination dictionary
         if subdir in dst_subdict:
 
-        # For each key, prepend its full filepath
-        subdir_fullpath = (src_abs_path+slashes+subdir)
-        # DEBUG
-        print(subdir_fullpath)
+            # For each key, prepend its full filepath
+            subdir_fullpath = (src_abs_path+slashes+subdir)
+            # DEBUG
+            print(subdir_fullpath)
 
 ''' old code for the find_files function from the main program file;
 else:
