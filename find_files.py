@@ -180,7 +180,7 @@ def find_dirs(fullpath, name, dict):
         if os.path.isdir(new_fullpath):
             # DEBUG
             print(f'dir: {item}')
-            dict[item] = None
+            dict[item] = {}
             print(f'dict: {dict}')
             # This will create an items object (list) that can be looped through;
             new_items = os.listdir(new_fullpath)
@@ -191,7 +191,7 @@ def find_dirs(fullpath, name, dict):
                 if os.path.isdir(subdir_fullpath):
                     # Create an inner key that matches the name of the 
                     # subdirectory, with a None value;
-                    dict[item] = None
+                    dict[item] = {}
                     print(f'dict: {dict}')
                     # current_dict points to the same location in memory as dict,
                     # i.e. the original object is modified, not a copy thereof;
@@ -212,11 +212,11 @@ def find_dirs(fullpath, name, dict):
                     print(f'current_dict: {current_dict}')
                     print(f'dict: {dict}')
                 else:
-                    print(dict[item])
-                    print (dict[item][new_item])
-                    dict[item][new_item] = None
+                    print(f'dict_item: {dict[item]}')
+                    print (f'dict[item][new_item]: {dict[item][new_item]}')
+                    dict[item][new_item] = 'timestamp'
         else:
-            dict[item] = None
+            dict[item] = 'timestamp'
     print('# /FIND_DIRS() BLOCK\n')
     return dict
 
