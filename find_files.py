@@ -2,6 +2,20 @@
 
 # NOTES
 
+# 3/5/24
+
+# Finally got my find_dirs() function to work, so now i need to plan next
+# steps: 
+
+# 1) if the key or subkey exists in both A & B, then we call the
+# find_files() function to add the files and their timestamps to our
+# dictionaries, then we can overwrite individual files based on this info;
+
+# 2) after individual files have been overwritten based on timestamps, then we
+# can look at entire directories that exist in A but not B, then we can use
+# copytree to copy entire directory structures from A to B---it is more
+# resource-efficient to perform this step last;
+
 # 3/2/24
 
 # BUG: the find_dirs() function only goes one level deep into the directory
@@ -181,10 +195,14 @@ def find_dirs(fullpath, name, dict):
             # DEBUG
             print(f'dir: {item}')
             dict[item] = {}
-            print(f'dict: {dict}')
+            new_dict = dict[item]
+            print(f'new_dict: {new_dict}')
             # This will create an items object (list) that can be looped through;
             new_items = os.listdir(new_fullpath)
             print(f'new_items: {new_items}')
+            # Call function recursively
+            find_dirs(new_fullpath, name, new_dict)
+            '''
             for new_item in new_items:
                 subdir_fullpath = (new_fullpath+slashes+new_item)
                 print(f'subdir_fullpath: {subdir_fullpath}')
@@ -217,6 +235,7 @@ def find_dirs(fullpath, name, dict):
                     dict[item][new_item] = 'timestamp'
         else:
             dict[item] = 'timestamp'
+            '''
     print('# /FIND_DIRS() BLOCK\n')
     return dict
 
@@ -292,6 +311,14 @@ def find_dirs(fullpath, name, dict):
             #print(dict.key())
             #print(f'dict_entry: {dict}')
 '''
+
+def find_files(src_dict, dst_dict, src_abs_path):
+    for dir in src_dict:
+        print('\n# FIND_FILES() BLOCK')
+        print(f'dir: {dir}')
+        if dir exists in dst_dict:
+
+
 
 # This function will fill in the keys (subdirectories) with their files;
 # Arguments: source dictionary, destination dictionary, source absolute file-
