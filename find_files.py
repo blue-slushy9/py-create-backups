@@ -312,14 +312,54 @@ def find_dirs(fullpath, name, dict):
             #print(f'dict_entry: {dict}')
 '''
 
-def find_files(src_dict, dst_dict, src_abs_path):
+# We need to define a separate function for the first outer key because it is
+# the only one for which the respective dictionary keys will not match;
+def find_files1(src_dict, dst_dict, fullpath):
+    #for dir in src_dict:
+    items = os.listdir(fullpath)
+    # DEBUG
+    print(items)
+    for item in items:
+        # DEBUG
+        print('\n# FIND_FILES() BLOCK')
+        print(f'item: {item}')
+        # Reset the fullpath variable after every iteration;
+        print(f'Before fullpath: {fullpath}')
+        fullpath = fullpath
+        print(f'After fullpath: {fullpath}')
+        #print(item)
+        # Update the fullpath variable to include the item name;
+        new_fullpath = os.path.abspath(fullpath+slashes+item)
+        #new_fullpath = fullpath+slashes+item
+        # DEBUG
+        print(f'new_fullpath: {new_fullpath}')
+        # If full filepath points to a directory...
+        # os.path.isdir() expects a path as argument, not a string;
+        if not os.path.isdir(new_fullpath):
+            print(f'file: {item}')
+            src_dict[item] = 'timestamp'
+            # Once the item/file is added to the dictionary, we need to remove
+            # it from the items list;
+            items.remove(item)
+            print(f'\n{items}\n')
+    # Recursively call find_files() to find files in subdirectories
+    #find_files1()
+    return src_dict
+    print(f'/# FIND_FILES() BLOCK')
+
+
+'''
+# This 
+def find_files2(src_dict, dst_dict, first_dir, src_abs_path):
     for dir in src_dict:
         print('\n# FIND_FILES() BLOCK')
-        print(f'dir: {dir}')
-        if dir exists in dst_dict:
+        print(f'dirA: {dir}')
+        if dir in dst_dict:
+            print(f'dirB: {dir}')
+    
+    print('/# FIND_FILES() BLOCK')
 
-
-
+    
 # This function will fill in the keys (subdirectories) with their files;
 # Arguments: source dictionary, destination dictionary, source absolute file-
 # path;
@@ -354,7 +394,7 @@ def find_files(src_subdict, dst_subdict, src_abs_path):
                 print(f'new_fullpath: {new_subdir_fullpath}')
     # DEBUG
     print('# /FIND_FILES() BLOCK\n')
-'''
+
         # For each key, prepend its full filepath
         subdir_fullpath = (src_abs_path+slashes+subdir)
         # DEBUG
@@ -436,11 +476,14 @@ subdict2 = dict2[destination]
 # dictionary to be built;
 find_dirs(dst_abs_path, destination, subdict2)
 #dict2 = double_to_single(dict2)
-print(f'dict2: {dict2}')
+print(f'dict2: {dict2}\n')
 
 # FIND FILES BLOCK
-find_files(subdict1, subdict2, src_abs_path)
+find_files1(dict1, dict2, src_abs_path)
 print("end of file test")
+# DEBUG
+print(dict1)
+print(dict2)
 
 '''
 # COPYTREE BLOCK
