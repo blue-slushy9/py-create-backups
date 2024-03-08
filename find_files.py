@@ -318,7 +318,7 @@ def find_files1(src_dict, dst_dict, fullpath):
     #for dir in src_dict:
     items = os.listdir(fullpath)
     # DEBUG
-    print(items)
+    print(f'items list: {items}')
     for item in items:
         # DEBUG
         print('\n# FIND_FILES() BLOCK')
@@ -336,12 +336,12 @@ def find_files1(src_dict, dst_dict, fullpath):
         # If full filepath points to a directory...
         # os.path.isdir() expects a path as argument, not a string;
         if not os.path.isdir(new_fullpath):
-            print(f'file: {item}')
+            print(f'file: {item}\n')
             src_dict[item] = 'timestamp'
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
             items.remove(item)
-            print(f'\n{items}\n')
+            print(f'updated items: {items}\n')
     # Recursively call find_files() to find files in subdirectories
     #find_files1()
     return src_dict
@@ -480,10 +480,11 @@ print(f'dict2: {dict2}\n')
 
 # FIND FILES BLOCK
 find_files1(dict1, dict2, src_abs_path)
-print("end of file test")
+print('# FIND_FILES() BLOCK\n')
 # DEBUG
-print(dict1)
-print(dict2)
+print(f'dict1: {dict1}\n')
+print(f'dict2: {dict2}\n')
+print('/# FIND_FILES() BLOCK\n')
 
 '''
 # COPYTREE BLOCK
