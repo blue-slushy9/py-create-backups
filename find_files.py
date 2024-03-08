@@ -2,6 +2,13 @@
 
 # NOTES
 
+# 3/8/24
+
+# Tried using multiple lists in the find_files() function to keep track of
+# dictionary keys and sub-keys, etc.; however this doesn't seem to be a good
+# approach; instead, it seems i should probably iterate over the dictionary
+# keys and sub-keys like so: 'for key in src_dict[item]' ;
+
 # 3/5/24
 
 # Finally got my find_dirs() function to work, so now i need to plan next
@@ -317,6 +324,9 @@ def find_dirs(fullpath, name, dict):
 def find_files1(src_dict, dst_dict, fullpath):
     #for dir in src_dict:
     items1 = os.listdir(fullpath)
+    # We will use a second list to keep track of the items in items1
+    # that are directories;
+    items2 = []
     # DEBUG
     print(f'items list: {items1}')
     for item in items1:
@@ -343,11 +353,22 @@ def find_files1(src_dict, dst_dict, fullpath):
             #items.remove(item)
             print(f'updated items: {items1}\n')
         else:
-            # We will use a second list to keep track of the items in items1
-            # that are directories;
-            items2 = []
-            items2.add(item)
-            print(f'items2: {items2}\n')
+            # If item is a directory, add it to our items2 list for later use;
+            items2.append(item)
+    # DEBUG
+    print(f'items2: {items2}\n')
+    items3 = []
+    for item in items2:
+        print(f'item: {item}')
+        new_fullpath = (fullpath+slashes+item)
+        print(f'new_fullpath: {new_fullpath}\n')
+        items3 = os.listdir(new_fullpath)
+        for subitem in items3:
+            src_dict[item] = 
+        #items3.append(item)
+    # DEBUG
+    print(f'items3: {items3}\n')
+
     # Recursively call find_files() to find files in subdirectories
     #find_files1()
     return src_dict
