@@ -316,10 +316,10 @@ def find_dirs(fullpath, name, dict):
 # the only one for which the respective dictionary keys will not match;
 def find_files1(src_dict, dst_dict, fullpath):
     #for dir in src_dict:
-    items = os.listdir(fullpath)
+    items1 = os.listdir(fullpath)
     # DEBUG
-    print(f'items list: {items}')
-    for item in items:
+    print(f'items list: {items1}')
+    for item in items1:
         # DEBUG
         print('\n# FIND_FILES() BLOCK')
         print(f'item: {item}')
@@ -340,8 +340,14 @@ def find_files1(src_dict, dst_dict, fullpath):
             src_dict[item] = 'timestamp'
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
-            items.remove(item)
-            print(f'updated items: {items}\n')
+            #items.remove(item)
+            print(f'updated items: {items1}\n')
+        else:
+            # We will use a second list to keep track of the items in items1
+            # that are directories;
+            items2 = []
+            items2.add(item)
+            print(f'items2: {items2}\n')
     # Recursively call find_files() to find files in subdirectories
     #find_files1()
     return src_dict
