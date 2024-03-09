@@ -2,6 +2,15 @@
 
 # NOTES
 
+# 3/9/24
+
+# Tried iterating over the dictionary without using lists, but apparently that
+# tends to bring up various errors as Python does not allow for modifying
+# dictionaries during loop iteration; GPT actually recommends using lists to
+# keep track of the changes you want to make, and then implementing those
+# changes in a separate loop than the one that iterates over the dictionary:
+# this is funny because that was my initial instinct yesterday;
+
 # 3/8/24
 
 # Tried using multiple lists in the find_files() function to keep track of
@@ -347,7 +356,8 @@ def find_files1(src_dict, dst_dict, fullpath):
         # os.path.isdir() expects a path as argument, not a string;
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
-            src_dict[item] = 'timestamp'
+            # 11:11 is just a generic timestamp for debugging purposes;
+            src_dict[item] = '11:11'
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
             #items.remove(item)
@@ -357,18 +367,39 @@ def find_files1(src_dict, dst_dict, fullpath):
             items2.append(item)
     # DEBUG
     print(f'items2: {items2}\n')
+    # items3 represents the third layer of the dictionary, begining from the
+    # outer layer, i.e. 'A' or 'B';
     items3 = []
+    # items2 represents the second layer of the dictionary, beginning from the
+    # outer layer, i.e. 'A' or 'B';
     for item in items2:
         print(f'item: {item}')
         new_fullpath = (fullpath+slashes+item)
         print(f'new_fullpath: {new_fullpath}\n')
-        items3 = os.listdir(new_fullpath)
-        for subitem in items3:
-            src_dict[item] = 
+        '''
+        # The dict() constructor creates a shallow copy of the original
+        # dictionary in order to avoid runtime errors associated with altering
+        # a dictionary while running a for loop;
+        subdict = (src_dict['A'].copy().items())
+        '''
+        subdict = src_dict['A']
+        # DEBUG
+        print(f'subdict: {subdict}\n')
+        for subitem in subdict:
+            items3 = os.listdir(new_fullpath)
+            # DEBUG
+            print(f'items3: {items3}\n')
+            # The below line has been commented out because Python does not
+            # allow for dictionary modification during for loop iteration; we 
+            # can create a list (items3) and for loop over it afterward in
+            # order to implement all of our changes to the dictionary;
+            #for item3 in items3:
+                #subdict[item3] = 'timestamp'
+        #for subitem in items3:
+            #src_dict[item] = 
         #items3.append(item)
     # DEBUG
     print(f'items3: {items3}\n')
-
     # Recursively call find_files() to find files in subdirectories
     #find_files1()
     return src_dict
