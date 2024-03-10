@@ -2,6 +2,17 @@
 
 # NOTES
 
+# 3/10/24
+
+# Left off around Line 350;
+
+# Trying to decide whether i should use nested functions or nested classes
+# in find_files(); only just learned today that nested functions and nested
+# classes are a thing in Python; find_files1() and find_files2() are only
+# marginally different from one another; wondering if i should make a class
+# for the aforementioned function, as well as find_dirs(), since they are all
+# so similar;
+
 # 3/9/24
 
 # Tried iterating over the dictionary without using lists, but apparently that
@@ -327,6 +338,13 @@ def find_dirs(fullpath, name, dict):
             #print(dict.key())
             #print(f'dict_entry: {dict}')
 '''
+# Defining this outside of the function allows to call it recursively for
+# subsequent layers in the dictionary; items1 will contain all directory
+# contents at the outermost layer of our directory structure;
+#items1 = os.listdir(fullpath)
+# items2 will be used to store the subdirectories, in order to call the
+# functions recursively on them later on;
+#items2 = []
 
 # We need to define a separate function for the first outer key because it is
 # the only one for which the respective dictionary keys will not match;
@@ -337,7 +355,7 @@ def find_files1(src_dict, dst_dict, fullpath):
     # that are directories;
     items2 = []
     # DEBUG
-    print(f'items list: {items1}')
+    print(f'items1: {items1}')
     for item in items1:
         # DEBUG
         print('\n# FIND_FILES() BLOCK')
@@ -361,7 +379,7 @@ def find_files1(src_dict, dst_dict, fullpath):
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
             #items.remove(item)
-            print(f'updated items: {items1}\n')
+            print(f'updated items1: {items1}\n')
         else:
             # If item is a directory, add it to our items2 list for later use;
             items2.append(item)
