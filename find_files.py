@@ -350,13 +350,13 @@ def find_dirs(fullpath, name, dict):
 # the only one for which the respective dictionary keys will not match;
 def find_files1(src_dict, dst_dict, fullpath):
     #for dir in src_dict:
-    items1 = os.listdir(fullpath)
-    # We will use a second list to keep track of the items in items1
+    items = os.listdir(fullpath)
+    # We will use a second list to keep track of the items
     # that are directories;
-    items2 = []
+    dirs = []
     # DEBUG
-    print(f'items1: {items1}')
-    for item in items1:
+    print(f'items: {items}')
+    for item in items:
         # DEBUG
         print('\n# FIND_FILES() BLOCK')
         print(f'item: {item}')
@@ -379,12 +379,43 @@ def find_files1(src_dict, dst_dict, fullpath):
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
             #items.remove(item)
-            print(f'updated items1: {items1}\n')
+            print(f'updated items: {items}\n')
         else:
             # If item is a directory, add it to our items2 list for later use;
-            items2.append(item)
+            dirs.append(item)
     # DEBUG
-    print(f'items2: {items2}\n')
+    print('/# FIND_FILES1() BLOCK\n')
+    
+    # Define function that will be used on inner layers of dictionary; this is
+    # the one we will be able to call recursively ad infinitum until all
+    # layers of the dictionary are plumbed and their files added to the
+    # dictionary;
+    def find_files2(dirs):
+        # DEBUG
+        print(f'# FIND_FILES2() BLOCK\n')
+        print(f'dirs: {dirs}\n')
+        for dir in dirs:
+            print(f'dir: {dir}')
+            new_fullpath = (fullpath+slashes+dir)
+            print(f'new_fullpath: {new_fullpath}\n')
+            items = os.listdir(new_fullpath)
+            print(f'items: {items}\n')
+            for item in items:
+                print(f'item: {item}\n')
+                new_fullpath = (new_fullpath+slashes+item)
+                print(f'new_fullpath: {new_fullpath}\n')
+                if not os.path.isdir(new_fullpath):
+                    src_dict['A'][dir][item] = '11:11'
+                    print(f'src_dict["A"][dir][item]\n')
+    # Remember that return statements cause the function to cease execution
+    #return src_dict
+
+    # Call the nested function
+    find_files2(dirs)
+    # DEBUG
+    print('/# FIND_FILES2() BLOCK\n')
+
+'''
     # items3 represents the third layer of the dictionary, begining from the
     # outer layer, i.e. 'A' or 'B';
     items3 = []
@@ -394,12 +425,12 @@ def find_files1(src_dict, dst_dict, fullpath):
         print(f'item: {item}')
         new_fullpath = (fullpath+slashes+item)
         print(f'new_fullpath: {new_fullpath}\n')
-        '''
+        
         # The dict() constructor creates a shallow copy of the original
         # dictionary in order to avoid runtime errors associated with altering
         # a dictionary while running a for loop;
         subdict = (src_dict['A'].copy().items())
-        '''
+        
         subdict = src_dict['A']
         # DEBUG
         print(f'subdict: {subdict}\n')
@@ -420,11 +451,10 @@ def find_files1(src_dict, dst_dict, fullpath):
     print(f'items3: {items3}\n')
     # Recursively call find_files() to find files in subdirectories
     #find_files1()
-    return src_dict
-    print(f'/# FIND_FILES() BLOCK')
 
+return src_dict
+print(f'/# FIND_FILES() BLOCK')
 
-'''
 # This 
 def find_files2(src_dict, dst_dict, first_dir, src_abs_path):
     for dir in src_dict:
