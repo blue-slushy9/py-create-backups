@@ -385,12 +385,12 @@ def find_files1(src_dict, dst_dict, fullpath):
             dirs.append(item)
     # DEBUG
     print('/# FIND_FILES1() BLOCK\n')
-    
+    new_dirs = []
     # Define function that will be used on inner layers of dictionary; this is
     # the one we will be able to call recursively ad infinitum until all
     # layers of the dictionary are plumbed and their files added to the
     # dictionary;
-    def find_files2(dirs):
+    def find_files2(dirs, new_dirs):
         # DEBUG
         print(f'# FIND_FILES2() BLOCK\n')
         print(f'dirs: {dirs}\n')
@@ -402,16 +402,28 @@ def find_files1(src_dict, dst_dict, fullpath):
             print(f'items: {items}\n')
             for item in items:
                 print(f'item: {item}\n')
-                new_fullpath = (new_fullpath+slashes+item)
+                #new_fullpath = new_fullpath
                 print(f'new_fullpath: {new_fullpath}\n')
-                if not os.path.isdir(new_fullpath):
-                    src_dict['A'][dir][item] = '11:11'
-                    print(f'src_dict["A"][dir][item]\n')
+                temp_fullpath = (new_fullpath+slashes+item)
+                print(f'temp_fullpath: {temp_fullpath}\n')
+                # If the item is not a directory...
+                if not os.path.isdir(temp_fullpath):
+                    # temp_dict is the current sub-dictionary that is being changed
+                    temp_dict = src_dict[source][dir]
+                    temp_dict[item] = '11:11'
+                    print(f'temp_dict: {temp_dict}\n')
+                else:
+                    new_dirs.append(item)
+            # Call function recursively until all subdirectories have been explored
+            find_files2(dirs, new_dirs)
+            # We need to clear this list after every recursive call
+            new_dirs = []
+    
     # Remember that return statements cause the function to cease execution
     #return src_dict
 
     # Call the nested function
-    find_files2(dirs)
+    find_files2(dirs, new_dirs)
     # DEBUG
     print('/# FIND_FILES2() BLOCK\n')
 
