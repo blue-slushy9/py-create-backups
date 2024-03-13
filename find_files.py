@@ -385,14 +385,16 @@ def find_files1(src_dict, dst_dict, fullpath):
             dirs.append(item)
     # DEBUG
     print('/# FIND_FILES1() BLOCK\n')
-    new_dirs = []
+    #new_dirs = []
     # Define function that will be used on inner layers of dictionary; this is
     # the one we will be able to call recursively ad infinitum until all
     # layers of the dictionary are plumbed and their files added to the
     # dictionary;
-    def find_files2(dirs, new_dirs):
+    def find_files2(dirs):
         # DEBUG
         print(f'# FIND_FILES2() BLOCK\n')
+        # We need to create this list and clear it after every recursive call
+        new_dirs = []
         print(f'dirs: {dirs}\n')
         for dir in dirs:
             print(f'dir: {dir}')
@@ -412,18 +414,19 @@ def find_files1(src_dict, dst_dict, fullpath):
                     temp_dict = src_dict[source][dir]
                     temp_dict[item] = '11:11'
                     print(f'temp_dict: {temp_dict}\n')
+                # Else, if the item is a directory we add it to our new list
                 else:
                     new_dirs.append(item)
             # Call function recursively until all subdirectories have been explored
-            find_files2(dirs, new_dirs)
+            find_files2(new_dirs)
             # We need to clear this list after every recursive call
-            new_dirs = []
+            #new_dirs = []
     
     # Remember that return statements cause the function to cease execution
     #return src_dict
 
     # Call the nested function
-    find_files2(dirs, new_dirs)
+    find_files2(dirs)
     # DEBUG
     print('/# FIND_FILES2() BLOCK\n')
 
