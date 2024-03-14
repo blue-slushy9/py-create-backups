@@ -358,7 +358,7 @@ def find_files1(src_dict, dst_dict, fullpath):
     print(f'items: {items}')
     for item in items:
         # DEBUG
-        print('\n# FIND_FILES() BLOCK')
+        print('\n# FIND_FILES1() BLOCK')
         print(f'item: {item}')
         # Reset the fullpath variable after every iteration;
         print(f'Before fullpath: {fullpath}')
@@ -385,7 +385,8 @@ def find_files1(src_dict, dst_dict, fullpath):
             dirs.append(item)
     # DEBUG
     print('/# FIND_FILES1() BLOCK\n')
-    #new_dirs = []
+    
+    new_dirs = []
     # Define function that will be used on inner layers of dictionary; this is
     # the one we will be able to call recursively ad infinitum until all
     # layers of the dictionary are plumbed and their files added to the
@@ -393,15 +394,22 @@ def find_files1(src_dict, dst_dict, fullpath):
     def find_files2(dirs):
         # DEBUG
         print(f'# FIND_FILES2() BLOCK\n')
+        print(f'dirs: {dirs}\n')
+        #print(f'new_dirs: {new_dirs}\n')
         # We need to create this list and clear it after every recursive call
         new_dirs = []
         print(f'dirs: {dirs}\n')
+        print(f'new_dirs: {new_dirs}\n')
+        fullpaths = []
+        print(f'fullpaths: {fullpaths}\n')
         for dir in dirs:
             print(f'dir: {dir}')
+            print(f'fullpath: {fullpath}\n')
             new_fullpath = (fullpath+slashes+dir)
             print(f'new_fullpath: {new_fullpath}\n')
             items = os.listdir(new_fullpath)
             print(f'items: {items}\n')
+            fullpaths.append(new_fullpath)
             for item in items:
                 print(f'item: {item}\n')
                 #new_fullpath = new_fullpath
@@ -417,10 +425,19 @@ def find_files1(src_dict, dst_dict, fullpath):
                 # Else, if the item is a directory we add it to our new list
                 else:
                     new_dirs.append(item)
-            # Call function recursively until all subdirectories have been explored
-            find_files2(new_dirs)
-            # We need to clear this list after every recursive call
-            #new_dirs = []
+                    print(f'new_dirs: {new_dirs}\n')
+        print(f'fullpaths: {fullpaths}\n')
+            # Update fullpath to match new_fullpath, which is a local variable
+            #fullpath = new_fullpath
+            #print(f'updated fullpath: {fullpath}\n')
+        # We need to update fullpath to prepare for recursive call
+        #fullpath = new_fullpath
+        #print(f'updated fullpath: {fullpath}\n')
+        print('# BEGIN RECURSIVE CALL\n')
+        # Call function recursively until all subdirectories have been explored
+        find_files2(new_dirs)
+        # We need to clear this list after every recursive call
+        #new_dirs = []
     
     # Remember that return statements cause the function to cease execution
     #return src_dict
