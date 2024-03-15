@@ -2,6 +2,13 @@
 
 # NOTES
 
+# 3/15/24
+
+# Line in question: temp_dict = src_dict[source][dir] , around :425 ?
+# As we go deeper into the dictionary and directory structure, we need to
+# update those keys. As it appears above, it only takes us to second layer of
+# the dictionary, starting from the outermost layer, A.
+
 # 3/10/24
 
 # Left off around Line 350;
@@ -386,7 +393,63 @@ def find_files1(src_dict, dst_dict, fullpath):
     # DEBUG
     print('/# FIND_FILES1() BLOCK\n')
     
+    parent_dirs = {}
     new_dirs = []
+    # Tentative version of function where for loop is removed
+    def find_files2(dir, fullpath):
+        # DEBUG
+        print(f'# FIND_FILES2() BLOCK\n')
+        print(f'dirs: {dirs}\n')
+        #print(f'new_dirs: {new_dirs}\n')
+        # We need to create this list and clear it after every recursive call
+        new_dirs = []
+        print(f'dirs: {dirs}\n')
+        print(f'new_dirs: {new_dirs}\n')
+        print(f'dir: {dir}')
+        print(f'fullpath: {fullpath}\n')
+        new_fullpath = (fullpath+slashes+dir)
+        print(f'new_fullpath: {new_fullpath}\n')
+        items = os.listdir(new_fullpath)
+        print(f'items: {items}\n')
+        #fullpaths.append(new_fullpath)
+        for item in items:
+            print(f'item: {item}\n')
+            #new_fullpath = new_fullpath
+            print(f'new_fullpath: {new_fullpath}\n')
+            temp_fullpath = (new_fullpath+slashes+item)
+            print(f'temp_fullpath: {temp_fullpath}\n')
+            parent_dirs[item] = new_fullpath
+            print(f'parent_dirs: {parent_dirs}\n')
+            # If the item is not a directory...
+            if not os.path.isdir(temp_fullpath):
+                # temp_dict is the current sub-dictionary that is being changed
+                print(f'src_dict: {src_dict}\n')
+                temp_dict = src_dict[source][dir]
+                temp_dict[item] = '11:11'
+                print(f'temp_dict: {temp_dict}\n')
+            # Else, if the item is a directory we add it to our new list
+            else:
+                new_dirs.append(item)
+                print(f'new_dirs: {new_dirs}\n')
+       
+        print('# BEGIN RECURSIVE CALL\n')
+        # This might work better than putting the for loop inside find_files2
+        for dir in new_dirs:
+            fullpath = parent_dirs[dir]
+            # Call nested function recursively on all new_dirs elements
+            find_files2(dir, fullpath)
+    
+    # Call nested function for first time on every element in dirs
+    for dir in dirs:
+        #fullpath = fullpath
+        find_files2(dir, fullpath)
+
+    # Call the nested function for the first time
+    #find_files2(dirs)
+    # DEBUG
+    print('/# FIND_FILES2() BLOCK\n')
+
+    '''
     # Define function that will be used on inner layers of dictionary; this is
     # the one we will be able to call recursively ad infinitum until all
     # layers of the dictionary are plumbed and their files added to the
@@ -400,8 +463,8 @@ def find_files1(src_dict, dst_dict, fullpath):
         new_dirs = []
         print(f'dirs: {dirs}\n')
         print(f'new_dirs: {new_dirs}\n')
-        fullpaths = []
-        print(f'fullpaths: {fullpaths}\n')
+        #fullpaths = []
+        #print(f'fullpaths: {fullpaths}\n')
         for dir in dirs:
             print(f'dir: {dir}')
             print(f'fullpath: {fullpath}\n')
@@ -409,13 +472,15 @@ def find_files1(src_dict, dst_dict, fullpath):
             print(f'new_fullpath: {new_fullpath}\n')
             items = os.listdir(new_fullpath)
             print(f'items: {items}\n')
-            fullpaths.append(new_fullpath)
+            #fullpaths.append(new_fullpath)
             for item in items:
                 print(f'item: {item}\n')
                 #new_fullpath = new_fullpath
                 print(f'new_fullpath: {new_fullpath}\n')
                 temp_fullpath = (new_fullpath+slashes+item)
                 print(f'temp_fullpath: {temp_fullpath}\n')
+                parent_dirs[item] = new_fullpath
+                print(f'parent_dirs: {parent_dirs}\n')
                 # If the item is not a directory...
                 if not os.path.isdir(temp_fullpath):
                     # temp_dict is the current sub-dictionary that is being changed
@@ -426,26 +491,36 @@ def find_files1(src_dict, dst_dict, fullpath):
                 else:
                     new_dirs.append(item)
                     print(f'new_dirs: {new_dirs}\n')
-        print(f'fullpaths: {fullpaths}\n')
+                    '''
+        #print(f'fullpaths: {fullpaths}\n')
             # Update fullpath to match new_fullpath, which is a local variable
             #fullpath = new_fullpath
             #print(f'updated fullpath: {fullpath}\n')
         # We need to update fullpath to prepare for recursive call
         #fullpath = new_fullpath
         #print(f'updated fullpath: {fullpath}\n')
-        print('# BEGIN RECURSIVE CALL\n')
+        #print('# BEGIN RECURSIVE CALL\n')
+        # Update fullpath variable in preparation for recursive call
+        #fullpath = parent_dirs[
         # Call function recursively until all subdirectories have been explored
-        find_files2(new_dirs)
+        #find_files2(new_dirs)
         # We need to clear this list after every recursive call
         #new_dirs = []
-    
+'''
+        print('# BEGIN RECURSIVE CALL\n')
+        # This might work better than putting the for loop inside find_files2
+        for dir in new_dirs:
+            fullpath = parent_dirs[dir]
+            # Call nested function recursively on all new_dirs elements
+            find_files2(dir)
+'''
     # Remember that return statements cause the function to cease execution
     #return src_dict
 
-    # Call the nested function
-    find_files2(dirs)
+    # Call the nested function for the first time
+    #find_files2(dirs)
     # DEBUG
-    print('/# FIND_FILES2() BLOCK\n')
+    #print('/# FIND_FILES2() BLOCK\n')
 
 '''
     # items3 represents the third layer of the dictionary, begining from the
