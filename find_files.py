@@ -2,6 +2,14 @@
 
 # NOTES
 
+# 3/16/24
+
+# There is a problem with the recursive find_files2() function, the error i am
+# getting is with the repr() function, a circular reference apparently.
+# find_files2() is iterating endlessly, it is not obeying the restrictions of
+# the for loop over new_dirs for some reason...
+
+
 # 3/15/24
 
 # Line in question: temp_dict = src_dict[source][dir] , around :425 ?
@@ -139,7 +147,7 @@ class UserInputs:
         correct = correct.lower()
         if correct == 'y':
             # Example output: 'A will be the source directory'
-            print(f"Okay, {self.eggs} will be the {self.spam} directory.\n")
+            print(f"Okay, {self.eggs} will be the {self.spam} directory.")
             return self.eggs
         else:
             # Return the value to be obtained from a recursive call
@@ -184,7 +192,7 @@ my_oper_sys = OperSys(oper_sys=None, spam=None)
 # forward slashes;
 slashes = my_oper_sys.input()
 # DEBUG
-print(f'slashes: {slashes}')
+print(f'slashes: {slashes}\n')
 
 # Create instance of class Source
 my_source = Source(source='source')
@@ -396,13 +404,13 @@ def find_files1(src_dict, dst_dict, fullpath):
     parent_dirs = {}
     new_dirs = []
     # Tentative version of function where for loop is removed
-    def find_files2(dir, fullpath):
+    def find_files2(dir, dirs, new_dirs, fullpath, temp_dict):
         # DEBUG
         print(f'# FIND_FILES2() BLOCK\n')
         print(f'dirs: {dirs}\n')
         #print(f'new_dirs: {new_dirs}\n')
         # We need to create this list and clear it after every recursive call
-        new_dirs = []
+        #new_dirs = []
         print(f'dirs: {dirs}\n')
         print(f'new_dirs: {new_dirs}\n')
         print(f'dir: {dir}')
@@ -423,8 +431,8 @@ def find_files1(src_dict, dst_dict, fullpath):
             # If the item is not a directory...
             if not os.path.isdir(temp_fullpath):
                 # temp_dict is the current sub-dictionary that is being changed
-                print(f'src_dict: {src_dict}\n')
-                temp_dict = src_dict[source][dir]
+                #print(f'src_dict: {src_dict}\n')
+                #temp_dict = src_dict[source][dir]
                 temp_dict[item] = '11:11'
                 print(f'temp_dict: {temp_dict}\n')
             # Else, if the item is a directory we add it to our new list
@@ -432,20 +440,30 @@ def find_files1(src_dict, dst_dict, fullpath):
                 new_dirs.append(item)
                 print(f'new_dirs: {new_dirs}\n')
        
-        print('# BEGIN RECURSIVE CALL\n')
+        print('# BEGIN RECURSIVE FIND_FILES2() CALL\n')
         # This might work better than putting the for loop inside find_files2
         for dir in new_dirs:
             fullpath = parent_dirs[dir]
-            par_dir = 
+            split_parents = fullpath.split('/')
+            par_dir = split_parents[-1]
+            print(f'par_dir: {par_dir}\n')
             temp_dict = src_dict[source][par_dir][dir]
             # Call nested function recursively on all new_dirs elements
-            find_files2(dir, fullpath)
+            find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
+        # Clear the list after we have completed iteration
+        new_dirs = [] 
+        print('/# RECURSIVE FIND_FILES2() CALL\n')
     
+    print('# BEGIN FIND_FILES2() INITIAL CALL\n')
     # Call nested function for first time on every element in dirs
     for dir in dirs:
         #fullpath = fullpath
-        find_files2(dir, fullpath)
-
+        temp_dict = src_dict[source]
+        find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
+    # Clear the list after we have completed iteration
+    dirs = []
+    print('/# FIND_FILES2 INITIAL CALL\n')
+    
     # Call the nested function for the first time
     #find_files2(dirs)
     # DEBUG
