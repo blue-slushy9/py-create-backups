@@ -436,6 +436,8 @@ def find_files1(src_dict, dst_dict, fullpath):
         # This might work better than putting the for loop inside find_files2
         for dir in new_dirs:
             fullpath = parent_dirs[dir]
+            par_dir = 
+            temp_dict = src_dict[source][par_dir][dir]
             # Call nested function recursively on all new_dirs elements
             find_files2(dir, fullpath)
     
