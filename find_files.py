@@ -439,7 +439,23 @@ def find_files1(src_dict, dst_dict, fullpath):
             else:
                 new_dirs.append(item)
                 print(f'new_dirs: {new_dirs}\n')
-       
+
+        print('# BEGIN FIND_FILES2() INITIAL CALL\n')
+        # Call nested function for first time on every element in dirs
+        for dir in dirs:
+            #fullpath = fullpath
+            temp_dict = src_dict[source]
+            find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
+        # Clear the list after we have completed iteration
+        dirs = []
+        print('/# FIND_FILES2 INITIAL CALL\n')
+
+        # DEBUG
+        print('/# FIND_FILES2() BLOCK\n')
+
+''' # I think the initial find_files2() call has to be placed above the
+    # recursive call, so I am going to test that
+
         print('# BEGIN RECURSIVE FIND_FILES2() CALL\n')
         # This might work better than putting the for loop inside find_files2
         for dir in new_dirs:
@@ -467,9 +483,8 @@ def find_files1(src_dict, dst_dict, fullpath):
     # Call the nested function for the first time
     #find_files2(dirs)
     # DEBUG
-    print('/# FIND_FILES2() BLOCK\n')
+    #print('/# FIND_FILES2() BLOCK\n')
 
-    '''
     # Define function that will be used on inner layers of dictionary; this is
     # the one we will be able to call recursively ad infinitum until all
     # layers of the dictionary are plumbed and their files added to the
