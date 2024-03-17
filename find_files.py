@@ -2,6 +2,14 @@
 
 # NOTES
 
+# 3/17/24
+
+# Think the problem might be with my find_dirs() function. I made a diagram of
+# sorts of how my dictionaries should be structured and found that I need
+# every subdirectory (and sub-subdirectory, ad infinitum) to also be its own
+# subdictionary, which my code wasn't actually doing. I will fix this next 
+# time...
+
 # 3/16/24
 
 # There is a problem with the recursive find_files2() function, the error i am
@@ -440,18 +448,32 @@ def find_files1(src_dict, dst_dict, fullpath):
                 new_dirs.append(item)
                 print(f'new_dirs: {new_dirs}\n')
 
-        print('# BEGIN FIND_FILES2() INITIAL CALL\n')
-        # Call nested function for first time on every element in dirs
-        for dir in dirs:
-            #fullpath = fullpath
-            temp_dict = src_dict[source]
-            find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
-        # Clear the list after we have completed iteration
-        dirs = []
-        print('/# FIND_FILES2 INITIAL CALL\n')
+    print('# BEGIN FIND_FILES2() INITIAL CALL\n')
+    # Call nested function for first time on every element in dirs
+    for dir in dirs:
+        #fullpath = fullpath
+        temp_dict = src_dict[source]
+        find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
+    # Clear the list after we have completed iteration
+    dirs = []
+    print('/# FIND_FILES2 INITIAL CALL\n')
 
-        # DEBUG
-        print('/# FIND_FILES2() BLOCK\n')
+    print('# BEGIN RECURSIVE FIND_FILES2() CALL\n')
+    # This might work better than putting the for loop inside find_files2
+    for dir in new_dirs:
+        fullpath = parent_dirs[dir]
+        split_parents = fullpath.split('/')
+        par_dir = split_parents[-1]
+        print(f'par_dir: {par_dir}\n')
+        temp_dict = src_dict[source][par_dir][dir]
+        # Call nested function recursively on all new_dirs elements
+        find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
+    # Clear the list after we have completed iteration
+    new_dirs = [] 
+    print('/# RECURSIVE FIND_FILES2() CALL\n')
+
+    # DEBUG
+    print('/# FIND_FILES2() BLOCK\n')
 
 ''' # I think the initial find_files2() call has to be placed above the
     # recursive call, so I am going to test that
