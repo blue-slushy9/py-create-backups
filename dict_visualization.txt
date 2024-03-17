@@ -1,15 +1,20 @@
 # This is just to help me visualize the dictionary structures i am trying to
 # create in this program;
 
-dict1
+# Every subdirectory should also be its own subdictionary;
 
-{'A': 
-       {
-       'blih.txt': '',
-       'blah.txt': '',
-       'blahblah.txt': '',
-       'bleh.txt': '',
-       'a1a': {},
-       'blahblahblah.txt': ''
-       }
+
+# dict1
+
+{'A': {
+      {'a1': {'a1a': {'bloh.txt': ''}},
+       'bleh.txt': ''},
+       
+      {'a2': {'blih.txt': ''}},
+      
+        
+      'blah.txt': '',
+      'blahblah.txt': '',
+      'blahblahblah.txt': ''
+      },
 }
