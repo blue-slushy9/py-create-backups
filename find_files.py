@@ -2,6 +2,12 @@
 
 # NOTES
 
+# 3/18/24
+
+# Around line 405, we need exact dict and subdict when setting dictionary
+# values;
+
+
 # 3/17/24
 
 # Think the problem might be with my find_dirs() function. I made a diagram of
@@ -398,15 +404,21 @@ def find_files1(src_dict, dst_dict, fullpath):
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
             # 11:11 is just a generic timestamp for debugging purposes;
-            src_dict[source][item] = '11:11'
+            src_dict[source][item] = '11:11' # BUG: need exact dict & subdict!
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
             #items.remove(item)
             print(f'updated items: {items}\n')
         else:
-            # If item is a directory, add it to our items2 list for later use;
+            # If item is a directory, add it to our dirs list for later use;
             dirs.append(item)
     # DEBUG
+    print('# INSIDE FUNCTION TEST PRINTS\n')
+    print(f'src_dict: {src_dict}\n')
+    print(f'src_dict["A"]: {src_dict["A"]}\n')
+    print(f'src_dict["A"]["a1"]: {src_dict["A"]["a1"]}\n')
+    print(f'src_dict["A"]["a2"]: {src_dict["A"]["a2"]}\n')
+
     print('/# FIND_FILES1() BLOCK\n')
     
     parent_dirs = {}
