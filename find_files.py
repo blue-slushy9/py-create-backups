@@ -398,7 +398,7 @@ def find_files1(src_dict, dst_dict, fullpath):
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
             # 11:11 is just a generic timestamp for debugging purposes;
-            src_dict[item] = '11:11'
+            src_dict[source][item] = '11:11'
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
             #items.remove(item)
@@ -754,6 +754,9 @@ print('# FIND_FILES() BLOCK\n')
 # DEBUG
 print(f'dict1: {dict1}\n')
 print(f'dict2: {dict2}\n')
+print(f'dict1["A"]: {dict1["A"]}\n')
+print(f'dict1["A"]["a1"]: {dict1["A"]["a1"]}\n')
+print(f'dict1["A"]["a2"]: {dict1["A"]["a2"]}\n')
 print('/# FIND_FILES() BLOCK\n')
 
 '''
