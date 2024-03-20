@@ -2,6 +2,12 @@
 
 # NOTES
 
+# 3/20/24
+
+# Got the dictionaries to print out correctly, but the code only works in a
+# static directory structure---need to make it dynamic! Started writing a
+# while loop that will hopefully solve this problem.
+
 # 3/18/24
 
 # Around line 405, we need exact dict and subdict when setting dictionary
@@ -460,6 +466,19 @@ def find_files1(src_dict, dst_dict, fullpath):
                 new_dirs.append(item)
                 print(f'new_dirs: {new_dirs}\n')
 
+# Create a while that will continue to run until all subdirectories have been
+# exhausted ? Instead of using just  the dirs and new_dirs lists, maybe create
+# a new list for each successive sublayer of the directory and dictionary?
+# e.g. dirs1, dirs2, dirs3, etc. 
+
+# This counter will keep track of how many layers we have searched so far in
+# our breadth-first search; we can use it for dirs1, dirs2, etc. 
+# i = 0
+
+# while loop condition is that list of dirs isn't empty, i.e. there are
+# additional subdirectories to explore
+# while len(dirs) > 0:
+
     print('# BEGIN FIND_FILES2() INITIAL CALL\n')
     # Call nested function for first time on every element in dirs
     for dir in dirs:
@@ -468,7 +487,7 @@ def find_files1(src_dict, dst_dict, fullpath):
         find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
     # Clear the list after we have completed iteration
     dirs = []
-    print('/# FIND_FILES2 INITIAL CALL\n')
+    print('/# FIND_FILES2() INITIAL CALL\n')
 
     print('# BEGIN RECURSIVE FIND_FILES2() CALL\n')
     # This might work better than putting the for loop inside find_files2
