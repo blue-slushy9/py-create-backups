@@ -404,7 +404,7 @@ def find_files1(src_dict, dst_dict, fullpath):
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
             # 11:11 is just a generic timestamp for debugging purposes;
-            src_dict[source][item] = '11:11' # BUG: need exact dict & subdict!
+            src_dict[item] = '11:11' # BUG: need exact dict & subdict!
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
             #items.remove(item)
@@ -415,9 +415,9 @@ def find_files1(src_dict, dst_dict, fullpath):
     # DEBUG
     print('# INSIDE FUNCTION TEST PRINTS\n')
     print(f'src_dict: {src_dict}\n')
-    print(f'src_dict["A"]: {src_dict["A"]}\n')
-    print(f'src_dict["A"]["a1"]: {src_dict["A"]["a1"]}\n')
-    print(f'src_dict["A"]["a2"]: {src_dict["A"]["a2"]}\n')
+    print(f'src_dict["A"]: {src_dict}\n')
+    print(f'src_dict["A"]["a1"]: {src_dict["a1"]}\n')
+    print(f'src_dict["A"]["a2"]: {src_dict["a2"]}\n')
 
     print('/# FIND_FILES1() BLOCK\n')
     
@@ -464,7 +464,7 @@ def find_files1(src_dict, dst_dict, fullpath):
     # Call nested function for first time on every element in dirs
     for dir in dirs:
         #fullpath = fullpath
-        temp_dict = src_dict[source]
+        temp_dict = src_dict[dir]
         find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
     # Clear the list after we have completed iteration
     dirs = []
@@ -477,7 +477,7 @@ def find_files1(src_dict, dst_dict, fullpath):
         split_parents = fullpath.split('/')
         par_dir = split_parents[-1]
         print(f'par_dir: {par_dir}\n')
-        temp_dict = src_dict[source][par_dir][dir]
+        temp_dict = src_dict[par_dir][dir]
         # Call nested function recursively on all new_dirs elements
         find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
     # Clear the list after we have completed iteration
@@ -761,7 +761,7 @@ find_dirs(dst_abs_path, destination, subdict2)
 print(f'dict2: {dict2}\n')
 
 # FIND FILES BLOCK
-find_files1(dict1, dict2, src_abs_path)
+find_files1(subdict1, dict2, src_abs_path)
 print('# FIND_FILES() BLOCK\n')
 # DEBUG
 print(f'dict1: {dict1}\n')
