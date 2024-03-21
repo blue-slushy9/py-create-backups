@@ -2,6 +2,11 @@
 
 # NOTES
 
+# 3/21/24
+
+# GPT suggested using nested lists or dictionaries re. the find_files2()
+# recursive function issue; around line 425
+
 # 3/20/24
 
 # Got the dictionaries to print out correctly, but the code only works in a
@@ -466,19 +471,34 @@ def find_files1(src_dict, dst_dict, fullpath):
                 new_dirs.append(item)
                 print(f'new_dirs: {new_dirs}\n')
 
-# Create a while that will continue to run until all subdirectories have been
+# Create a while loop that will continue to run until all subdirectories are
 # exhausted ? Instead of using just  the dirs and new_dirs lists, maybe create
 # a new list for each successive sublayer of the directory and dictionary?
 # e.g. dirs1, dirs2, dirs3, etc. 
+
+# GPT suggests using nested lists or dictionaries instead of creating separate
+# lists
 
 # This counter will keep track of how many layers we have searched so far in
 # our breadth-first search; we can use it for dirs1, dirs2, etc. 
 # i = 0
 
-# while loop condition is that list of dirs isn't empty, i.e. there are
+# while-loop condition is that next list of dirs isn't empty, i.e. there are
 # additional subdirectories to explore
-# while len(dirs) > 0:
 
+# while len(dirs[i]) > 0:
+# print('# BEGIN FIND_FILES2() INITIAL CALL\n')
+#     # Call nested function for first time on every element in dirs
+#     for dir in dirs:
+#         #fullpath = fullpath
+#         temp_dict = src_dict[dir]
+#         find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
+#     # Clear the list after we have completed iteration
+#     dirs = []
+#     print('/# FIND_FILES2() INITIAL CALL\n')
+
+# i++ at the end of each loop
+                
     print('# BEGIN FIND_FILES2() INITIAL CALL\n')
     # Call nested function for first time on every element in dirs
     for dir in dirs:
