@@ -1,3 +1,13 @@
+# NOTES
+
+# 3/22/24
+
+# Working on refactoring the find_files() functions to get them to work
+# recursively, next step is to get the correct (sub)dictionaries for each
+# while-loop iteration. left off around line 250.
+
+
+
 # Create a while loop that will continue to run until all subdirectories are
 # exhausted ? Instead of using just  the dirs and new_dirs lists, maybe create
 # a new list for each successive sublayer of the directory and dictionary?
@@ -139,12 +149,13 @@ def find_dirs(fullpath, name, dict):
 
 # We need to define a separate function for the first outer key because it is
 # the only one for which the respective dictionary keys will not match;
-def find_files1(src_dict, dst_dict, fullpath):
+def find_files1(dict, fullpath):
     #for dir in src_dict:
     items = os.listdir(fullpath)
     # We will use a second list to keep track of the items
     # that are directories;
     dirs = []
+    #dirs[0] = []
     # DEBUG
     print(f'items: {items}')
     for item in items:
@@ -166,27 +177,30 @@ def find_files1(src_dict, dst_dict, fullpath):
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
             # 11:11 is just a generic timestamp for debugging purposes;
-            src_dict[item] = '11:11' # BUG: need exact dict & subdict!
+            dict[item] = '11:11' # BUG: need exact dict & subdict!
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
             #items.remove(item)
             print(f'updated items: {items}\n')
         else:
-            # If item is a directory, add it to our dirs list for later use;
-            dirs.append(item)
+            # Created nested list by appending an empty list to dirs
+            dirs.append([])
+            # If item is a directory, add it to our nested list for later use
+            dirs[0].append(item)
     # DEBUG
     print('# INSIDE FUNCTION TEST PRINTS\n')
-    print(f'src_dict: {src_dict}\n')
-    print(f'src_dict["A"]: {src_dict}\n')
-    print(f'src_dict["A"]["a1"]: {src_dict["a1"]}\n')
-    print(f'src_dict["A"]["a2"]: {src_dict["a2"]}\n')
+    print(f'dict: {dict}\n')
+    print(f'dict["A"]: {dict}\n')
+    print(f'dict["A"]["a1"]: {dict["a1"]}\n')
+    print(f'dict["A"]["a2"]: {dict["a2"]}\n')
 
     print('/# FIND_FILES1() BLOCK\n')
-
+    
+    i=0
     parent_dirs = {}
-    new_dirs = []
+    #new_dirs = []
     # Tentative version of function where for loop is removed
-    def find_files2(dir, dirs, new_dirs, fullpath, temp_dict):
+    def find_files2(dir, dirs, fullpath, dict, i):
         # DEBUG
         print(f'# FIND_FILES2() BLOCK\n')
         print(f'dirs: {dirs}\n')
@@ -194,7 +208,7 @@ def find_files1(src_dict, dst_dict, fullpath):
         # We need to create this list and clear it after every recursive call
         #new_dirs = []
         print(f'dirs: {dirs}\n')
-        print(f'new_dirs: {new_dirs}\n')
+        #print(f'new_dirs: {new_dirs}\n')
         print(f'dir: {dir}')
         print(f'fullpath: {fullpath}\n')
         new_fullpath = (fullpath+slashes+dir)
@@ -215,34 +229,39 @@ def find_files1(src_dict, dst_dict, fullpath):
                 # temp_dict is the current sub-dictionary that is being changed
                 #print(f'src_dict: {src_dict}\n')
                 #temp_dict = src_dict[source][dir]
+                temp_dict = dict
                 temp_dict[item] = '11:11'
                 print(f'temp_dict: {temp_dict}\n')
             # Else, if the item is a directory we add it to our new list
             else:
-                new_dirs.append(item)
-                print(f'new_dirs: {new_dirs}\n')
+                # Increment i to create our next list of subdirectories
+                i+=1
+                dirs[i].append(item)
+                print(f'dirs[i]: {dirs[i]}\n')
 
 
 
+    print('# BEGIN FIND_FILES2() INITIAL CALL\n')
 
+    # The list we get from find_files1() will be the one we start with, 
+    # i.e. dirs[0]
+    #i = 0
 
-print('# BEGIN FIND_FILES2() INITIAL CALL\n')
+    while len(dirs[i]) > 0:
+         # Call nested function for first time on every element in dirs[i]
+         for dir in dirs[i]:
+             print(f'dir: {dir}\n')
+             print(f'dirs: {dirs}\n')
+             print(f'dirs[i]: {dirs[i]}\n')
+             #fullpath = fullpath
+             # Have to figure out how i'm going to get the correct
+             # subdictionary in each iteration
+             print(f'dict: {dict}\n')
+             dict = dict[dir]
+             find_files2(dir, dirs, fullpath, dict, i)
+         i+=1
 
-# The list we get from find_files1() will be the one we start with, 
-# i.e. dirs[0]
-
-i = 0
-while len(dirs[i]) > 0:
-#     # Call nested function for first time on every element in dirs[i]
-#     for dir in dirs[i]:
-#         #fullpath = fullpath
-#         temp_dict = src_dict[dir]
-#         find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
-#     # Clear the list after we have completed iteration
-#     #dirs = []
-      i++
-
-print('/# FIND_FILES2() INITIAL CALL\n')
+    print('/# FIND_FILES2() INITIAL CALL\n')
 
 
 
@@ -305,7 +324,7 @@ find_dirs(dst_abs_path, destination, subdict2)
 print(f'dict2: {dict2}\n')
 
 # FIND FILES BLOCK
-find_files1(subdict1, dict2, src_abs_path)
+find_files1(subdict1, src_abs_path)
 print('# FIND_FILES() BLOCK\n')
 # DEBUG
 print(f'dict1: {dict1}\n')
