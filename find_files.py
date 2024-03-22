@@ -2,7 +2,12 @@
 
 # NOTES
 
+
 # 3/21/24
+
+# Still working on the while loop that i'm hoping i'll be able to use to call
+# the find_files() functions recursively and get the dynamic directory-
+# structure mapping that i am looking for!
 
 # GPT suggested using nested lists or dictionaries re. the find_files2()
 # recursive function issue; around line 425
@@ -489,7 +494,7 @@ def find_files1(src_dict, dst_dict, fullpath):
 # while len(dirs[i]) > 0:
 # print('# BEGIN FIND_FILES2() INITIAL CALL\n')
 #     # Call nested function for first time on every element in dirs
-#     for dir in dirs:
+#     for dir in dirs[i]:
 #         #fullpath = fullpath
 #         temp_dict = src_dict[dir]
 #         find_files2(dir, dirs, new_dirs, fullpath, temp_dict)
