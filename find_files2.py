@@ -1,5 +1,11 @@
 # NOTES
 
+# 3/23/24
+
+# Just added the parent_dirs code into the find_files2 while loop. Have not
+# tested it yet, hoping it will solve the issue with accessing the right
+# subdictionaries during every while-loop iteration.
+
 # 3/22/24
 
 # Working on refactoring the find_files() functions to get them to work
@@ -236,7 +242,7 @@ def find_files1(dict, fullpath):
             else:
                 # Increment i to create our next list of subdirectories
                 i+=1
-                print(f'i: {i}\n')
+                print(f'else i: {i}\n')
                 dirs[i].append(item)
                 print(f'dirs[i]: {dirs[i]}\n')
 
@@ -256,22 +262,31 @@ def find_files1(dict, fullpath):
              print(f'dir: {dir}\n')
              print(f'dirs: {dirs}\n')
              print(f'dirs[i]: {dirs[i]}\n')
-             #fullpath = fullpath
+             temp_fullpath = parent_dirs[dir]
+             split_parents = temp_fullpath.split(slashes)
+             par_dir = split_parents[-1]
+             current_dict = dict[par_dir][dir]
              # Have to figure out how i'm going to get the correct
              # subdictionary in each iteration
              #print(f'Before dict: {dict}\n')
              # The dict variable also needs to be updated after each iteration
-             current_dict = dict[dir]
+             #current_dict = dict[dir]
              #dict = current_dict
              print(f'current_dict: {current_dict}\n')
              find_files2(dir, dirs, fullpath, current_dict, i)
+             print(f'After dict: {dict}\n')
          i+=1
-         print(f'i: {i}\n')
+         print(f'while loop i: {i}\n')
          
 
     print('/# FIND_FILES2() INITIAL CALL\n')
 
-
+# Code I wrote to use parent_dirs for subdictionary modifications
+#    fullpath = parent_dirs[dir]
+#    split_parents = fullpath.split('/')
+#    par_dir = split_parents[-1]
+#    print(f'par_dir: {par_dir}\n')
+#    temp_dict = src_dict[par_dir][dir]
 
 
 
