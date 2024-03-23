@@ -236,6 +236,7 @@ def find_files1(dict, fullpath):
             else:
                 # Increment i to create our next list of subdirectories
                 i+=1
+                print(f'i: {i}\n')
                 dirs[i].append(item)
                 print(f'dirs[i]: {dirs[i]}\n')
 
@@ -246,7 +247,9 @@ def find_files1(dict, fullpath):
     # The list we get from find_files1() will be the one we start with, 
     # i.e. dirs[0]
     #i = 0
-
+    
+    # Initial dict value will work for first iteration only
+    #dict = dict[dir]
     while len(dirs[i]) > 0:
          # Call nested function for first time on every element in dirs[i]
          for dir in dirs[i]:
@@ -256,10 +259,15 @@ def find_files1(dict, fullpath):
              #fullpath = fullpath
              # Have to figure out how i'm going to get the correct
              # subdictionary in each iteration
-             print(f'dict: {dict}\n')
-             dict = dict[dir]
-             find_files2(dir, dirs, fullpath, dict, i)
+             #print(f'Before dict: {dict}\n')
+             # The dict variable also needs to be updated after each iteration
+             current_dict = dict[dir]
+             #dict = current_dict
+             print(f'current_dict: {current_dict}\n')
+             find_files2(dir, dirs, fullpath, current_dict, i)
          i+=1
+         print(f'i: {i}\n')
+         
 
     print('/# FIND_FILES2() INITIAL CALL\n')
 
