@@ -257,26 +257,52 @@ def find_files1(dict, fullpath):
     # Initial dict value will work for first iteration only
     #dict = dict[dir]
     while len(dirs[i]) > 0:
-         # Call nested function for first time on every element in dirs[i]
-         for dir in dirs[i]:
-             print(f'dir: {dir}\n')
-             print(f'dirs: {dirs}\n')
-             print(f'dirs[i]: {dirs[i]}\n')
-             temp_fullpath = parent_dirs[dir]
-             split_parents = temp_fullpath.split(slashes)
-             par_dir = split_parents[-1]
-             current_dict = dict[par_dir][dir]
-             # Have to figure out how i'm going to get the correct
-             # subdictionary in each iteration
-             #print(f'Before dict: {dict}\n')
-             # The dict variable also needs to be updated after each iteration
-             #current_dict = dict[dir]
-             #dict = current_dict
-             print(f'current_dict: {current_dict}\n')
-             find_files2(dir, dirs, fullpath, current_dict, i)
-             print(f'After dict: {dict}\n')
-         i+=1
-         print(f'while loop i: {i}\n')
+        # while loop behavior is going to be different for first iteration
+        if i == 0:
+            # Call nested function for first time on every element in dirs[i],
+            # i.e. dirs[0]
+            for dir in dirs[i]:
+                print(f'dir: {dir}\n')
+                print(f'dirs: {dirs}\n')
+                print(f'dirs[i]: {dirs[i]}\n')
+                print(f'while loop parent_dirs: {parent_dirs}\n')
+                #temp_fullpath = parent_dirs[dir]
+                #split_parents = temp_fullpath.split(slashes)
+                #par_dir = split_parents[-1]
+                #current_dict = dict[par_dir][dir]
+                # Have to figure out how i'm going to get the correct
+                # subdictionary in each iteration
+                #print(f'Before dict: {dict}\n')
+                # The dict variable also needs to be updated after each iteration
+                current_dict = dict[dir]
+                #dict = current_dict
+                #print(f'current_dict: {current_dict}\n')
+                find_files2(dir, dirs, fullpath, current_dict, i)
+                print(f'After dict: {dict}\n')
+            i+=1
+            print(f'while loop i: {i}\n')
+        else:
+            for dir in dirs[i]:
+                print(f'dir: {dir}\n')
+                print(f'dirs: {dirs}\n')
+                print(f'dirs[i]: {dirs[i]}\n')
+                print(f'while loop parent_dirs: {parent_dirs}\n')
+                temp_fullpath = parent_dirs[dir]
+                split_parents = temp_fullpath.split(slashes)
+                par_dir = split_parents[-1]
+                current_dict = dict[par_dir][dir]
+                # Have to figure out how i'm going to get the correct
+                # subdictionary in each iteration
+                #print(f'Before dict: {dict}\n')
+                # The dict variable also needs to be updated after each iteration
+                #current_dict = dict[dir]
+                #dict = current_dict
+                #print(f'current_dict: {current_dict}\n')
+                find_files2(dir, dirs, fullpath, current_dict, i)
+                print(f'else dict: {dict}\n')
+            i+=1
+            print(f'while loop i: {i}\n')
+
          
 
     print('/# FIND_FILES2() INITIAL CALL\n')
