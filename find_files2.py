@@ -1,5 +1,10 @@
 # NOTES
 
+# 3/25/24
+
+# Still trying to get all of the nested loops just right, left off around line
+# 320.
+
 # 3/24/24
 
 # The 'current_dict = dict[par_dir][dir]' variable assignment isn't working
@@ -279,7 +284,8 @@ def find_files1(dict, fullpath):
                 print(f'dirs: {dirs}\n')
                 print(f'dirs[i]: {dirs[i]}\n')
                 print(f'while loop parent_dirs: {parent_dirs}\n')
-                # The dict variable also needs to be updated after each iteration
+                # The dict variable is static here because this for loop is
+                # only for the first directories list
                 current_dict = dict[dir]
                 #dict = current_dict
                 #print(f'current_dict: {current_dict}\n')
@@ -293,17 +299,29 @@ def find_files1(dict, fullpath):
                 print(f'dirs: {dirs}\n')
                 print(f'dirs[i]: {dirs[i]}\n')
                 print(f'while loop parent_dirs: {parent_dirs}\n')
-                temp_fullpath = parent_dirs[dir]
-                split_parents = temp_fullpath.split(slashes)
-                par_dir = split_parents[-1]
+                #temp_fullpath = parent_dirs[dir]
+                #split_parents = temp_fullpath.split(slashes)
+                #par_dir = split_parents[-1]
                 print(f'else dict: {dict}\n')
-                print(f'else par_dir: {par_dir}\n')
+                #print(f'else par_dir: {par_dir}\n')
                 print(f'else dir: {dir}\n')
+                # We will need to keep track of the parent dirs for each
+                # directory moving forward
                 par_dirs = []
-                for n in range(len(dirs[i])):
-                    par_dir = split_parents[n]
+                # n will start at 0 if not for the 1
+                for n in range(1, len(dirs[i])):
+                    temp_fullpath = parent_dirs[dir]
+                    print(f'n temp_fullpath: {temp_fullpath}\n')
+                    split_parents = temp_fullpath.split(slashes)
+                    print(f'n split_parents: {split_parents}\n')
+                    par_dir = split_parents[-n]
+                    print(f'n: {n}\n')
+                    print(f'else par_dir: {par_dir}\n')
                     par_dirs.append(par_dir)
                 print(f'else par_dirs: {par_dirs}\n')
+                # Once the par_dirs list is complete, we can then loop through
+                # it to add the parent directories to dict,
+                # dict[par_dir1][par_dir2], etc.
                 print(f'current_dict: {current_dict}\n')
                 find_files2(dir, dirs, temp_fullpath, current_dict, i)
                 print(f'else dict: {dict}\n')
