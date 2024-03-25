@@ -267,7 +267,9 @@ def find_files1(dict, fullpath):
     
     # Initial dict value will work for first iteration only
     #dict = dict[dir]
-    while len(dirs[i]) > 0:
+    #while len(dirs[i]) > 0:
+    #while dirs[i] in dirs:
+    while i <= (len(dirs)-1):
         # while loop behavior is going to be different for first iteration
         if i == 0:
             # Call nested function for first time on every element in dirs[i],
@@ -297,15 +299,12 @@ def find_files1(dict, fullpath):
                 print(f'else dict: {dict}\n')
                 print(f'else par_dir: {par_dir}\n')
                 print(f'else dir: {dir}\n')
-                # This definition isn't working for every iteration
-                current_dict = dict[par_dir][dir]
-                # Have to figure out how i'm going to get the correct
-                # subdictionary in each iteration
-                #print(f'Before dict: {dict}\n')
-                # The dict variable also needs to be updated after each iteration
-                #current_dict = dict[dir]
-                #dict = current_dict
-                #print(f'current_dict: {current_dict}\n')
+                par_dirs = []
+                for n in range(len(dirs[i])):
+                    par_dir = split_parents[n]
+                    par_dirs.append(par_dir)
+                print(f'else par_dirs: {par_dirs}\n')
+                print(f'current_dict: {current_dict}\n')
                 find_files2(dir, dirs, temp_fullpath, current_dict, i)
                 print(f'else dict: {dict}\n')
             i+=1
