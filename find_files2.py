@@ -305,13 +305,16 @@ def find_files1(dict, fullpath):
                 print(f'else dict: {dict}\n')
                 #print(f'else par_dir: {par_dir}\n')
                 print(f'else dir: {dir}\n')
+                temp_fullpath = parent_dirs[dir]
+                print(f'n temp_fullpath: {temp_fullpath}\n')
                 # We will need to keep track of the parent dirs for each
                 # directory moving forward
                 par_dirs = []
-                # n will start at 0 if not for the 1
+                # This for loop will be used to create the full filepath for
+                # each dir in dirs[i], n would start at 0 if not for the 1
                 for n in range(1, len(dirs[i])):
-                    temp_fullpath = parent_dirs[dir]
-                    print(f'n temp_fullpath: {temp_fullpath}\n')
+                    #temp_fullpath = parent_dirs[dir]
+                    #print(f'n temp_fullpath: {temp_fullpath}\n')
                     split_parents = temp_fullpath.split(slashes)
                     print(f'n split_parents: {split_parents}\n')
                     par_dir = split_parents[-n]
