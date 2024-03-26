@@ -1,5 +1,9 @@
 # NOTES
 
+# 3/26/24
+
+# Still trying to get the par_dirs loop right, left off around line 330.
+
 # 3/25/24
 
 # Still trying to get all of the nested loops just right, left off around line
@@ -305,27 +309,43 @@ def find_files1(dict, fullpath):
                 print(f'else dict: {dict}\n')
                 #print(f'else par_dir: {par_dir}\n')
                 print(f'else dir: {dir}\n')
-                temp_fullpath = parent_dirs[dir]
-                print(f'n temp_fullpath: {temp_fullpath}\n')
+                #temp_fullpath = parent_dirs[dir]
+                #print(f'n temp_fullpath: {temp_fullpath}\n')
                 # We will need to keep track of the parent dirs for each
                 # directory moving forward
                 par_dirs = []
                 # This for loop will be used to create the full filepath for
-                # each dir in dirs[i], n would start at 0 if not for the 1
-                for n in range(1, len(dirs[i])):
-                    #temp_fullpath = parent_dirs[dir]
+                # each dir in dirs[i]; n would start at 0 if not for the 1,
+                # then we have use +1 or the range (1, 1) would do nothing
+                for n in range(1, (len(dirs))):
+                    temp_fullpath = parent_dirs[dir]
                     #print(f'n temp_fullpath: {temp_fullpath}\n')
                     split_parents = temp_fullpath.split(slashes)
                     print(f'n split_parents: {split_parents}\n')
                     par_dir = split_parents[-n]
                     print(f'n: {n}\n')
                     print(f'else par_dir: {par_dir}\n')
-                    par_dirs.append(par_dir)
+                    # insert allows for adding a list element at a specific
+                    # index, in this case 0
+                    par_dirs.insert(0, par_dir)
                 print(f'else par_dirs: {par_dirs}\n')
+                # We use this variable that points to dict in order to be able
+                # to access different subdictionaries without altering dict;
+                par_dict = dict
                 # Once the par_dirs list is complete, we can then loop through
-                # it to add the parent directories to dict,
-                # dict[par_dir1][par_dir2], etc.
-                print(f'current_dict: {current_dict}\n')
+                # it to add the parent directories to dict as keys, in order;
+                for par in par_dirs:
+                    print(f'par_dict: {par_dict}\n')
+                    current_dict = par_dict[par]
+                    # Update value of par_dict in order to be able to continue
+                    # iterating through subdictionaries in sequence
+                    par_dict = current_dict
+                    # We can't assign a different value to the dict variable
+                    #dict = current_dict
+                    print(f'par loop current_dict: {current_dict}\n')
+                print(f'After par loop dict: {dict}\n')
+                print(f'After par loop current_dict: {current_dict}\n')
+                temp_fullpath = parent_dirs[dir]
                 find_files2(dir, dirs, temp_fullpath, current_dict, i)
                 print(f'else dict: {dict}\n')
             i+=1
