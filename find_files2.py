@@ -234,8 +234,8 @@ def find_files1(dict, fullpath):
         print(f'fullpath: {fullpath}\n')
         # Will have to find a way to get this to update for each while-loop
         # iteration as well
-        new_fullpath = (fullpath+slashes+dir)
-        print(f'new_fullpath: {new_fullpath}\n')
+        #new_fullpath = (fullpath+slashes+dir)
+        #print(f'new_fullpath: {new_fullpath}\n')
         items = os.listdir(new_fullpath)
         print(f'items: {items}\n')
         #fullpaths.append(new_fullpath)
@@ -316,7 +316,7 @@ def find_files1(dict, fullpath):
                 par_dirs = []
                 # This for loop will be used to create the full filepath for
                 # each dir in dirs[i]; n would start at 0 if not for the 1,
-                # then we have use +1 or the range (1, 1) would do nothing
+                # then we have to use +1 or the range (1, 1) would do nothing
                 for n in range(1, (len(dirs))):
                     temp_fullpath = parent_dirs[dir]
                     #print(f'n temp_fullpath: {temp_fullpath}\n')
@@ -326,7 +326,8 @@ def find_files1(dict, fullpath):
                     print(f'n: {n}\n')
                     print(f'else par_dir: {par_dir}\n')
                     # insert allows for adding a list element at a specific
-                    # index, in this case 0
+                    # index, in this case 0; we need to add the parent
+                    # directories in the correct order
                     par_dirs.insert(0, par_dir)
                 print(f'else par_dirs: {par_dirs}\n')
                 # We use this variable that points to dict in order to be able
@@ -345,7 +346,10 @@ def find_files1(dict, fullpath):
                     print(f'par loop current_dict: {current_dict}\n')
                 print(f'After par loop dict: {dict}\n')
                 print(f'After par loop current_dict: {current_dict}\n')
-                temp_fullpath = parent_dirs[dir]
+                # I believe this line may be the problem, as it is not dynamic
+                temp_fullpath = (parent_dirs[dir]+slashes+dir)
+                print(f'Before FF2 dir: {dir}\n')
+                print(f'Before FF2 temp_fullpath: {temp_fullpath}\n')
                 find_files2(dir, dirs, temp_fullpath, current_dict, i)
                 print(f'else dict: {dict}\n')
             i+=1
