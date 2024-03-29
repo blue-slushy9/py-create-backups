@@ -1,5 +1,12 @@
 # NOTES
 
+# 3/29/24
+
+# Think I got the program to work up to where I left off last time, now I can
+# move forward. Current problem is that new_fullpath around line 239 isn't 
+# filling out correctly, specifically at the point where a1a is the current
+# directory being iterated through.
+
 # 3/26/24
 
 # Still trying to get the par_dirs loop right, left off around line 330.
@@ -291,7 +298,7 @@ def find_files1(dict, fullpath):
                 # The dict variable is static here because this for loop is
                 # only for the first directories list
                 current_dict = dict[dir]
-                dict = current_dict # Uncommented on 3/29/24
+                #dict = current_dict # Uncommented on 3/29/24
                 print(f'current_dict: {current_dict}\n')
                 find_files2(dir, dirs, fullpath, current_dict, i)
                 print(f'After dict: {dict}\n')
