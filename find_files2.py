@@ -192,7 +192,7 @@ def find_files1(dict, fullpath):
         new_fullpath = os.path.abspath(fullpath+slashes+item)
         #new_fullpath = fullpath+slashes+item
         # DEBUG
-        print(f'new_fullpath: {new_fullpath}')
+        print(f'new_fullpath: {new_fullpath}\n')
         # If full filepath points to a directory...
         # os.path.isdir() expects a path as argument, not a string;
         if not os.path.isdir(new_fullpath):
@@ -228,15 +228,15 @@ def find_files1(dict, fullpath):
         #print(f'new_dirs: {new_dirs}\n')
         # We need to create this list and clear it after every recursive call
         #new_dirs = []
-        print(f'dirs: {dirs}\n')
+        #print(f'dirs: {dirs}\n')
         #print(f'new_dirs: {new_dirs}\n')
         print(f'dir: {dir}')
         print(f'fullpath: {fullpath}\n')
         # Will have to find a way to get this to update for each while-loop
         # iteration as well
-        #new_fullpath = (fullpath+slashes+dir)
-        #print(f'new_fullpath: {new_fullpath}\n')
-        items = os.listdir(new_fullpath)
+        new_fullpath = (fullpath+slashes+dir)    # Uncommented 3/29/24: fixed
+        print(f'new_fullpath: {new_fullpath}\n') # issue with subdicts in dirs
+        items = os.listdir(new_fullpath)         
         print(f'items: {items}\n')
         #fullpaths.append(new_fullpath)
         for item in items:
@@ -291,12 +291,14 @@ def find_files1(dict, fullpath):
                 # The dict variable is static here because this for loop is
                 # only for the first directories list
                 current_dict = dict[dir]
-                #dict = current_dict
-                #print(f'current_dict: {current_dict}\n')
+                dict = current_dict # Uncommented on 3/29/24
+                print(f'current_dict: {current_dict}\n')
                 find_files2(dir, dirs, fullpath, current_dict, i)
                 print(f'After dict: {dict}\n')
             i+=1
             print(f'while loop i: {i}\n')
+        
+        # Else for all subsequent iterations of the while loop...
         else:
             for dir in dirs[i]:
                 print(f'dir: {dir}\n')
@@ -311,6 +313,7 @@ def find_files1(dict, fullpath):
                 print(f'else dir: {dir}\n')
                 #temp_fullpath = parent_dirs[dir]
                 #print(f'n temp_fullpath: {temp_fullpath}\n')
+                
                 # We will need to keep track of the parent dirs for each
                 # directory moving forward
                 par_dirs = []
@@ -330,6 +333,7 @@ def find_files1(dict, fullpath):
                     # directories in the correct order
                     par_dirs.insert(0, par_dir)
                 print(f'else par_dirs: {par_dirs}\n')
+                
                 # We use this variable that points to dict in order to be able
                 # to access different subdictionaries without altering dict;
                 par_dict = dict
@@ -346,6 +350,7 @@ def find_files1(dict, fullpath):
                     print(f'par loop current_dict: {current_dict}\n')
                 print(f'After par loop dict: {dict}\n')
                 print(f'After par loop current_dict: {current_dict}\n')
+                
                 # I believe this line may be the problem, as it is not dynamic
                 temp_fullpath = (parent_dirs[dir]+slashes+dir)
                 print(f'Before FF2 dir: {dir}\n')
@@ -355,17 +360,8 @@ def find_files1(dict, fullpath):
             i+=1
             print(f'while loop i: {i}\n')
 
-         
 
     print('/# FIND_FILES2() INITIAL CALL\n')
-
-# Code I wrote to use parent_dirs for subdictionary modifications
-#    fullpath = parent_dirs[dir]
-#    split_parents = fullpath.split('/')
-#    par_dir = split_parents[-1]
-#    print(f'par_dir: {par_dir}\n')
-#    temp_dict = src_dict[par_dir][dir]
-
 
 
 # FUNCTION CALLS
