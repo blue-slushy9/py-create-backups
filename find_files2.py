@@ -1,5 +1,11 @@
 # NOTES
 
+# 3/30/24
+
+# Got my dictionaries to print out all the way through, however many of the
+# files are still in the wrong sub-dictionaries. Added some crucial code
+# around line 250 or so, added comments next to it for easy identification.
+
 # 3/29/24
 
 # Think I got the program to work up to where I left off last time, now I can
@@ -241,12 +247,15 @@ def find_files1(dict, fullpath):
         print(f'fullpath: {fullpath}\n')
         # Will have to find a way to get this to update for each while-loop
         # iteration as well
-        new_fullpath = (fullpath+slashes+dir)    # Uncommented 3/29/24: fixed
-        print(f'new_fullpath: {new_fullpath}\n') # issue with subdicts in dirs
-        items = os.listdir(new_fullpath)         
-        print(f'items: {items}\n')
-        #fullpaths.append(new_fullpath)
-        for item in items:
+        if i == 0: # 3/30/24: added this if-else statement to try to correct the below: 
+            new_fullpath = (fullpath+slashes+dir)    # Uncommented 3/29/24: fixed
+        else: 
+            new_fullpath = fullpath
+        print(f'new_fullpath: {new_fullpath}\n')     # issue with subdicts in dirs;
+        items = os.listdir(new_fullpath)             # 3/30/24: this also seems to be
+        print(f'items: {items}\n')                   # where the bug is that preventing
+        #fullpaths.append(new_fullpath)              # a1a from being iterated through,
+        for item in items:                           # i.e. its path ends in a1a/a1a;
             print(f'item: {item}\n')
             #new_fullpath = new_fullpath
             print(f'new_fullpath: {new_fullpath}\n')
@@ -306,7 +315,7 @@ def find_files1(dict, fullpath):
             print(f'while loop i: {i}\n')
         
         # Else for all subsequent iterations of the while loop...
-        else:
+        elif i > 0:
             for dir in dirs[i]:
                 print(f'dir: {dir}\n')
                 print(f'dirs: {dirs}\n')
