@@ -1,5 +1,13 @@
 # NOTES
 
+# 3/31/24
+
+# Trying to find the exact line(s) where the program is going wrong now. The
+# is issue is still that my files are ending up in the wrong subdictionaries.
+# Will probably need to add more print statements to see what is happening
+# line by line, and/or to add more descriptive text to the existing print
+# statements. I left off around line 255 or so.
+
 # 3/30/24
 
 # Got my dictionaries to print out all the way through, however many of the
@@ -237,40 +245,40 @@ def find_files1(dict, fullpath):
     def find_files2(dir, dirs, fullpath, dict, i):
         # DEBUG
         print(f'# FIND_FILES2() BLOCK\n')
-        print(f'dirs: {dirs}\n')
+        print(f'dirs1: {dirs}\n')
         #print(f'new_dirs: {new_dirs}\n')
         # We need to create this list and clear it after every recursive call
         #new_dirs = []
         #print(f'dirs: {dirs}\n')
         #print(f'new_dirs: {new_dirs}\n')
-        print(f'dir: {dir}')
-        print(f'fullpath: {fullpath}\n')
+        print(f'dir1: {dir}')
+        print(f'fullpath1: {fullpath}\n')
         # Will have to find a way to get this to update for each while-loop
         # iteration as well
         if i == 0: # 3/30/24: added this if-else statement to try to correct the below: 
             new_fullpath = (fullpath+slashes+dir)    # Uncommented 3/29/24: fixed
-        else: 
+        elif i > 0: 
             new_fullpath = fullpath
-        print(f'new_fullpath: {new_fullpath}\n')     # issue with subdicts in dirs;
+        print(f'new_fullpath1: {new_fullpath}\n')     # issue with subdicts in dirs;
         items = os.listdir(new_fullpath)             # 3/30/24: this also seems to be
-        print(f'items: {items}\n')                   # where the bug is that preventing
+        print(f'items1: {items}\n')                   # where the bug is that preventing
         #fullpaths.append(new_fullpath)              # a1a from being iterated through,
         for item in items:                           # i.e. its path ends in a1a/a1a;
             print(f'item: {item}\n')
             #new_fullpath = new_fullpath
-            print(f'new_fullpath: {new_fullpath}\n')
+            print(f'new_fullpath2: {new_fullpath}\n')
             temp_fullpath = (new_fullpath+slashes+item)
-            print(f'temp_fullpath: {temp_fullpath}\n')
+            print(f'temp_fullpath1: {temp_fullpath}\n')
             parent_dirs[item] = new_fullpath
-            print(f'parent_dirs: {parent_dirs}\n')
+            print(f'parent_dirs1: {parent_dirs}\n')
             # If the item is not a directory...
             if not os.path.isdir(temp_fullpath):
                 # temp_dict is the current sub-dictionary that is being changed
                 #print(f'src_dict: {src_dict}\n')
                 #temp_dict = src_dict[source][dir]
                 temp_dict = dict
-                temp_dict[item] = '11:11'
-                print(f'temp_dict: {temp_dict}\n')
+                temp_dict[item] = '11:11' # Is this where the subdicts problem lies? 
+                print(f'temp_dict1: {temp_dict}\n')
             # Else, if the item is a directory we add it to our new list
             else:
                 # Increment i to create our next list of subdirectories
