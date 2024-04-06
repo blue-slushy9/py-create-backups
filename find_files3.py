@@ -1,52 +1,15 @@
 # NOTES
 
-# 3/31/24
+# 4/6/24
 
-# Trying to find the exact line(s) where the program is going wrong now. The
-# is issue is still that my files are ending up in the wrong subdictionaries.
-# Will probably need to add more print statements to see what is happening
-# line by line, and/or to add more descriptive text to the existing print
-# statements. I left off around line 255 or so.
+# Started making my code more modular by defining chunks of find_files2() and
+# ff2_while_loop() as their own functions and putting them above the respective
+# code blocks. The newly created functions that haven't already been mentioned
+# are get_pars_list() and create_par_dicts(). Left off around line 345.
 
-# 3/30/24
-
-# Got my dictionaries to print out all the way through, however many of the
-# files are still in the wrong sub-dictionaries. Added some crucial code
-# around line 250 or so, added comments next to it for easy identification.
-
-# 3/29/24
-
-# Think I got the program to work up to where I left off last time, now I can
-# move forward. Current problem is that new_fullpath around line 239 isn't 
-# filling out correctly, specifically at the point where a1a is the current
-# directory being iterated through.
-
-# 3/26/24
-
-# Still trying to get the par_dirs loop right, left off around line 330.
-
-# 3/25/24
-
-# Still trying to get all of the nested loops just right, left off around line
-# 320.
-
-# 3/24/24
-
-# The 'current_dict = dict[par_dir][dir]' variable assignment isn't working
-# for every loop iteration. Wrote a few print statements just above it to help
-# me troubleshoot. Left off around line 281.
-
-# 3/23/24
-
-# Just added the parent_dirs code into the find_files2 while loop. Have not
-# tested it yet, hoping it will solve the issue with accessing the right
-# subdictionaries during every while-loop iteration.
-
-# 3/22/24
-
-# Working on refactoring the find_files() functions to get them to work
-# recursively, next step is to get the correct (sub)dictionaries for each
-# while-loop iteration. left off around line 250.
+# Created a copy of find_files2.py to try to make my code more modular! It was
+# getting too difficult to debug find_files2.py, but I am going to preserve
+# the file in case anything goes wrong with this one.
 
 
 
@@ -292,99 +255,112 @@ def find_files1(dict, fullpath):
 
 
 
-    print('# BEGIN FIND_FILES2() INITIAL CALL\n')
+    #print('# BEGIN FIND_FILES2() INITIAL CALL\n')
 
-    # The list we get from find_files1() will be the one we start with, 
-    # i.e. dirs[0]
-    #i = 0
+    # These two nested functions will be called in ff2_while_loop()
     
+    # This function will create the list of parent directories
+    def get_pars_list():
+        # We will need to keep track of the parent dirs for each
+        # directory moving forward
+        par_dirs = []
+        # This for loop will be used to create the full filepath for
+        # each dir in dirs[i]; n would start at 0 if not for the 1,
+        # then we have to use +1 or the range (1, 1) would do nothing
+        for n in range(1, (len(dirs))):
+            temp_fullpath = parent_dirs[dir]
+            #print(f'n temp_fullpath: {temp_fullpath}\n')
+            split_parents = temp_fullpath.split(slashes)
+            print(f'n split_parents: {split_parents}\n')
+            par_dir = split_parents[-n]
+            print(f'n: {n}\n')
+            print(f'else par_dir: {par_dir}\n')
+            # insert allows for adding a list element at a specific
+            # index, in this case 0; we need to add the parent
+            # directories in the correct order
+            par_dirs.insert(0, par_dir)
+        print(f'else par_dirs: {par_dirs}\n')
+   
+    # This function then uses the parents list to create parent dictionary keys
+    def create_par_dicts():
+        # We use this variable that points to dict in order to be able
+        # to access different subdictionaries without altering dict;
+        par_dict = dict
+        # Once the par_dirs list is complete, we can then loop through
+        # it to add the parent directories to dict as keys, in order;
+        for par in par_dirs:
+            print(f'par_dict: {par_dict}\n')
+            current_dict = par_dict[par] # 4/6: This could be issue
+            # Update value of par_dict in order to be able to continue
+            # iterating through subdictionaries in sequence
+            par_dict = current_dict
+            # We can't assign a different value to the dict variable
+            #dict = current_dict
+            print(f'par loop current_dict: {current_dict}\n')
+        print(f'After par loop dict: {dict}\n')
+        print(f'After par loop current_dict: {current_dict}\n')
+
     # Initial dict value will work for first iteration of find_files2() only
-    #dict = dict[dir]
-    #while len(dirs[i]) > 0:
-    #while dirs[i] in dirs:
-    while i <= (len(dirs)-1):
-        # while loop behavior is going to be different for first iteration
-        if i == 0:
-            # Call nested function for first time on every element in dirs[i],
-            # i.e. dirs[0]
-            for dir in dirs[i]:
-                print(f'dir: {dir}\n')
-                print(f'dirs: {dirs}\n')
-                print(f'dirs[i]: {dirs[i]}\n')
-                print(f'while loop parent_dirs: {parent_dirs}\n')
-                # The dict variable is static here because this for loop is
-                # only for the first directories list
-                current_dict = dict[dir]
-                #dict = current_dict # Uncommented on 3/29/24
-                print(f'current_dict: {current_dict}\n')
-                find_files2(dir, dirs, fullpath, current_dict, i)
-                print(f'After dict: {dict}\n')
-            i+=1
-            print(f'while loop i: {i}\n')
-        
-        # Else for all subsequent iterations of the while loop...
-        elif i > 0:
-            for dir in dirs[i]:
-                print(f'dir: {dir}\n')
-                print(f'dirs: {dirs}\n')
-                print(f'dirs[i]: {dirs[i]}\n')
-                print(f'while loop parent_dirs: {parent_dirs}\n')
-                #temp_fullpath = parent_dirs[dir]
-                #split_parents = temp_fullpath.split(slashes)
-                #par_dir = split_parents[-1]
-                print(f'else dict: {dict}\n')
-                #print(f'else par_dir: {par_dir}\n')
-                print(f'else dir: {dir}\n')
-                #temp_fullpath = parent_dirs[dir]
-                #print(f'n temp_fullpath: {temp_fullpath}\n')
-                
-                # We will need to keep track of the parent dirs for each
-                # directory moving forward
-                par_dirs = []
-                # This for loop will be used to create the full filepath for
-                # each dir in dirs[i]; n would start at 0 if not for the 1,
-                # then we have to use +1 or the range (1, 1) would do nothing
-                for n in range(1, (len(dirs))):
-                    temp_fullpath = parent_dirs[dir]
+    def ff2_while_loop(i):
+        print('# BEGIN FF2 WHILE LOOP\n')
+        while i <= (len(dirs)-1):
+            # while loop behavior is going to be different for first iteration
+            if i == 0:
+                # Call nested function for first time on every element in dirs[i],
+                # i.e. dirs[0]
+                for dir in dirs[i]:
+                    print(f'dir: {dir}\n')
+                    print(f'dirs: {dirs}\n')
+                    print(f'dirs[i]: {dirs[i]}\n')
+                    print(f'while loop parent_dirs: {parent_dirs}\n')
+                    # The dict variable is static here because this for loop is
+                    # only for the first directories list
+                    current_dict = dict[dir]
+                    #dict = current_dict # Uncommented on 3/29/24
+                    print(f'current_dict: {current_dict}\n')
+                    find_files2(dir, dirs, fullpath, current_dict, i)
+                    print(f'After dict: {dict}\n')
+                i+=1
+                print(f'while loop i: {i}\n')
+            
+            # Else for all subsequent iterations of the while loop...
+            elif i > 0:
+                for dir in dirs[i]:
+                    print(f'dir: {dir}\n')
+                    print(f'dirs: {dirs}\n')
+                    print(f'dirs[i]: {dirs[i]}\n')
+                    print(f'while loop parent_dirs: {parent_dirs}\n')
+                    #temp_fullpath = parent_dirs[dir]
+                    #split_parents = temp_fullpath.split(slashes)
+                    #par_dir = split_parents[-1]
+                    print(f'else dict: {dict}\n')
+                    #print(f'else par_dir: {par_dir}\n')
+                    print(f'else dir: {dir}\n')
+                    #temp_fullpath = parent_dirs[dir]
                     #print(f'n temp_fullpath: {temp_fullpath}\n')
-                    split_parents = temp_fullpath.split(slashes)
-                    print(f'n split_parents: {split_parents}\n')
-                    par_dir = split_parents[-n]
-                    print(f'n: {n}\n')
-                    print(f'else par_dir: {par_dir}\n')
-                    # insert allows for adding a list element at a specific
-                    # index, in this case 0; we need to add the parent
-                    # directories in the correct order
-                    par_dirs.insert(0, par_dir)
-                print(f'else par_dirs: {par_dirs}\n')
-                
-                # We use this variable that points to dict in order to be able
-                # to access different subdictionaries without altering dict;
-                par_dict = dict
-                # Once the par_dirs list is complete, we can then loop through
-                # it to add the parent directories to dict as keys, in order;
-                for par in par_dirs:
-                    print(f'par_dict: {par_dict}\n')
-                    current_dict = par_dict[par]
-                    # Update value of par_dict in order to be able to continue
-                    # iterating through subdictionaries in sequence
-                    par_dict = current_dict
-                    # We can't assign a different value to the dict variable
-                    #dict = current_dict
-                    print(f'par loop current_dict: {current_dict}\n')
-                print(f'After par loop dict: {dict}\n')
-                print(f'After par loop current_dict: {current_dict}\n')
-                
-                # I believe this line may be the problem, as it is not dynamic
-                temp_fullpath = (parent_dirs[dir]+slashes+dir)
-                print(f'Before FF2 dir: {dir}\n')
-                print(f'Before FF2 temp_fullpath: {temp_fullpath}\n')
-                find_files2(dir, dirs, temp_fullpath, current_dict, i)
-                print(f'else dict: {dict}\n')
-            i+=1
-            print(f'while loop i: {i}\n')
-
-
+                    
+                    # This function will create the list of parent directories
+                    print('# BEGIN GET_PARS_LIST()\n')
+                    get_pars_list()
+                    print('/# GET_PARS_LIST()\n')
+                                            
+                    # This function then uses the parents list to create parent
+                    # dictionary keys
+                    print('# BEGIN CREATE_PAR_DICTS()\n') 
+                    create_par_dicts()
+                    print('/# CREATE_PAR_DICTS()\n') 
+                                            
+                    # I believe this line may be the problem, as it is not dynamic
+                    temp_fullpath = (parent_dirs[dir]+slashes+dir)
+                    print(f'Before FF2 dir: {dir}\n')
+                    print(f'Before FF2 temp_fullpath: {temp_fullpath}\n')
+                    find_files2(dir, dirs, temp_fullpath, current_dict, i)
+                    print(f'else dict: {dict}\n')
+                i+=1
+                print(f'while loop i: {i}\n')
+    
+    i=0
+    ff2_while_loop(i)
     print('/# FIND_FILES2() INITIAL CALL\n')
 
 
