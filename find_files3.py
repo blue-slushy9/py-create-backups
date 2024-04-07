@@ -1,5 +1,16 @@
 # NOTES
 
+# 4/7/24
+
+# The value of current_dict seems get stuck at dict1["A"]["a2"] for some
+# reason. The subdictionary seems to update properly before that point, but
+# not after that point.
+
+# The problem seems to lie with temp_dict around line 245, there also seems to
+# be a problem with else_dict around line 343/365. There seems to be an issue
+# with the dict variable not being managed correctly, I may need to clear it at
+# certain junctures and I'm not sure my code is currently doing that.
+
 # 4/6/24
 
 # Started making my code more modular by defining chunks of find_files2() and
@@ -204,9 +215,9 @@ def find_files1(dict, fullpath):
     i=0
     parent_dirs = {}
     #new_dirs = []
-    # Tentative version of function where for loop is removed
-    def find_files2(dir, dirs, fullpath, dict, i):
-        # DEBUG
+    # Tentative version of FF2 where for loop is removed
+    def find_files2(dir, dirs, fullpath, dict, i): # 4/7/24: could the problem be the
+        # DEBUG                                    # the dict this is being passed?
         print(f'# FIND_FILES2() BLOCK\n')
         print(f'dirs1: {dirs}\n')
         #print(f'new_dirs: {new_dirs}\n')
@@ -260,7 +271,7 @@ def find_files1(dict, fullpath):
     # These two nested functions will be called in ff2_while_loop()
     
     # This function will create the list of parent directories
-    def get_pars_list():
+    def get_pars_list(dir):
         # We will need to keep track of the parent dirs for each
         # directory moving forward
         par_dirs = []
@@ -280,15 +291,17 @@ def find_files1(dict, fullpath):
             # directories in the correct order
             par_dirs.insert(0, par_dir)
         print(f'else par_dirs: {par_dirs}\n')
+        return par_dirs
    
     # This function then uses the parents list to create parent dictionary keys
-    def create_par_dicts():
+    def create_par_dicts(par_dirs):
         # We use this variable that points to dict in order to be able
         # to access different subdictionaries without altering dict;
         par_dict = dict
         # Once the par_dirs list is complete, we can then loop through
         # it to add the parent directories to dict as keys, in order;
         for par in par_dirs:
+            print(f'par: {par}\n')
             print(f'par_dict: {par_dict}\n')
             current_dict = par_dict[par] # 4/6: This could be issue
             # Update value of par_dict in order to be able to continue
@@ -315,7 +328,7 @@ def find_files1(dict, fullpath):
                     print(f'while loop parent_dirs: {parent_dirs}\n')
                     # The dict variable is static here because this for loop is
                     # only for the first directories list
-                    current_dict = dict[dir]
+                    current_dict = dict[dir] # 4/7/24: is current_dict the correct dict?
                     #dict = current_dict # Uncommented on 3/29/24
                     print(f'current_dict: {current_dict}\n')
                     find_files2(dir, dirs, fullpath, current_dict, i)
@@ -341,21 +354,23 @@ def find_files1(dict, fullpath):
                     
                     # This function will create the list of parent directories
                     print('# BEGIN GET_PARS_LIST()\n')
-                    get_pars_list()
+                    par_dirs = get_pars_list(dir)
                     print('/# GET_PARS_LIST()\n')
                                             
                     # This function then uses the parents list to create parent
                     # dictionary keys
                     print('# BEGIN CREATE_PAR_DICTS()\n') 
-                    create_par_dicts()
+                    create_par_dicts(par_dirs)
                     print('/# CREATE_PAR_DICTS()\n') 
                                             
                     # I believe this line may be the problem, as it is not dynamic
                     temp_fullpath = (parent_dirs[dir]+slashes+dir)
                     print(f'Before FF2 dir: {dir}\n')
                     print(f'Before FF2 temp_fullpath: {temp_fullpath}\n')
-                    find_files2(dir, dirs, temp_fullpath, current_dict, i)
-                    print(f'else dict: {dict}\n')
+                    print(f'before FF2 current_dict: {current_dict}\n')
+                    find_files2(dir, dirs, temp_fullpath, current_dict, i) # 4/7/24: is
+                    print(f'else dict: {dict}\n')                          # current_dict                                                                           # the correct
+                                                                           # argument?
                 i+=1
                 print(f'while loop i: {i}\n')
     
@@ -430,5 +445,5 @@ print(f'dict1["A"]: {dict1["A"]}\n')
 print(f'dict1["A"]["a1"]: {dict1["A"]["a1"]}\n')
 print(f'dict1["A"]["a1"]["a1a"]: {dict1["A"]["a1"]["a1a"]}\n')
 print(f'dict1["A"]["a2"]: {dict1["A"]["a2"]}\n')
-print(f'dict1["A"]["a1"]["a1a"]["a2a"]: {dict1["A"]["a1"]["a1a"]["a2a"]}\n')
+print(f'dict1["A"]["a1"]["a1a"]["a1b"]: {dict1["A"]["a1"]["a1a"]["a1b"]}\n')
 print('/# FIND_FILES() BLOCK\n')
