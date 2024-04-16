@@ -7,7 +7,7 @@
 # and debugging it. 
 
 # Might be a good idea to look at the dict variable that is being passed to
-# find_files2(), which seems to be current_dict.
+# find_files2(), which seems to be current_dict
 
 # The dict that is being passed to temp_dict in the below note is this:
 # {'a2.txt': '11:11', 'a1a.txt': '11:11'}
@@ -352,6 +352,7 @@ def find_files1(dict, fullpath):
                 i+=1
                 print(f'while loop i: {i}\n')
                 
+                # This function will run for all iterations after first
                 def ff2_while_loop2(i):
                     for dir in dirs[i]:
                         print(f'dir: {dir}\n')
