@@ -1,5 +1,16 @@
 # NOTES
 
+# 4/15/24
+
+# Looking at the output of find_files2(), it doesn't seem to attempt to
+# include A in its par_dirs list for some reason. Not sure why FF3 does try
+# to include, I don't believe I made any changes that would cause this...
+
+# For some reason, the create_pars_list() and create_par_dicts() functions
+# aren't working with each other the way they were before they were two
+# separate functions. There may be a problem with variables not being passed
+# correctly between them; will keep analyzing find_files2() for clues.
+
 # 4/13/24
 
 # Tried separating ff2_while_loop() into two separate functions: ...loop1()
@@ -293,8 +304,8 @@ def find_files1(dict, fullpath):
         par_dirs = []
         # This for loop will be used to create the full filepath for
         # each dir in dirs[i]; n would start at 0 if not for the 1,
-        # then we have to use +1 or the range (1, 1) would do nothing
-        for n in range(1, (len(dirs))):
+        # (then we have to use +1 or the range (1, 1) would do nothing)
+        for n in range(1, (len(dirs))): # 4/15/24: added -1 to omit 'A' & 'B'
             temp_fullpath = parent_dirs[dir]
             #print(f'n temp_fullpath: {temp_fullpath}\n')
             split_parents = temp_fullpath.split(slashes)
@@ -309,16 +320,17 @@ def find_files1(dict, fullpath):
         print(f'else par_dirs: {par_dirs}\n')
         return par_dirs
    
-    # This function then uses the parents list to create parent dictionary keys
+    # This function uses the parents list to create parent dictionary keys
     def create_par_dicts(par_dirs):
         # We use this variable that points to dict in order to be able
         # to access different subdictionaries without altering dict;
         par_dict = dict
+        print(f'par_dict1: {par_dict}\n')
         # Once the par_dirs list is complete, we can then loop through
         # it to add the parent directories to dict as keys, in order;
         for par in par_dirs:
             print(f'par: {par}\n')
-            print(f'par_dict: {par_dict}\n')
+            print(f'par_dict2: {par_dict}\n')
             current_dict = par_dict[par] # 4/6: This could be issue
             # Update value of par_dict in order to be able to continue
             # iterating through subdictionaries in sequence
@@ -373,18 +385,19 @@ def find_files1(dict, fullpath):
                         par_dirs = get_pars_list(dir)
                         print('/# GET_PARS_LIST()\n')
                                                 
-                        # This function then uses the parents list to create parent
+                        # This function uses the parents list to create parent
                         # dictionary keys
                         print('# BEGIN CREATE_PAR_DICTS()\n') 
                         create_par_dicts(par_dirs)
                         print('/# CREATE_PAR_DICTS()\n') 
                                                 
-                        # I believe this line may be the problem, as it is not dynamic
+                        # This line may be the problem, as it is not dynamic
                         temp_fullpath = (parent_dirs[dir]+slashes+dir)
                         print(f'Before FF2 dir: {dir}\n')
                         print(f'Before FF2 temp_fullpath: {temp_fullpath}\n')
                         print(f'before FF2 current_dict: {current_dict}\n')
-                        find_files2(dir, dirs, temp_fullpath, current_dict, i) # 4/7/24: is current_dict the right argument?
+                        # 4/7/24: is current_dict the right argument?
+                        find_files2(dir, dirs, temp_fullpath, current_dict, i)
                         print(f'else final dict: {dict}\n')
                     i+=1
                     print(f'while loop i: {i}\n')
