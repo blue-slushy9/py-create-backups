@@ -115,7 +115,10 @@ class DictOps:
 
 # Child class for finding directories and adding them to dictionary
 class FindDirs(DictOps):
-    super().__init__()
+    def __init__(self, dict, fullpath, name):
+        # super() method allows you to inherit attributes from parent class
+        super().__init__(dict, fullpath, name)
+
 
 	# This function will be called on every file in the source and destination to
 	# build the respective dictionaries;
