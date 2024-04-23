@@ -97,17 +97,25 @@ destination = my_destination.input()
 # DEBUG
 print(f'destination: {destination}\n')
 
-# Parent class for creating and filling out dictionary
-class DictionaryOperations:
-    # A class-level variable is associated with the class itself, rather than
-    # a specific instance; we will need the dict variable across all instances
-    dict = {}
 
-    def __init__(self, fullpath, name):
+
+# Parent class for creating and filling out dictionary
+class DictOps:
+    # A class-level variable is associated with the class itself, rather than
+    # a specific instance; we will need the dict variable across all classes
+    #dict = {} # this isn't a class-level variable actually, as we are
+               # constructing two different dictionaries
+                
+    def __init__(self, dict, fullpath, name):
         # Instance variables defined and initialized based on arguments passed
         # during object creation
+        self.dict = dict
         self.fullpath = fullpath
         self.name = name
+
+# Child class for finding directories and adding them to dictionary
+class FindDirs(DictOps):
+    super().__init__()
 
 	# This function will be called on every file in the source and destination to
 	# build the respective dictionaries;
@@ -149,107 +157,117 @@ class DictionaryOperations:
         print('# /FIND_DIRS() BLOCK\n')
         return dict
 
-# We need to define a separate function for the first outer key because it is
-# the only one for which the respective dictionary keys will not match;
-def find_files1(dict, fullpath):
-    #for dir in src_dict:
-    items = os.listdir(fullpath)
-    # We will use a second list to keep track of the items
-    # that are directories;
-    dirs = []
-    #dirs[0] = []
-    # DEBUG
-    print(f'items: {items}')
-    for item in items:
+# Child class for finding files and adding them to dictionary
+class FindFiles(DictOps):
+    # We need to define a separate function for the first outer key because it is
+    # the only one for which the respective dictionary keys will not match;
+    def find_files1(dict, fullpath):
+        #for dir in src_dict:
+        items = os.listdir(fullpath)
+        # We will use a second list to keep track of the items
+        # that are directories;
+        dirs = []
+        #dirs[0] = []
         # DEBUG
-        print('\n# FIND_FILES1() BLOCK')
-        print(f'item: {item}')
-        # Reset the fullpath variable after every iteration;
-        print(f'Before fullpath: {fullpath}')
-        fullpath = fullpath
-        print(f'After fullpath: {fullpath}')
-        #print(item)
-        # Update the fullpath variable to include the item name;
-        new_fullpath = os.path.abspath(fullpath+slashes+item)
-        #new_fullpath = fullpath+slashes+item
-        # DEBUG
-        print(f'new_fullpath: {new_fullpath}\n')
-        # If full filepath points to a directory...
-        # os.path.isdir() expects a path as argument, not a string;
-        if not os.path.isdir(new_fullpath):
-            print(f'file: {item}\n')
-            # 11:11 is just a generic timestamp for debugging purposes;
-            dict[item] = '11:11' # BUG: need exact dict & subdict!
-            # Once the item/file is added to the dictionary, we need to remove
-            # it from the items list;
-            #items.remove(item)
-            print(f'updated items: {items}\n')
-        else:
-            # Created nested list by appending an empty list to dirs
-            dirs.append([])
-            # If item is a directory, add it to our nested list for later use
-            dirs[0].append(item)
-    # DEBUG
-    print('# INSIDE FUNCTION TEST PRINTS\n')
-    print(f'dict: {dict}\n')
-    print(f'dict["A"]: {dict}\n')
-    print(f'dict["A"]["a1"]: {dict["a1"]}\n')
-    print(f'dict["A"]["a2"]: {dict["a2"]}\n')
-
-    print('/# FIND_FILES1() BLOCK\n')
-    
-    i=0
-    parent_dirs = {}
-    #new_dirs = []
-    # Tentative version of FF2 where for loop is removed
-    def find_files2(dir, dirs, fullpath, dict, i): # 4/7/24: could the problem be the
-        # DEBUG                                    # the dict that is being passed?
-        print(f'# FIND_FILES2() BLOCK\n')
-        print(f'dirs1: {dirs}\n')
-        #print(f'new_dirs: {new_dirs}\n')
-        # We need to create this list and clear it after every recursive call
-        #new_dirs = []
-        #print(f'dirs: {dirs}\n')
-        #print(f'new_dirs: {new_dirs}\n')
-        print(f'dir1: {dir}')
-        print(f'fullpath1: {fullpath}\n')
-        # Will have to find a way to get this to update for each while-loop
-        # iteration as well
-        if i == 0: # 3/30/24: added this if-else statement to try to correct the below: 
-            new_fullpath = (fullpath+slashes+dir)    # Uncommented 3/29/24: fixed
-        elif i > 0: 
-            new_fullpath = fullpath
-        print(f'new_fullpath1: {new_fullpath}\n')     # issue with subdicts in dirs;
-        items = os.listdir(new_fullpath)             # 3/30/24: this also seems to be
-        print(f'items1: {items}\n')                   # where the bug is that preventing
-        #fullpaths.append(new_fullpath)              # a1a from being iterated through,
-        for item in items:                           # i.e. its path ends in a1a/a1a;
-            print(f'item: {item}\n')
-            #new_fullpath = new_fullpath
-            print(f'new_fullpath2: {new_fullpath}\n')
-            temp_fullpath = (new_fullpath+slashes+item)
-            print(f'temp_fullpath1: {temp_fullpath}\n')
-            parent_dirs[item] = new_fullpath
-            print(f'parent_dirs1: {parent_dirs}\n')
-            # If the item is not a directory...
-            if not os.path.isdir(temp_fullpath):
-                # temp_dict is the current sub-dictionary that is being changed
-                #print(f'src_dict: {src_dict}\n')
-                #temp_dict = src_dict[source][dir]
-                print(f'pre-temp_dict dict: {dict}\n')
-                temp_dict = dict
-                temp_dict[item] = '11:11' # Is this where the subdicts problem lies? 
-                print(f'temp_dict1: {temp_dict}\n')
-            # Else, if the item is a directory we add it to our new list
+        print(f'items: {items}')
+        for item in items:
+            # DEBUG
+            print('\n# FIND_FILES1() BLOCK')
+            print(f'item: {item}')
+            # Reset the fullpath variable after every iteration;
+            print(f'Before fullpath: {fullpath}')
+            fullpath = fullpath
+            print(f'After fullpath: {fullpath}')
+            #print(item)
+            # Update the fullpath variable to include the item name;
+            new_fullpath = os.path.abspath(fullpath+slashes+item)
+            #new_fullpath = fullpath+slashes+item
+            # DEBUG
+            print(f'new_fullpath: {new_fullpath}\n')
+            # If full filepath points to a directory...
+            # os.path.isdir() expects a path as argument, not a string;
+            if not os.path.isdir(new_fullpath):
+                print(f'file: {item}\n')
+                # 11:11 is just a generic timestamp for debugging purposes;
+                dict[item] = '11:11' # BUG: need exact dict & subdict!
+                # Once the item/file is added to the dictionary, we need to remove
+                # it from the items list;
+                #items.remove(item)
+                print(f'updated items: {items}\n')
             else:
-                # Increment i to create our next list of subdirectories
-                i+=1
-                print(f'else i: {i}\n')
-                if i == (len(dirs)):
-                    dirs.append([])
-                    print(f'else dirs: {dirs}\n')
-                dirs[i].append(item)
-                print(f'dirs[i]: {dirs[i]}\n')
+                # Created nested list by appending an empty list to dirs
+                dirs.append([])
+                # If item is a directory, add it to our nested list for later use
+                dirs[0].append(item)
+        # DEBUG
+        print('# INSIDE FUNCTION TEST PRINTS\n')
+        print(f'dict: {dict}\n')
+        print(f'dict["A"]: {dict}\n')
+        print(f'dict["A"]["a1"]: {dict["a1"]}\n')
+        print(f'dict["A"]["a2"]: {dict["a2"]}\n')
+
+        print('/# FIND_FILES1() BLOCK\n')
+
+# Creating an instance for dict1
+class dict1(DictOps):
+
+# Creating an instance for dict2
+class dict2(DictOps):
+
+
+        
+        i=0
+        parent_dirs = {}
+        #new_dirs = []
+        # Tentative version of FF2 where for loop is removed
+        def find_files2(dir, dirs, fullpath, dict, i): # 4/7/24: could the problem be the
+            # DEBUG                                    # the dict that is being passed?
+            print(f'# FIND_FILES2() BLOCK\n')
+            print(f'dirs1: {dirs}\n')
+            #print(f'new_dirs: {new_dirs}\n')
+            # We need to create this list and clear it after every recursive call
+            #new_dirs = []
+            #print(f'dirs: {dirs}\n')
+            #print(f'new_dirs: {new_dirs}\n')
+            print(f'dir1: {dir}')
+            print(f'fullpath1: {fullpath}\n')
+            # Will have to find a way to get this to update for each while-loop
+            # iteration as well
+            if i == 0: # 3/30/24: added this if-else statement to try to correct the below: 
+                new_fullpath = (fullpath+slashes+dir)    # Uncommented 3/29/24: fixed
+            elif i > 0: 
+                new_fullpath = fullpath
+            print(f'new_fullpath1: {new_fullpath}\n')     # issue with subdicts in dirs;
+            items = os.listdir(new_fullpath)             # 3/30/24: this also seems to be
+            print(f'items1: {items}\n')                   # where the bug is that preventing
+            #fullpaths.append(new_fullpath)              # a1a from being iterated through,
+            for item in items:                           # i.e. its path ends in a1a/a1a;
+                print(f'item: {item}\n')
+                #new_fullpath = new_fullpath
+                print(f'new_fullpath2: {new_fullpath}\n')
+                temp_fullpath = (new_fullpath+slashes+item)
+                print(f'temp_fullpath1: {temp_fullpath}\n')
+                parent_dirs[item] = new_fullpath
+                print(f'parent_dirs1: {parent_dirs}\n')
+                # If the item is not a directory...
+                if not os.path.isdir(temp_fullpath):
+                    # temp_dict is the current sub-dictionary that is being changed
+                    #print(f'src_dict: {src_dict}\n')
+                    #temp_dict = src_dict[source][dir]
+                    print(f'pre-temp_dict dict: {dict}\n')
+                    temp_dict = dict
+                    temp_dict[item] = '11:11' # Is this where the subdicts problem lies? 
+                    print(f'temp_dict1: {temp_dict}\n')
+                # Else, if the item is a directory we add it to our new list
+                else:
+                    # Increment i to create our next list of subdirectories
+                    i+=1
+                    print(f'else i: {i}\n')
+                    if i == (len(dirs)):
+                        dirs.append([])
+                        print(f'else dirs: {dirs}\n')
+                    dirs[i].append(item)
+                    print(f'dirs[i]: {dirs[i]}\n')
 
 
 
