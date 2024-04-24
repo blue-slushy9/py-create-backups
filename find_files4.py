@@ -1,5 +1,11 @@
 # NOTES
 
+# 4/23/24
+
+# Created an additional scratch file, class2.py, to help me figure out how I
+# want to define my classes. I am leaning toward composition, you can ask
+# ChatGPT about it.
+
 # 4/20/24
 
 # Still working on building the classes I am going to use for the 'find'
