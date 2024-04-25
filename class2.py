@@ -3,10 +3,20 @@
 
 # "Composite" or "containing" class, similar to parent class in inheritance
 class DictOps:
-    def __init__(self):
+    def __init__(self, source, fullpath, name, dict):
         self.find_dirs = FindDirs()
         self.find_files = FindFiles()
-        
+
+# Accessory class for find_dirs() function
+class FindDirs:
+    
+
+# Create an instance of DictOps for source dictionary
+dict1_ops = DictOps(source, fullpath, name, dict1)
+
+
+# Create an instance of DictOps for destination dictionary
+dict2_ops = DictOps(destination, fullpath, name, dict2)
 
 
 '''
