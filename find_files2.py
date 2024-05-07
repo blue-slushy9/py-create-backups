@@ -3,7 +3,7 @@
 # 3/31/24
 
 # Trying to find the exact line(s) where the program is going wrong now. The
-# is issue is still that my files are ending up in the wrong subdictionaries.
+# issue is still that my files are ending up in the wrong subdictionaries.
 # Will probably need to add more print statements to see what is happening
 # line by line, and/or to add more descriptive text to the existing print
 # statements. I left off around line 255 or so.
@@ -447,12 +447,13 @@ print(f'dict2: {dict2}\n')
 # FIND FILES BLOCK
 find_files1(subdict1, src_abs_path)
 print('# FIND_FILES() BLOCK\n')
+
 # DEBUG
 print(f'dict1: {dict1}\n')
 print(f'dict2: {dict2}\n')
 print(f'dict1["A"]: {dict1["A"]}\n')
 print(f'dict1["A"]["a1"]: {dict1["A"]["a1"]}\n')
 print(f'dict1["A"]["a1"]["a1a"]: {dict1["A"]["a1"]["a1a"]}\n')
+print(f'dict1["A"]["a1"]["a1a"]["a1b"]: {dict1["A"]["a1"]["a1a"]["a1b"]}\n')
 print(f'dict1["A"]["a2"]: {dict1["A"]["a2"]}\n')
-print(f'dict1["A"]["a1"]["a1a"]["a2a"]: {dict1["A"]["a1"]["a1a"]["a2a"]}\n')
 print('/# FIND_FILES() BLOCK\n')

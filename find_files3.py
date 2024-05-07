@@ -1,5 +1,11 @@
 # NOTES
 
+# 5/6/24
+
+# Started exploring different tools to help with debugging! Started by
+# installing the Python extension for Code-OSS. Also copied some notes notes
+# from GPT for general Python debugging as well as debugging tools for Vim.
+
 # 4/15/24
 
 # Looking at the output of find_files2(), it doesn't seem to attempt to
