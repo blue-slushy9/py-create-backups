@@ -269,7 +269,7 @@ def find_files1(dict, fullpath):
         items = os.listdir(new_fullpath)             # 3/30/24: this also seems to be
         print(f'items1: {items}\n')                   # where the bug is that preventing
         #fullpaths.append(new_fullpath)              # a1a from being iterated through,
-        for item in items:                           # i.e. its path ends in a1a/a1a;
+        for item in items:                           # i.e. its path ends in a1a/a1a
             print(f'item: {item}\n')
             #new_fullpath = new_fullpath
             print(f'new_fullpath2: {new_fullpath}\n')
@@ -291,9 +291,13 @@ def find_files1(dict, fullpath):
                 # Increment i to create our next list of subdirectories
                 i+=1
                 print(f'else i: {i}\n')
+                # i starts at 0, len(dirs) does not; therefore to make them
+                # equal we append a new empty list in the next line 
                 if i == (len(dirs)):
                     dirs.append([])
                     print(f'else dirs: {dirs}\n')
+                # If i is less than len(dirs), then we are in the current list
+                # and we can append the current item
                 dirs[i].append(item)
                 print(f'dirs[i]: {dirs[i]}\n')
 
