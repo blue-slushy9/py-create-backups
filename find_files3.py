@@ -201,7 +201,7 @@ def find_files1(dict, fullpath):
     #for dir in src_dict:
     items = os.listdir(fullpath)
     # We will use a second list to keep track of the items
-    # that are directories;
+    # that are directories
     dirs = []
     #dirs[0] = []
     # DEBUG
@@ -210,30 +210,35 @@ def find_files1(dict, fullpath):
         # DEBUG
         print('\n# FIND_FILES1() BLOCK')
         print(f'item: {item}')
-        # Reset the fullpath variable after every iteration;
+        # Reset the fullpath variable after every iteration
         print(f'Before fullpath: {fullpath}')
         fullpath = fullpath
         print(f'After fullpath: {fullpath}')
         #print(item)
-        # Update the fullpath variable to include the item name;
+        # Update the fullpath variable to include the item name
         new_fullpath = os.path.abspath(fullpath+slashes+item)
         #new_fullpath = fullpath+slashes+item
         # DEBUG
         print(f'new_fullpath: {new_fullpath}\n')
         # If full filepath points to a directory...
-        # os.path.isdir() expects a path as argument, not a string;
+        # os.path.isdir() expects a path as argument, not a string
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
             # 11:11 is just a generic timestamp for debugging purposes;
-            dict[item] = '11:11' # BUG: need exact dict & subdict!
+            dict[item] = '11:11' # BUG: need exact dict & subdict?
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
             #items.remove(item)
             print(f'updated items: {items}\n')
+        # Else, if item is a directory...
         else:
+            # The below line may not be correct, we don't really want to add
+            # a nested sub-list for every sub-directory in the outermost
+            # directory; 
             # Created nested list by appending an empty list to dirs
             dirs.append([])
-            # If item is a directory, add it to our nested list for later use
+            # If item is a directory, add it to our first nested sub-list for
+            # later use
             dirs[0].append(item)
     # DEBUG
     print('# INSIDE FUNCTION TEST PRINTS\n')
