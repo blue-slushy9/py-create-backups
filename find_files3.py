@@ -1,5 +1,11 @@
 # NOTES
 
+# 5/9/24
+
+# Was going through the program in the debugger, everything looks fine up to
+# where I left off, which was up to the ff2_while_loop2(). Will have to
+# continue debugging, but now I know where the set the breakpoints.
+
 # 5/6/24
 
 # Started exploring different tools to help with debugging! Started by
@@ -301,7 +307,7 @@ def find_files1(dict, fullpath):
                 if i == (len(dirs)):
                     dirs.append([])
                     print(f'else dirs: {dirs}\n')
-                # If i is less than len(dirs), then we are in the current list
+                # If i is less than len(dirs), we are in the correct sub-list
                 # and we can append the current item
                 dirs[i].append(item)
                 print(f'dirs[i]: {dirs[i]}\n')
@@ -320,7 +326,7 @@ def find_files1(dict, fullpath):
         # This for loop will be used to create the full filepath for
         # each dir in dirs[i]; n would start at 0 if not for the 1,
         # (then we have to use +1 or the range (1, 1) would do nothing)
-        for n in range(1, (len(dirs))): # 4/15/24: added -1 to omit 'A' & 'B'
+        for n in range(1, (len(dirs))): # 5/9/24 this omits 'A' & 'B'
             temp_fullpath = parent_dirs[dir]
             #print(f'n temp_fullpath: {temp_fullpath}\n')
             split_parents = temp_fullpath.split(slashes)
@@ -338,7 +344,7 @@ def find_files1(dict, fullpath):
     # This function uses the parents list to create parent dictionary keys
     def create_par_dicts(par_dirs):
         # We use this variable that points to dict in order to be able
-        # to access different subdictionaries without altering dict;
+        # to access different subdictionaries without altering dict
         par_dict = dict
         print(f'par_dict1: {par_dict}\n')
         # Once the par_dirs list is complete, we can then loop through
