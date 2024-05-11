@@ -1,5 +1,17 @@
 # NOTES
 
+# 5/10/24
+
+# Looks like I may also need to pass a specific subdict as an argument to the
+# create_par_dicts() function, and maybe the create_pars() function as well.
+# I'm not sure though, as structurally the correct subdicts are being created,
+# rather the issue is that the files are ending up in the wrong subdicts.
+
+# The first item to be added to the wrong subdict is a1a.txt, which ends up
+# under the a2 subdict instead of a1a. The problem seems to be with the dict
+# variable, which isn't being properly managed between iterations of
+# ff2_while_loop2.
+
 # 5/9/24
 
 # Was going through the program in the debugger, everything looks fine up to
@@ -255,6 +267,7 @@ def find_files1(dict, fullpath):
 
     print('/# FIND_FILES1() BLOCK\n')
     
+    # Initial values, only valid for first iteration
     i=0
     parent_dirs = {}
     #new_dirs = []
@@ -325,12 +338,13 @@ def find_files1(dict, fullpath):
         par_dirs = []
         # This for loop will be used to create the full filepath for
         # each dir in dirs[i]; n would start at 0 if not for the 1,
-        # (then we have to use +1 or the range (1, 1) would do nothing)
-        for n in range(1, (len(dirs))): # 5/9/24 this omits 'A' & 'B'
+        # (then we have to use +1 or the range (1, 1) would do nothing);
+        for n in range(1, (len(dirs))): # 5/10/24 - this code returns the correct par_dirs
             temp_fullpath = parent_dirs[dir]
             #print(f'n temp_fullpath: {temp_fullpath}\n')
             split_parents = temp_fullpath.split(slashes)
             print(f'n split_parents: {split_parents}\n')
+            # n starts at 1 because -1 is the last element in a list
             par_dir = split_parents[-n]
             print(f'n: {n}\n')
             print(f'else par_dir: {par_dir}\n')
@@ -343,16 +357,19 @@ def find_files1(dict, fullpath):
    
     # This function uses the parents list to create parent dictionary keys
     def create_par_dicts(par_dirs):
+        # Assign first element in par_dirs to variable
+        par_zero = par_dirs[0]
         # We use this variable that points to dict in order to be able
         # to access different subdictionaries without altering dict
-        par_dict = dict
+        par_dict = dict[par_zero]
         print(f'par_dict1: {par_dict}\n')
         # Once the par_dirs list is complete, we can then loop through
-        # it to add the parent directories to dict as keys, in order;
+        # it to add the parent directories to dict as keys, in order
         for par in par_dirs:
             print(f'par: {par}\n')
             print(f'par_dict2: {par_dict}\n')
-            current_dict = par_dict[par] # 4/6: This could be issue
+            # 5/10/24 - still need to make sure current_dict is correct
+            current_dict = par_dict[par]
             # Update value of par_dict in order to be able to continue
             # iterating through subdictionaries in sequence
             par_dict = current_dict
@@ -410,12 +427,14 @@ def find_files1(dict, fullpath):
                         # dictionary keys
                         print('# BEGIN CREATE_PAR_DICTS()\n') 
                         create_par_dicts(par_dirs)
-                        print('/# CREATE_PAR_DICTS()\n') 
+                        print('/# CREATE_PAR_DICTS()\n')
                                                 
                         # This line may be the problem, as it is not dynamic
                         temp_fullpath = (parent_dirs[dir]+slashes+dir)
                         print(f'Before FF2 dir: {dir}\n')
                         print(f'Before FF2 temp_fullpath: {temp_fullpath}\n')
+                        # Update current_dict to point to correct subdict
+                        #current_dict = 
                         print(f'before FF2 current_dict: {current_dict}\n')
                         # 4/7/24: is current_dict the right argument?
                         find_files2(dir, dirs, temp_fullpath, current_dict, i)
