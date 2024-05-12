@@ -1,3 +1,9 @@
+# 5/12/24
+
+Problem is line 373 in find_files3.py, which is part of the create_par_dicts()
+function. The subdict being assigned to the variable, current_dict, and then
+returned to the function call is incorrect.
+
 # 5/11/24
 
 Breakpoints in find_files3.py currently set at lines 452, 447, 380, and 372. 

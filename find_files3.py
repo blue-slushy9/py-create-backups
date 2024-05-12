@@ -355,8 +355,9 @@ def find_files1(dict, fullpath):
         print(f'else par_dirs: {par_dirs}\n')
         return par_dirs
    
-    # This function uses the parents list to create parent dictionary keys
-    def create_par_dicts(par_dirs):
+    # This function uses the parents list to create parent dictionary keys for
+    # our parallel dictionary
+    def create_par_dicts(dir, par_dirs):
         # Assign first element in par_dirs to variable
         par_zero = par_dirs[0]
         # We use this variable that points to dict in order to be able
@@ -369,13 +370,15 @@ def find_files1(dict, fullpath):
             print(f'par: {par}\n')
             print(f'par_dict2: {par_dict}\n')
             # 5/10/24 - still need to make sure current_dict is correct
-            current_dict = par_dict[par]
+            current_dict = par_dict[dir] # 5/12/24 - added '[dir]' to render correct subdict
+            #current_dict = par_dict[par] # 5/12/24 - changed to correct subdict
             # Update value of par_dict in order to be able to continue
             # iterating through subdictionaries in sequence
-            par_dict = current_dict
+            #par_dict = current_dict # 5/11/24 - this line seems unnecessary
             # We can't assign a different value to the dict variable
             #dict = current_dict
             print(f'par loop current_dict: {current_dict}\n')
+        return current_dict # 5/11/24 - need to return output to function call
         print(f'After par loop dict: {dict}\n')
         print(f'After par loop current_dict: {current_dict}\n')
 
@@ -426,8 +429,8 @@ def find_files1(dict, fullpath):
                         # This function uses the parents list to create parent
                         # dictionary keys
                         print('# BEGIN CREATE_PAR_DICTS()\n') 
-                        create_par_dicts(par_dirs)
-                        print('/# CREATE_PAR_DICTS()\n')
+                        current_dict = create_par_dicts(dir, par_dirs) # 5/11/24 - need to capture output
+                        print('/# CREATE_PAR_DICTS()\n')          # to pass to find_files2() below
                                                 
                         # This line may be the problem, as it is not dynamic
                         temp_fullpath = (parent_dirs[dir]+slashes+dir)
