@@ -1,5 +1,25 @@
 # 5/12/24
 
+Made changes to create_par_dicts(), have not tested yet.
+
+-----
+
+May have fixed the i bug. Now I am working around line 362, in the 
+create_par_dicts() function, to try to render the correct parent directories
+in my current_dict structures. It gets trickier the further down the directory
+tree you go.
+
+-----
+
+I seem to have fixed the bug (for now) that was rendering the wrong subdict
+for my functions with work with, now I have a new bug: i. 
+
+The value for i isn't consistent across the different functions, I think I
+will have to insert the proper return statements and variable assignments for
+i.
+
+-----
+
 Problem is line 373 in find_files3.py, which is part of the create_par_dicts()
 function. The subdict being assigned to the variable, current_dict, and then
 returned to the function call is incorrect.

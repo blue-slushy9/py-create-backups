@@ -358,6 +358,22 @@ def find_files1(dict, fullpath):
     # This function uses the parents list to create parent dictionary keys for
     # our parallel dictionary
     def create_par_dicts(dir, par_dirs):
+        # First we assign our base dictionary to the variable in order to make
+        # changes to it
+        current_dict = dict
+        # Now that the par_dirs list is complete, we can loop through it
+        for par in par_dirs:
+            # We add parent directories as keys, one by one, in correct order
+            current_dict = current_dict[par]
+        # Finally, we add our current directory as the final key so that we
+        # can move forward with updating its subdict in the following steps
+        current_dict = current_dict[dir]
+        # DEBUG
+        print(f'create_par_dicts() current_dict: {current_dict}\n')
+        return current_dict # 5/11/24 - need to return output to function call
+        
+        # Old version of create_par_dicts()
+        '''
         # Assign first element in par_dirs to variable
         par_zero = par_dirs[0]
         # We use this variable that points to dict in order to be able
@@ -365,7 +381,7 @@ def find_files1(dict, fullpath):
         par_dict = dict[par_zero]
         print(f'par_dict1: {par_dict}\n')
         # Once the par_dirs list is complete, we can then loop through
-        # it to add the parent directories to dict as keys, in order
+        # it to add the parent directories to current_dict as keys, in order
         for par in par_dirs:
             print(f'par: {par}\n')
             print(f'par_dict2: {par_dict}\n')
@@ -377,10 +393,7 @@ def find_files1(dict, fullpath):
             #par_dict = current_dict # 5/11/24 - this line seems unnecessary
             # We can't assign a different value to the dict variable
             #dict = current_dict
-            print(f'par loop current_dict: {current_dict}\n')
-        return current_dict # 5/11/24 - need to return output to function call
-        print(f'After par loop dict: {dict}\n')
-        print(f'After par loop current_dict: {current_dict}\n')
+        '''
 
     # Initial dict value will work for first iteration of find_files2() only
     def ff2_while_loop1(i):
@@ -444,10 +457,11 @@ def find_files1(dict, fullpath):
                         print(f'else final dict: {dict}\n')
                     i+=1
                     print(f'while loop i: {i}\n')
+                    return i # 5/12/24 - added to try to fix the i bug
             
             # Else for all subsequent iterations of the while loop...
             elif i > 0:
-                ff2_while_loop2(i)
+                i = ff2_while_loop2(i) # 5/12/24 - added 'i =' to try to fix i bug
     
     # This kicks off the find_files2() while loop
     i=0
