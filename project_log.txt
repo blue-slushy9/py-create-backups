@@ -1,3 +1,14 @@
+# 5/13/24
+
+Created some new subdirectories to do more extensive testing, unfortunately it
+broke the program. The problem seems to be that a new empty sublist is getting
+created inside of dirs, which throws off the n value in the get_pars_list()
+function. The empty sublist is being created before it ever needs to be, it
+should only happen just before we are going to start adding next-layer sub-
+directories to it.
+
+I'm not sure yet, but the above bug seems to begin at find_files2().
+
 # 5/12/24
 
 Made changes to create_par_dicts(), have not tested yet.
