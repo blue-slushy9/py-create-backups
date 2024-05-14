@@ -214,13 +214,16 @@ def find_dirs(fullpath, name, dict):
     return dict
 
 # We need to define a separate function for the first outer key because it is
-# the only one for which the respective dictionary keys will not match;
+# the only one for which the respective dictionary keys will not match
 def find_files1(dict, fullpath):
     #for dir in src_dict:
     items = os.listdir(fullpath)
     # We will use a second list to keep track of the items
     # that are directories
     dirs = []
+    # 5/14/24 - we need to append an empty sub-list to 'dirs' in order for
+    # subsequent code to work correctly
+    dirs.append([])
     #dirs[0] = []
     # DEBUG
     print(f'items: {items}')
@@ -238,7 +241,7 @@ def find_files1(dict, fullpath):
         #new_fullpath = fullpath+slashes+item
         # DEBUG
         print(f'new_fullpath: {new_fullpath}\n')
-        # If full filepath points to a directory...
+        # If full filepath does not point to a directory...
         # os.path.isdir() expects a path as argument, not a string
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
@@ -254,10 +257,12 @@ def find_files1(dict, fullpath):
             # a nested sub-list for every sub-directory in the outermost
             # directory; 
             # Created nested list by appending an empty list to dirs
-            dirs.append([])
+            #dirs.append([]) # 5/14/24 - commented out to try to fix sub-lists issue
             # If item is a directory, add it to our first nested sub-list for
             # later use
             dirs[0].append(item)
+            #dirs[0].append(item) # 5/14/24 - dirs[0] caused an IndexError
+
     # DEBUG
     print('# INSIDE FUNCTION TEST PRINTS\n')
     print(f'dict: {dict}\n')

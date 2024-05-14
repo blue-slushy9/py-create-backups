@@ -1,3 +1,14 @@
+# 5/14/24
+
+The outermost level in the directory structure is being created as NOT its own
+sublist in 'dirs'. Need to make sure it is being created as its own sublist,
+which corresponds to dirs[0].
+
+For some reason, the dir variable isn't being assigned a value.
+
+Upon setting a new breakpoint earlier in the program file, I found that the
+empty sub-lists are perhaps being created in find_files1().
+
 # 5/13/24
 
 Created some new subdirectories to do more extensive testing, unfortunately it
