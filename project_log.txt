@@ -1,5 +1,11 @@
 # 5/14/24
 
+Wrote a new function to get the correct limit for the loop in get_pars_list(),
+haven't tested yet.
+
+Found a logic bug in get_pars_list(), instead of the len(dirs) it should be
+the index of the sub-list to which the dir in question belongs.
+
 The outermost level in the directory structure is being created as NOT its own
 sublist in 'dirs'. Need to make sure it is being created as its own sublist,
 which corresponds to dirs[0].

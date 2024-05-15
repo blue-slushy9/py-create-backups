@@ -335,18 +335,27 @@ def find_files1(dict, fullpath):
     #print('# BEGIN FIND_FILES2() INITIAL CALL\n')
 
     # These two nested functions will be called in ff2_while_loop()
-    
+
+    # Now the exclusive stop point will be the sublist that contains the dir
+    def find_limit(dir):    
+        for j in range(len(dirs)):
+            if dir in dirs[j]:
+                limit = j
+            else:
+                pass
+            return limit
+
     # This function will create the list of parent directories
     def get_pars_list(dir):
         # We will need to keep track of the parent dirs for each
         # directory moving forward
         par_dirs = []
-        # Assign length of dirs list to variable
-        dirs_len = len(dirs)
+        # Call the above function to get value for limit
+        limit = find_limit(dir)
         # This for loop will be used to create the full filepath for
         # each dir in dirs[i]; n would start at 0 if not for the 1,
         # (then we have to use +1 or the range (1, 1) would do nothing);
-        for n in range(1, dirs_len): # 5/10/24 - this code returns the correct par_dirs
+        for n in range(1, limit): # 5/14/24 - len(dirs) is NOT correct metric, you need the index of the sub-list of the dir
             temp_fullpath = parent_dirs[dir]
             #print(f'n temp_fullpath: {temp_fullpath}\n')
             split_parents = temp_fullpath.split(slashes)
@@ -424,7 +433,8 @@ def find_files1(dict, fullpath):
                     print(f'After dict: {dict}\n')
                 i+=1
                 print(f'while loop i: {i}\n')
-                
+            
+            
                 # This function will run for all iterations after first
                 def ff2_while_loop2(i):
                     for dir in dirs[i]:
