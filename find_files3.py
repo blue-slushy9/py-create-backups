@@ -286,7 +286,7 @@ def find_files1(dict, fullpath):
         #new_dirs = []
         #print(f'dirs: {dirs}\n')
         #print(f'new_dirs: {new_dirs}\n')
-        print(f'dir1: {dir}')
+        print(f'dir1: {dir}\n')
         print(f'fullpath1: {fullpath}\n')
         # Will have to find a way to get this to update for each while-loop
         # iteration as well
@@ -340,10 +340,13 @@ def find_files1(dict, fullpath):
     def find_limit(dir):    
         for j in range(len(dirs)):
             if dir in dirs[j]:
-                limit = j
+                # We need to add 1 because range is exclusive
+                limit = (j + 1)
+                # DEBUG
+                print(limit)
+                return limit
             else:
                 pass
-            return limit
 
     # This function will create the list of parent directories
     def get_pars_list(dir):
@@ -488,7 +491,7 @@ def find_files1(dict, fullpath):
 
 # FUNCTION CALLS
 
-# DICTIONARY1 BLOCK
+# DICT1 FIND_DIRS() BLOCK
 src_local_path = ('.'+slashes+source)
 src_abs_path = os.path.abspath(src_local_path)
 # Define the path as a string, which will be converted to a list below;
@@ -516,7 +519,7 @@ find_dirs(src_abs_path, source, subdict1)
 # DEBUG
 print(f'dict1: {dict1}\n')
 
-# DICTIONARY2 BLOCK
+# DICT2 FIND_DIRS() BLOCK
 dst_path = ('.'+slashes+destination)
 dst_abs_path = os.path.abspath(dst_path)
 # Define the path as a string, which will be converted to a list below;
@@ -542,15 +545,22 @@ find_dirs(dst_abs_path, destination, subdict2)
 #dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}\n')
 
-# FIND FILES BLOCK
+# DICT1 FIND_FILES() BLOCK
 find_files1(subdict1, src_abs_path)
-print('# FIND_FILES() BLOCK\n')
+print('# FIND_FILES() DICT1 BLOCK\n')
 # DEBUG
 print(f'dict1: {dict1}\n')
-print(f'dict2: {dict2}\n')
 print(f'dict1["A"]: {dict1["A"]}\n')
 print(f'dict1["A"]["a1"]: {dict1["A"]["a1"]}\n')
 print(f'dict1["A"]["a1"]["a1a"]: {dict1["A"]["a1"]["a1a"]}\n')
 print(f'dict1["A"]["a2"]: {dict1["A"]["a2"]}\n')
 print(f'dict1["A"]["a1"]["a1a"]["a1b"]: {dict1["A"]["a1"]["a1a"]["a1b"]}\n')
-print('/# FIND_FILES() BLOCK\n')
+print('/# FIND_FILES() DICT1 BLOCK\n')
+''' # Just getting irrelevant bugs because the print statements in this file are for dict1
+# DICT2 FIND_FILES() BLOCK
+find_files1(subdict2, dst_abs_path)
+print('# FIND_FILES() DICT2 BLOCK\n')
+# DEBUG
+print(f'dict2: {dict2}\n')
+print('/# FIND_FILES() DICT2 BLOCK\n')
+'''

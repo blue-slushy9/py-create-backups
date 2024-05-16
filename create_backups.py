@@ -1,9 +1,9 @@
-# NOTES - newest to oldest;
+# NOTES - newest to oldest
 
 # 2/15/24
 # Maybe I can just add the filepaths beginning at the source and destination
 # directories to the dictionaries? The full filepaths clutter it up and are
-# unnecessary, though they are needed for running the OS methods;
+# unnecessary, though they are needed for running the OS methods.
 
 # Since copytree uses other methods which I do not control, perhaps I will
 # have to use it only for copying entire directories (including root node)
