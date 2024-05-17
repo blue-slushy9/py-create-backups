@@ -89,9 +89,9 @@ def loop_thru_dir(fullpath, name, dict):
     return dict
 
 # Define function that will copy and/or overwrite the files as needed;
-# Arguments: source, destination, source directory, destination directory;
+# Arguments: source, destination, source directory, destination directory
 def overwrite(dict1, dict2, path1, path2):
-    # key is the full filepath;
+    # key is the full filepath
     for key in dict1:
         print(f'key: {key}')
         split_key = key.split(path1)
@@ -191,7 +191,7 @@ def double_to_single(dict):
         #key = key.replace(r'\\', r'\')
         #print(f'post-key: {key}')
     return dict
-'''
+
 
 # GEMINI CODE;
 # shutil is a collection of high-level utilities for performing common file 

@@ -1,3 +1,18 @@
+# 5/16/24
+
+The parent_dirs structure is going to be key to getting the overwrite and copy
+functions to work, have to figure out how to extract that structure from its
+local function(s) where it resides.
+
+For the parent_dirs structures, we might need to create separate structures
+for directories and for files, that would help with the process of identifying
+the files that need to be copied or overwritten.
+
+Started the prospective final program file. With respect to the overwrite()
+function, I think I will have to use the parent_dirs dictionaries for the
+overwrite process itself, as those dictionaries are the ones that store the
+full filepaths for the files.
+
 # 5/15/24
 
 Have to start going through create_backups.py and figuring out which parts I
