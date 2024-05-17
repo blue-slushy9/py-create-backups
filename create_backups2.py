@@ -205,7 +205,8 @@ def find_files1(dict, fullpath):
     
     # Initial values, only valid for first iteration
     i=0
-    parent_dirs = {}
+    global parent_dirs # 5/17/24 - declared global variable
+    parent_dirs = {} 
     #new_dirs = []
     # Tentative version of FF2 where for loop is removed
     def find_files2(dir, dirs, fullpath, dict, i): # 4/7/24: could the problem be the
@@ -235,6 +236,7 @@ def find_files1(dict, fullpath):
             print(f'new_fullpath2: {new_fullpath}\n')
             temp_fullpath = (new_fullpath+slashes+item)
             print(f'temp_fullpath1: {temp_fullpath}\n')
+            global parent_dirs # 5/17/24 - declared global variable
             parent_dirs[item] = new_fullpath
             print(f'parent_dirs1: {parent_dirs}\n')
             # If the item is not a directory...
@@ -486,7 +488,7 @@ print(f'dict1["A"]["a1"]: {dict1["A"]["a1"]}\n')
 print(f'dict1["A"]["a1"]["a1a"]: {dict1["A"]["a1"]["a1a"]}\n')
 print(f'dict1["A"]["a2"]: {dict1["A"]["a2"]}\n')
 print(f'dict1["A"]["a1"]["a1a"]["a1b"]: {dict1["A"]["a1"]["a1a"]["a1b"]}\n')
-print(parent_dirs) # 5/16/24 - will be needing this structure, not sure how to extract it from its local function though
+print(f'{parent_dirs}\n') # 5/16/24 - will be needing this structure, not sure how to extract it from its local function though
 print('/# FIND_FILES() DICT1 BLOCK\n')
 ''' # Just getting irrelevant bugs because the print statements in this file are for dict1
 # DICT2 FIND_FILES() BLOCK
