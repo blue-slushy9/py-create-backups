@@ -434,20 +434,22 @@ src_abs_path = os.path.abspath(src_local_path)
 # DEBUG - prints out entire filepath;
 print(f'src_path_obj1: {src_abs_path}')
 # Create your first dictionary, which corresponds to the source, and which
-# will store the full filepaths as keys and their timestamps as values;
+# will store the full filepaths as keys and their timestamps as values
 #dictionary1 = {}
-# Define dictionary1, the source;
-#dict1 = dictionary1
+# Define dict1, the dictionary that corresponds to the source
 dict1 = {}
-# Create subdictionary for the source directory;
+# Create subdictionary for the source directory, e.g. A
 dict1[source] = {}
-# For clarity, create a second variable that points to dict1[source];
+# For clarity, create a second variable that points to dict1[source]
 subdict1 = dict1[source]
+# Create the parent directories dictionary, which will store the full
+# filepaths corresponding to each file and subdirectory in the source
+src_parent_dirs = {}
 #dict1[source] = None
 # DEBUG
 #print(f'dict1: {dict1}')
 # Arguments: full path of source directory, name of source directory,
-# dictionary to be built;
+# dictionary to be built
 find_dirs(src_abs_path, source, subdict1)
 # DEBUG
 print(f'dict1: {dict1}\n')
@@ -467,13 +469,15 @@ print(f'dst_abs_path: {dst_abs_path}')
 #dict2 = dictionary2
 dict2 = {}
 dict2[destination] = {}
-# For clarity, create a second variable that points to dict2[destination];
+# For clarity, create a second variable that points to dict2[destination]
 subdict2 = dict2[destination]
-#dict2[destination] = None
+# Create the parent directories dictionary, which will store the full
+# filepaths corresponding to each file and subdirectory in the destination
+dst_parent_dirs = {}
 # DEBUG
 #print(f'dict2: {dict2}')
 # Arguments: full path of destination directory, name of destination directory,
-# dictionary to be built;
+# dictionary to be built
 find_dirs(dst_abs_path, destination, subdict2)
 #dict2 = double_to_single(dict2)
 print(f'dict2: {dict2}\n')
@@ -488,7 +492,6 @@ print(f'dict1["A"]["a1"]: {dict1["A"]["a1"]}\n')
 print(f'dict1["A"]["a1"]["a1a"]: {dict1["A"]["a1"]["a1a"]}\n')
 print(f'dict1["A"]["a2"]: {dict1["A"]["a2"]}\n')
 print(f'dict1["A"]["a1"]["a1a"]["a1b"]: {dict1["A"]["a1"]["a1a"]["a1b"]}\n')
-print(f'{parent_dirs}\n') # 5/16/24 - will be needing this structure, not sure how to extract it from its local function though
 print('/# FIND_FILES() DICT1 BLOCK\n')
 ''' # Just getting irrelevant bugs because the print statements in this file are for dict1
 # DICT2 FIND_FILES() BLOCK
@@ -501,8 +504,12 @@ print('/# FIND_FILES() DICT2 BLOCK\n')
 
 # OVERWRITE BLOCK - we first overwrite files that already exist in both
 # directories, only if the timestamps don't match
+print(f'{parent_dirs}\n') # 5/16/24 - will be needing this structure, not sure how to extract it from its local function though
 
 
+# Define function that will copy and/or overwrite the files as needed;
+# Arguments: source, destination, source directory, destination directory
+def overwrite(dict1, dict2, path1, path2):
 
 # COPYTREE - finally if a directory exists in A but not in B, we can copy its
 # entire directory structure and files contained therein
