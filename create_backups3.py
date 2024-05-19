@@ -1,3 +1,6 @@
+# Using this to make changes that will allow me to test for dict2, whereof the
+# corresponding directory is 'B'
+
 # This will hopefully be the final version of the program file, it was
 # originally a copy of find_files3.py
 
@@ -197,9 +200,9 @@ def find_files1(dict, fullpath):
     # DEBUG
     print('# INSIDE FUNCTION TEST PRINTS\n')
     print(f'dict: {dict}\n')
-    print(f'dict["A"]: {dict}\n')
-    print(f'dict["A"]["a1"]: {dict["a1"]}\n')
-    print(f'dict["A"]["a2"]: {dict["a2"]}\n')
+    #print(f'dict["A"]: {dict}\n')
+    #print(f'dict["A"]["a1"]: {dict["a1"]}\n')
+    #print(f'dict["A"]["a2"]: {dict["a2"]}\n')
 
     print('/# FIND_FILES1() BLOCK\n')
     
@@ -487,7 +490,7 @@ print(f'dst_parent_dirs: {dst_parent_dirs}\n')
 # DICT1 FIND_FILES() BLOCK
 find_files1(subdict1, src_abs_path)
 print('# FIND_FILES() DICT1 BLOCK\n')
-# DEBUG
+'''# DEBUG
 print(f'dict1: {dict1}\n')
 print(f'dict1["A"]: {dict1["A"]}\n')
 print(f'dict1["A"]["a1"]: {dict1["A"]["a1"]}\n')
@@ -495,15 +498,15 @@ print(f'dict1["A"]["a1"]["a1a"]: {dict1["A"]["a1"]["a1a"]}\n')
 print(f'dict1["A"]["a2"]: {dict1["A"]["a2"]}\n')
 print(f'dict1["A"]["a1"]["a1a"]["a1b"]: {dict1["A"]["a1"]["a1a"]["a1b"]}\n')
 print('/# FIND_FILES() DICT1 BLOCK\n')
+'''
 
-''' # Just getting irrelevant bugs because the print statements in this file are for dict1
+# Just getting irrelevant bugs because the print statements in this file are for dict1
 # DICT2 FIND_FILES() BLOCK
 find_files1(subdict2, dst_abs_path)
 print('# FIND_FILES() DICT2 BLOCK\n')
 # DEBUG
 print(f'dict2: {dict2}\n')
 print('/# FIND_FILES() DICT2 BLOCK\n')
-'''
 
 # OVERWRITE BLOCK - we first overwrite files that already exist in both
 # directories, only if the timestamps don't match

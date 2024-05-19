@@ -1,3 +1,8 @@
+# 5/19/24
+
+Trying to figure out how to get the respective parent_dirs structures to be
+assigned to two separate variables, e.g. src_parent_dirs and dst_parent_dirs.
+
 # 5/17/24
 
 Started writing the code in the final subsection of the program, but I am
