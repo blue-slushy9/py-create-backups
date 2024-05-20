@@ -21,15 +21,15 @@ from shutil import copy2, copytree
 class UserInputs:
     def __init__(self, spam):
         # spam specifies whether it is the source or destination, the function
-        # call itself will pass 'source' or 'destination' string to the method;
+        # call itself will pass 'source' or 'destination' string to the method
         self.spam = spam
         # eggs specifies the name of the source or destination directory,
-        # it is set to None because it will be defined via user input;
+        # it is set to None because it will be defined via user input
         self.eggs = None
 
     def input(self):
-        # eggs will take the user input, spam will be part of the prompt them
-        # for the name of the source or destination;
+        # eggs will take the user input, spam will be part of the prompt that 
+        # asks them for the name of the source or destination
         self.eggs = input(f'Please enter the name of your {self.spam} directory now:\n')
         # The correct variable is there to prevent user error, e.g. typos
         correct = input(f'You have entered {self.eggs}, is this correct? [Y/n]\n')
@@ -50,7 +50,7 @@ class OperSys(UserInputs):
         # to use it in the child class ?
         super().__init__(spam)
         # We pass the initial value of oper_sys in the method call,
-        # which is None because we need the user input for its actual value;
+        # which is None because we need the user input for its actual value
         self.oper_sys = oper_sys
 
     def input(self):
@@ -79,7 +79,7 @@ class Destination(UserInputs):
 # Create instance of class OperSys
 my_oper_sys = OperSys(oper_sys=None, spam=None)
 # slashes will be needed for our filepaths later on, either backslashes or
-# forward slashes;
+# forward slashes
 slashes = my_oper_sys.input()
 # DEBUG
 print(f'slashes: {slashes}\n')
