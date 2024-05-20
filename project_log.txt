@@ -1,3 +1,11 @@
+# 5/20/24
+
+I was thinking I might be able to create a few classes for my two main
+function calls down at the bottom of the program file. They may not need to be
+new classes, I may be able to re-use the ones I defined near the top of the
+program file. This approach might also solve the problem of getting the two
+parent_dirs structures assigned to separate variables.
+
 # 5/19/24
 
 Trying to figure out how to get the respective parent_dirs structures to be
