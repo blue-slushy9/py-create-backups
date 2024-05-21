@@ -109,9 +109,10 @@ def get_timestamp(fullpath):
 
 # This function will be called on every file in the source and destination to
 # build the respective dictionaries;
-# Arguments: full filepath of source, name of source, dictionary to be built;
+# Arguments: full filepath of directory, name of directory, dictionary to be
+# built
 def find_dirs(fullpath, name, dict):
-    # This will create an items object (list) that can be looped through;
+    # This will create an items object (list) that can be looped through
     items = os.listdir(fullpath)
     # 'items' is a list that contains only strings,
     #print(items)
@@ -125,7 +126,7 @@ def find_dirs(fullpath, name, dict):
         fullpath = fullpath
         print(f'After fullpath: {fullpath}')
         #print(item)
-        # Update the fullpath variable to include the item name;
+        # Update the fullpath variable to include the item name
         new_fullpath = os.path.abspath(fullpath+slashes+item)
         #new_fullpath = fullpath+slashes+item
         # DEBUG
@@ -209,7 +210,7 @@ def find_files1(dict, fullpath):
     # Initial values, only valid for first iteration
     i=0
     global parent_dirs # 5/17/24 - declared global variable
-    parent_dirs = {} 
+    parent_dirs = {}
     #new_dirs = []
     # Tentative version of FF2 where for loop is removed
     def find_files2(dir, dirs, fullpath, dict, i): # 4/7/24: could the problem be the
@@ -427,7 +428,7 @@ def find_files1(dict, fullpath):
 
 # FUNCTION CALLS
 
-# DICT1 FIND_DIRS() BLOCK
+# SOURCE/DICT1 FIND_DIRS() BLOCK
 src_local_path = ('.'+slashes+source)
 src_abs_path = os.path.abspath(src_local_path)
 # Define the path as a string, which will be converted to a list below;
@@ -451,14 +452,14 @@ src_parent_dirs = {}
 #dict1[source] = None
 # DEBUG
 #print(f'dict1: {dict1}')
-# Arguments: full path of source directory, name of source directory,
+# Arguments: fullpath of source directory, name of source directory, 
 # dictionary to be built
 find_dirs(src_abs_path, source, subdict1)
 # DEBUG
 print(f'dict1: {dict1}\n')
 print(f'src_parent_dirs: {src_parent_dirs}\n')
 
-# DICT2 FIND_DIRS() BLOCK
+# DESTINATION/DICT2 FIND_DIRS() BLOCK
 dst_path = ('.'+slashes+destination)
 dst_abs_path = os.path.abspath(dst_path)
 # Define the path as a string, which will be converted to a list below;
@@ -480,7 +481,7 @@ subdict2 = dict2[destination]
 dst_parent_dirs = {}
 # DEBUG
 #print(f'dict2: {dict2}')
-# Arguments: full path of destination directory, name of destination directory,
+# Arguments: fullpath of destination directory, name of destination directory,
 # dictionary to be built
 find_dirs(dst_abs_path, destination, subdict2)
 #dict2 = double_to_single(dict2)
