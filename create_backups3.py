@@ -111,7 +111,7 @@ def get_timestamp(fullpath):
 # build the respective dictionaries;
 # Arguments: full filepath of directory, name of directory, dictionary to be
 # built
-def find_dirs(fullpath, name, dict):
+def find_dirs(fullpath, name, dict, parent_dirs): # 5/22/24 - added parent_dirs as argument
     # This will create an items object (list) that can be looped through
     items = os.listdir(fullpath)
     # 'items' is a list that contains only strings,

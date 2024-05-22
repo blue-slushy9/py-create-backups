@@ -1,3 +1,7 @@
+# 5/22/24
+
+Started adding parent_dirs as argument to find_dirs()
+
 # 5/21/24
 
 I tried creating an if statement under find_files1() that creates either
