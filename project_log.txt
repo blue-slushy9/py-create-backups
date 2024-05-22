@@ -1,5 +1,11 @@
 # 5/21/24
 
+I tried creating an if statement under find_files1() that creates either
+src_parent_dirs or dst_parent_dirs, but I don't think that's going to work as
+I need to work with the variable later in the program. I think I will have to
+handle the structures as function arguments, as I've done with fullpath, dict,
+etc.
+
 Trying to figure out how to create a different variable name for parent_dirs
 based on whether it is being created for the source or destination.
 

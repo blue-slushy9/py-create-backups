@@ -150,7 +150,7 @@ def find_dirs(fullpath, name, dict):
 
 # We need to define a separate function for the first outer key because it is
 # the only one for which the respective dictionary keys will not match
-def find_files1(dict, fullpath):
+def find_files1(fullpath, name, dict): # 5/21/24 - updated arguments to include name
     #for dir in src_dict:
     items = os.listdir(fullpath)
     # We will use a second list to keep track of the items
@@ -209,8 +209,19 @@ def find_files1(dict, fullpath):
     
     # Initial values, only valid for first iteration
     i=0
-    global parent_dirs # 5/17/24 - declared global variable
-    parent_dirs = {}
+    ''' Don't think the below addition is going to work---instead, I think I
+        will have to pass src_parent_dirs and dst_parent_dirs as arguments
+        from the function calls at the bottom of the program file
+
+    # 5/21/24 - name refers to the name of the source or destination directory,
+    # this if statement ensures each gets its own parent_dirs structure
+    if name == source:
+        global src_parent_dirs # 5/17/24 - declared global variable
+        src_parent_dirs = {}
+    elif name == destination:
+        global dst_parent_dirs
+        dst_parent_dirs = {}
+    '''
     #new_dirs = []
     # Tentative version of FF2 where for loop is removed
     def find_files2(dir, dirs, fullpath, dict, i): # 4/7/24: could the problem be the
