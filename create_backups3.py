@@ -111,7 +111,7 @@ def get_timestamp(fullpath):
 # build the respective dictionaries;
 # Arguments: full filepath of directory, name of directory, dictionary to be
 # built
-def find_dirs(fullpath, name, dict, parent_dirs): # 5/22/24 - added parent_dirs as argument
+def find_dirs(fullpath, name, dict):     
     # This will create an items object (list) that can be looped through
     items = os.listdir(fullpath)
     # 'items' is a list that contains only strings,
@@ -150,7 +150,7 @@ def find_dirs(fullpath, name, dict, parent_dirs): # 5/22/24 - added parent_dirs 
 
 # We need to define a separate function for the first outer key because it is
 # the only one for which the respective dictionary keys will not match
-def find_files1(fullpath, name, dict): # 5/21/24 - updated arguments to include name
+def find_files1(dict, fullpath, parent_dirs): # 5/22/24 - updated arguments to include parent_dirs
     #for dir in src_dict:
     items = os.listdir(fullpath)
     # We will use a second list to keep track of the items
@@ -209,23 +209,10 @@ def find_files1(fullpath, name, dict): # 5/21/24 - updated arguments to include 
     
     # Initial values, only valid for first iteration
     i=0
-    ''' Don't think the below addition is going to work---instead, I think I
-        will have to pass src_parent_dirs and dst_parent_dirs as arguments
-        from the function calls at the bottom of the program file
-
-    # 5/21/24 - name refers to the name of the source or destination directory,
-    # this if statement ensures each gets its own parent_dirs structure
-    if name == source:
-        global src_parent_dirs # 5/17/24 - declared global variable
-        src_parent_dirs = {}
-    elif name == destination:
-        global dst_parent_dirs
-        dst_parent_dirs = {}
-    '''
     #new_dirs = []
     # Tentative version of FF2 where for loop is removed
-    def find_files2(dir, dirs, fullpath, dict, i): # 4/7/24: could the problem be the
-        # DEBUG                                    # the dict that is being passed?
+    def find_files2(dir, dirs, fullpath, dict, i, parent_dirs): # 5/22/24 - added parent_dirs as argument
+        # DEBUG 
         print(f'# FIND_FILES2() BLOCK\n')
         print(f'dirs1: {dirs}\n')
         #print(f'new_dirs: {new_dirs}\n')
@@ -251,7 +238,7 @@ def find_files1(fullpath, name, dict): # 5/21/24 - updated arguments to include 
             print(f'new_fullpath2: {new_fullpath}\n')
             temp_fullpath = (new_fullpath+slashes+item)
             print(f'temp_fullpath1: {temp_fullpath}\n')
-            global parent_dirs # 5/17/24 - declared global variable
+            #global parent_dirs # 5/22/24 - commented out
             parent_dirs[item] = new_fullpath
             print(f'parent_dirs1: {parent_dirs}\n')
             # If the item is not a directory...
@@ -380,7 +367,7 @@ def find_files1(fullpath, name, dict): # 5/21/24 - updated arguments to include 
                     current_dict = dict[dir] # 4/13/24: this is fine because it's only for first iteration
                     #dict = current_dict # Uncommented on 3/29/24
                     print(f'current_dict: {current_dict}\n')
-                    find_files2(dir, dirs, fullpath, current_dict, i)
+                    find_files2(dir, dirs, fullpath, current_dict, i, parent_dirs)
                     print(f'After dict: {dict}\n')
                 i+=1
                 print(f'while loop i: {i}\n')
@@ -421,7 +408,7 @@ def find_files1(fullpath, name, dict): # 5/21/24 - updated arguments to include 
                         #current_dict = 
                         print(f'before FF2 current_dict: {current_dict}\n')
                         # 4/7/24: is current_dict the right argument?
-                        find_files2(dir, dirs, temp_fullpath, current_dict, i)
+                        find_files2(dir, dirs, temp_fullpath, current_dict, i, parent_dirs)
                         print(f'else final dict: {dict}\n')
                     i+=1
                     print(f'while loop i: {i}\n')
@@ -484,6 +471,7 @@ print(f'dst_abs_path: {dst_abs_path}')
 # Define dictionary2, the destination;
 #dict2 = dictionary2
 dict2 = {}
+# Create subdictionary for the source directory, e.g. B
 dict2[destination] = {}
 # For clarity, create a second variable that points to dict2[destination]
 subdict2 = dict2[destination]
@@ -500,7 +488,7 @@ print(f'dict2: {dict2}\n')
 print(f'dst_parent_dirs: {dst_parent_dirs}\n')
 
 # DICT1 FIND_FILES() BLOCK
-find_files1(subdict1, src_abs_path)
+find_files1(subdict1, src_abs_path, src_parent_dirs)
 print('# FIND_FILES() DICT1 BLOCK\n')
 '''# DEBUG
 print(f'dict1: {dict1}\n')
@@ -514,7 +502,7 @@ print('/# FIND_FILES() DICT1 BLOCK\n')
 
 # Just getting irrelevant bugs because the print statements in this file are for dict1
 # DICT2 FIND_FILES() BLOCK
-find_files1(subdict2, dst_abs_path)
+find_files1(subdict2, dst_abs_path, dst_parent_dirs)
 print('# FIND_FILES() DICT2 BLOCK\n')
 # DEBUG
 print(f'dict2: {dict2}\n')
@@ -522,8 +510,8 @@ print('/# FIND_FILES() DICT2 BLOCK\n')
 
 # OVERWRITE BLOCK - we first overwrite files that already exist in both
 # directories, only if the timestamps don't match
-print(f'parent_dirs: {parent_dirs}\n') # 5/16/24 - will be needing this structure, not sure how to extract it from its local function though
-
+print(f'src_parent_dirs: {src_parent_dirs}\n') # 5/22/24 - extracted both structures
+print(f'dst_parent_dirs: {dst_parent_dirs}\n')
 
 # Define function that will copy and/or overwrite the files as needed;
 # Arguments: source, destination, source directory, destination directory

@@ -1,6 +1,12 @@
 # 5/22/24
 
-Started adding parent_dirs as argument to find_dirs()
+I was able to get both parent_dirs structures to print out correctly---
+although B doesn't actually have one yet as it only contains the .gitkeep file
+I created. But theoretically it should work. Next, I will have to figure out
+how to work with these structures to get the correct files and directories
+to be copied or overwritten from A to B.
+
+Started adding parent_dirs as argument to find_dirs().
 
 # 5/21/24
 
