@@ -1,3 +1,10 @@
+# 5/24/24
+
+Using full filepaths for both the source and destinations in copy2() is
+working! The only problem is that it will only work if the parent directories
+for the specific file already exist, so I may rethink the order in which I
+want the copy and overwrite steps to be executed...
+
 # 5/23/24
 
 Left off on the copy_files() function, which im doing first just because i

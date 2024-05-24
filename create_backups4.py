@@ -544,19 +544,23 @@ def copy_files(src_files, dst_files):
             # full filepath from src_parent_dirs and change only the name of
             # source directory to the name of the destination directory,
             # e.g. 'A' to 'B'
-            filepath = src_parent_files[file]
+            src_filepath = (src_parent_files[file]+slashes+file)
             # We need to make sure we match the right substring in the path,
             # so we sandwich the source directory name between two slashes
             src_dir = (slashes+source+slashes)
             # Same concept as above, except for the destination directory
             dst_dir = (slashes+destination+slashes)
-            # Replace source directory name and assign new path to variable
-            new_filepath = filepath.replace(src_dir, dst_dir)
+            # Replace source directory name and with assign new path to variable
+            dst_filepath = src_filepath.replace(src_dir, dst_dir)
+            # Add filename to end of new filepath
+            #new_filepath = (new_filepath+slashes+file)
             # DEBUG
-            print(f'filepath: {filepath}\n')
+            print(f'src_filepath: {src_filepath}\n')
+            print(f'dst_filepath: {dst_filepath}\n')
             # Copy file and metadata; 
-            # Arguments: source file, destination (can be file or directory)
-            copy2(file, new_filepath)
+            # Arguments: full filepath for source file, full filepath for 
+            # destination (including the filename)
+            copy2(src_filepath, dst_filepath)
 
 # Call function
 copy_files(src_parent_files, dst_parent_files)
