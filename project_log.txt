@@ -1,3 +1,22 @@
+# 5/23/24
+
+Left off on the copy_files() function, which im doing first just because i
+haven't integrated the timestamp feature yet. I left off at the point where I
+am trying to replace the name of the source directory in the full filepath for
+the file with the name of the destination directory in order to be able to
+copy from source to destination using copy2.
+
+Created a copy of create_backups3.py in order to make some changes to the
+structures I mentioned in the entry below. The changes may be significant, so
+I want to be able to roll back to create_backups3.py if something goes wrong.
+
+It occurs to me that perhaps I could create two separate dictionaries for each
+the source and destination, e.g. src_files and src_dirs. This is in order to
+separate the files from the directories, given that the files must be copied
+before directories, for the most efficient resource utilization. In order to
+do this, I think I would have to create these dictionaries at the point in the
+program where Python checks whether the item is a file or directory.
+
 # 5/22/24
 
 I was able to get both parent_dirs structures to print out correctly---
