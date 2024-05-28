@@ -1,3 +1,17 @@
+# 5/27/24
+
+Created the file split.py to put together the code I need for the below steps.
+
+Basically, my next move is going to be determined by what is the most parsimonious approach, as far as system resources. There is no point copying directories and files, and only *then* running the get-timestamp function, etc. where it's clearly not needed.
+
+I was thinking I might be able to reuse the function I defined earlier to create the parent directories in backwards order based on the dictionary keys. This is in the case that we are trying to copy a file or directory whereof the parent directory or directories don't exist yet in the destination.
+
+Order in which items in source directory should be copied or overwritten to destination:
+
+1) files that already exist in both source and destination
+2) files that exist in source but not in destination
+3) entire directory structures, including files, that exist in source but not in destination
+
 # 5/24/24
 
 Using full filepaths for both the source and destinations in copy2() is

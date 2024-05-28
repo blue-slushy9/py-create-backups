@@ -525,7 +525,9 @@ print(f'dst_parent_files: {dst_parent_files}\n')
 
 # OVERWRITE FILES BLOCK - we first overwrite files that already exist in both
 # directories, only if the timestamps don't match
-''' # Finish this later
+''' 
+# Finish this later
+
 # Define function that will copy and/or overwrite the files as needed;
 # Arguments: source, destination, source directory, destination directory
 def overwrite_files(dict1, dict2, path1, path2):
@@ -557,10 +559,18 @@ def copy_files(src_files, dst_files):
             # DEBUG
             print(f'src_filepath: {src_filepath}\n')
             print(f'dst_filepath: {dst_filepath}\n')
-            # Copy file and metadata; 
-            # Arguments: full filepath for source file, full filepath for 
-            # destination (including the filename)
-            copy2(src_filepath, dst_filepath)
+            # Before you attempt to copy the file, verify whether the target
+            # filepath actually exists---in order for the copy2() function to
+            # work, the parent directories must already be in place
+            if os.path.exists(dst_filepath):
+                # Copy file and metadata; 
+                # Arguments: full filepath for source file, full filepath for 
+                # destination (including the filename)
+                copy2(src_filepath, dst_filepath)
+            # Else, if the parent directories don't already exist, then we
+            # need to create them
+            else:
+
 
 # Call function
 copy_files(src_parent_files, dst_parent_files)
