@@ -525,17 +525,18 @@ print(f'dst_parent_files: {dst_parent_files}\n')
 
 # OVERWRITE FILES BLOCK - we first overwrite files that already exist in both
 # directories, only if the timestamps don't match
-''' 
+
 # Finish this later
 
 # Define function that will copy and/or overwrite the files as needed;
 # Arguments: source, destination, source directory, destination directory
-def overwrite_files(dict1, dict2, path1, path2):
-    for file in src_parent_files:
-        if file in dst_parent_files:
-            if timestamp[src_file] > timestamp[dst_file]:
-                overwrite dst_file with src_file
-'''
+#def overwrite_files(dict1, dict2, path1, path2):
+#    for file in src_parent_files:
+#        if file in dst_parent_files:
+#            if timestamp[src_file] > timestamp[dst_file]:
+#                overwrite dst_file with src_file
+#
+
 # COPY FILES BLOCK - if a file exists in source but not in destination, we now
 # copy it
 def copy_files(src_files, dst_files):
@@ -546,30 +547,46 @@ def copy_files(src_files, dst_files):
             # full filepath from src_parent_dirs and change only the name of
             # source directory to the name of the destination directory,
             # e.g. 'A' to 'B'
-            src_filepath = (src_parent_files[file]+slashes+file)
+            src_dirpath = (src_parent_files[file]+slashes)
+            #src_filepath = (src_parent_files[file]+slashes+file) # 5/28/24 - trying out line above instead
             # We need to make sure we match the right substring in the path,
             # so we sandwich the source directory name between two slashes
             src_dir = (slashes+source+slashes)
             # Same concept as above, except for the destination directory
             dst_dir = (slashes+destination+slashes)
-            # Replace source directory name and with assign new path to variable
-            dst_filepath = src_filepath.replace(src_dir, dst_dir)
+            # Replace source directory name and assign new path to variable
+            dst_dirpath = src_dirpath.replace(src_dir, dst_dir)
+            #dst_filepath = src_filepath.replace(src_dir, dst_dir) # 5/28/24 - trying out line above
             # Add filename to end of new filepath
             #new_filepath = (new_filepath+slashes+file)
             # DEBUG
-            print(f'src_filepath: {src_filepath}\n')
-            print(f'dst_filepath: {dst_filepath}\n')
+            print(f'src_dirpath: {src_dirpath}\n')
+            print(f'dst_dirpath: {dst_dirpath}\n')
+            #print(f'src_filepath: {src_filepath}\n')
+            #print(f'dst_filepath: {dst_filepath}\n')
             # Before you attempt to copy the file, verify whether the target
-            # filepath actually exists---in order for the copy2() function to
-            # work, the parent directories must already be in place
-            if os.path.exists(dst_filepath):
-                # Copy file and metadata; 
+            # filepath (NOT including the filename itself) actually exists---
+            # in order for copy2() to work, the parent directories must already 
+            # be in place
+            if os.path.exists(dst_dirpath): # 5/28/24 - implementing above changes
+                
+                # Copy file and metadata 
                 # Arguments: full filepath for source file, full filepath for 
                 # destination (including the filename)
                 copy2(src_filepath, dst_filepath)
             # Else, if the parent directories don't already exist, then we
             # need to create them
             else:
+                # 'os.path.dirname()' extracts only the directory portion of a
+                # filepath, we do this because os.makedirs() cannot work with
+                # filepaths that include a filename at the end
+                #dst_dirs = os.path.dirname(dst_filepath) # 5/28/24 - no longer necessary due to above changes
+                # 'exist_ok=True' prevents the method from returning an error
+                # in the case that some of the directories in the argument
+                # filepath already exist
+                os.makedirs(dst_dirpath, exist_ok=True)
+                # Now we can copy the actual files
+                copy2(src_filepath, dst_filepath)
 
 
 # Call function

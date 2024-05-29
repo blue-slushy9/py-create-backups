@@ -1,3 +1,7 @@
+# 5/28/24
+
+Continued working on my copy_files() function down at the bottom, should be ready for testing soon.
+
 # 5/27/24
 
 Created the file split.py to put together the code I need for the below steps.
