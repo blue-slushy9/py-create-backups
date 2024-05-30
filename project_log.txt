@@ -1,3 +1,7 @@
+# 5/29/24
+
+Created a little zsh script to clear the contents of B/ as needed. The copy_files() function seems to work thus far!
+
 # 5/28/24
 
 Continued working on my copy_files() function down at the bottom, should be ready for testing soon.

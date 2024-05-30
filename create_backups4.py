@@ -542,12 +542,15 @@ print(f'dst_parent_files: {dst_parent_files}\n')
 def copy_files(src_files, dst_files):
     # Iterate over all files/keys in source files dictionary
     for file in src_parent_files:
+        # Potential issue: there may be multiple files in the source and/or 
+        # destination directory with the same filename
         if file not in dst_parent_files:
             # Since the file does not exist in dst_parent_files, we take the
             # full filepath from src_parent_dirs and change only the name of
             # source directory to the name of the destination directory,
             # e.g. 'A' to 'B'
             src_dirpath = (src_parent_files[file]+slashes)
+            src_filepath = (src_dirpath+file)
             #src_filepath = (src_parent_files[file]+slashes+file) # 5/28/24 - trying out line above instead
             # We need to make sure we match the right substring in the path,
             # so we sandwich the source directory name between two slashes
@@ -556,21 +559,23 @@ def copy_files(src_files, dst_files):
             dst_dir = (slashes+destination+slashes)
             # Replace source directory name and assign new path to variable
             dst_dirpath = src_dirpath.replace(src_dir, dst_dir)
+            dst_filepath = (dst_dirpath+file)
             #dst_filepath = src_filepath.replace(src_dir, dst_dir) # 5/28/24 - trying out line above
             # Add filename to end of new filepath
             #new_filepath = (new_filepath+slashes+file)
+            
             # DEBUG
             print(f'src_dirpath: {src_dirpath}\n')
             print(f'dst_dirpath: {dst_dirpath}\n')
-            #print(f'src_filepath: {src_filepath}\n')
-            #print(f'dst_filepath: {dst_filepath}\n')
+            print(f'src_filepath: {src_filepath}\n')
+            print(f'dst_filepath: {dst_filepath}\n')
+            
             # Before you attempt to copy the file, verify whether the target
             # filepath (NOT including the filename itself) actually exists---
             # in order for copy2() to work, the parent directories must already 
             # be in place
             if os.path.exists(dst_dirpath): # 5/28/24 - implementing above changes
-                
-                # Copy file and metadata 
+                # copy2() copies files *and* their metadata 
                 # Arguments: full filepath for source file, full filepath for 
                 # destination (including the filename)
                 copy2(src_filepath, dst_filepath)
