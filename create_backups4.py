@@ -500,6 +500,7 @@ print(f'dst_parent_dirs: {dst_parent_dirs}\n')
 # DICT1 FIND_FILES() BLOCK
 find_files1(subdict1, src_abs_path, src_parent_dirs, src_parent_files)
 print('# FIND_FILES() DICT1 BLOCK\n')
+
 '''# DEBUG
 print(f'dict1: {dict1}\n')
 print(f'dict1["A"]: {dict1["A"]}\n')
@@ -597,5 +598,7 @@ def copy_files(src_files, dst_files):
 # Call function
 copy_files(src_parent_files, dst_parent_files)
 
+
+# Not sure if this is really needed anymore due to the os.makedirs() method?
 # COPYTREE - finally if a directory exists in A but not in B, we can copy its
 # entire directory structure and files contained therein

@@ -1,5 +1,7 @@
 # 5/29/24
 
+I think the next thing I will have to do is create a separate dictionary with all of the files as keys and their timestamps as values. The get-timestamp() function has been defined and seems like it will work.
+
 Created a little zsh script to clear the contents of B/ as needed. The copy_files() function seems to work thus far!
 
 # 5/28/24
