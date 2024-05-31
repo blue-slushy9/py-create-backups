@@ -532,14 +532,16 @@ print(f'dst_parent_files: {dst_parent_files}\n')
 # Define function that will copy and/or overwrite the files as needed;
 # Arguments: source, destination, source directory, destination directory
 #def overwrite_files(dict1, dict2, path1, path2):
-#    for file in src_parent_files:
-#        if file in dst_parent_files:
-#            if timestamp[src_file] > timestamp[dst_file]:
-#                overwrite dst_file with src_file
-#
+def overwrite_files(src_times, dst_times, src_files, dst_times):
+    for file in src_parent_files:
+        if file in dst_parent_files:
+            if timestamp[src_file] > timestamp[dst_file]:
+                overwrite dst_file with src_file
 
-# COPY FILES BLOCK - if a file exists in source but not in destination, we now
-# copy it
+
+# COPY FILES BLOCK - if a file exists in source but not in destination, copy it;
+# Arguments: dictionary of all files/keys in source and their filepaths/values,
+# dictionary of all files/keys in destination and their filepaths/values
 def copy_files(src_files, dst_files):
     # Iterate over all files/keys in source files dictionary
     for file in src_parent_files:
