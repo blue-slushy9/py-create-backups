@@ -562,6 +562,8 @@ def get_timestamp(fullpath):
     # Convert timestamp to datetime object, 'stat.st_mtime' is the time of the
     # last file modification
     timestamp = datetime.fromtimestamp(stat.st_mtime)
+    # DEBUG
+    #print(f'timestamp: {timestamp}')
     return timestamp
 
 
@@ -571,26 +573,34 @@ def get_timestamp(fullpath):
 # Define function that will copy and/or overwrite the files as needed;
 # Arguments: source, destination, source directory, destination directory
 #def overwrite_files(dict1, dict2, path1, path2):
+# Arguments: source files dictionary, destination files dictionary (the ones
+# with the parent directory filepaths)
 def overwrite_files(src_files, dst_files):
     # Iterate over every file in source dictionary
     for file in src_parent_files:
         # If the file is also in the destination dictionary...
         if file in dst_parent_files:
-            # Retrieve the full filepath for the file
+            # Retrieve the full filepaths for the file
             (src_filepath, dst_filepath) = get_filepaths(file, src_files, dst_files) 
             # This was intended to make sure they are in fact different files,
             # but the logic was flawed
             #if src_filepath not dst_filepath:
             # Then retrieve the timestamp for each file using their filepaths    
             src_time = get_timestamp(src_filepath)
+            print(f'Source file: {file}, Timestamp: {src_time}')
             dst_time = get_timestamp(dst_filepath)
+            print(f'Destin file: {file}, Timestamp: {dst_time}\n')
             # If the timestamps are different...
-            if src_time not dst_time: 
+            if src_time > dst_time: 
                 # Delete the copy of the file in destination
                 os.remove(dst_filepath)
+                print(f'Removed {dst_filepath}')
                 # Copy the source file along with its metadata
                 copy2(src_filepath, dst_filepath)
+                print(f'Copied {file} to {dst_filepath}')
 
+# Call function
+overwrite_files(src_parent_files, dst_parent_files)
 
 # COPY FILES BLOCK - if a file exists in source but not in destination, copy it;
 # Arguments: dictionary of all files/keys in source and their filepaths/values,
