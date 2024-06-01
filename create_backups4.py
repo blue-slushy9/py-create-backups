@@ -572,13 +572,24 @@ def get_timestamp(fullpath):
 # Arguments: source, destination, source directory, destination directory
 #def overwrite_files(dict1, dict2, path1, path2):
 def overwrite_files(src_files, dst_files):
+    # Iterate over every file in source dictionary
     for file in src_parent_files:
+        # If the file is also in the destination dictionary...
         if file in dst_parent_files:
+            # Retrieve the full filepath for the file
             (src_filepath, dst_filepath) = get_filepaths(file, src_files, dst_files) 
-            if src_filepath not dst_filepath:
-                get_timestamp(src_filepath, dst_filepath)
-            if timestamp[src_file] > timestamp[dst_file]:
-                overwrite dst_file with src_file
+            # This was intended to make sure they are in fact different files,
+            # but the logic was flawed
+            #if src_filepath not dst_filepath:
+            # Then retrieve the timestamp for each file using their filepaths    
+            src_time = get_timestamp(src_filepath)
+            dst_time = get_timestamp(dst_filepath)
+            # If the timestamps are different...
+            if src_time not dst_time: 
+                # Delete the copy of the file in destination
+                os.remove(dst_filepath)
+                # Copy the source file along with its metadata
+                copy2(src_filepath, dst_filepath)
 
 
 # COPY FILES BLOCK - if a file exists in source but not in destination, copy it;

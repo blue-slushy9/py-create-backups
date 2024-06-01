@@ -1,3 +1,7 @@
+# 6/1/24
+
+Still working on overwrite_files() function. Think I might need a way to verify that, in the case that there are multiple files with the same filename, that they are in fact different files; this would be based on their full filepaths.
+
 # 5/31/24
 
 Left off at overwrite_files() function. Think I have most of the steps down. I think I am may be able to retrieve the timestamp for each file within that function rather than build an entire second dictionary just for the filepaths and timestamps. We'll see if it works...
