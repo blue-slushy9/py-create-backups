@@ -1,5 +1,9 @@
 # 6/1/24
 
+Actually, upon investigating copy_files() and some of the output in the program, I think the problem is going to further up the call stack; as those structures get assembled in earlier functions. I think it is something to do with me passing subdict1 and subdict2 as arguments to find_dirs() or find_files() instead of the directory structures in their entirety.
+
+Found a bug! create_backups4.py is copying all of the files and directories *except* for the three text files that are in A/: A1.txt, A2.txt, A3.txt. Have to debug and get them over to B/, the problem should be found in the copy_files() function.
+
 Still working on overwrite_files() function. Think I might need a way to verify that, in the case that there are multiple files with the same filename, that they are in fact different files; this would be based on their full filepaths.
 
 # 5/31/24
