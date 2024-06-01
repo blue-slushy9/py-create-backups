@@ -524,17 +524,59 @@ print(f'src_parent_files: {src_parent_files}\n') # 5/22/24 - extracted both stru
 print(f'dst_parent_dirs: {dst_parent_dirs}\n')
 print(f'dst_parent_files: {dst_parent_files}\n')
 
+# Define function that retrieves the full filepaths, then we'll use these
+# paths to retrieve the timestamp for each file
+def get_filepaths(file, src_files, dst_files):
+    # Since the file does not exist in dst_parent_files, we take the
+    # full filepath from src_parent_dirs and change only the name of
+    # source directory to the name of the destination directory,
+    # e.g. 'A' to 'B'
+    src_dirpath = (src_parent_files[file]+slashes)
+    src_filepath = (src_dirpath+file)
+    #src_filepath = (src_parent_files[file]+slashes+file) # 5/28/24 - trying out line above instead
+    # We need to make sure we match the right substring in the path,
+    # so we sandwich the source directory name between two slashes
+    src_dir = (slashes+source+slashes)
+    # Same concept as above, except for the destination directory
+    dst_dir = (slashes+destination+slashes)
+    # Replace source directory name and assign new path to variable
+    dst_dirpath = src_dirpath.replace(src_dir, dst_dir)
+    dst_filepath = (dst_dirpath+file)
+    #dst_filepath = src_filepath.replace(src_dir, dst_dir) # 5/28/24 - trying out line above
+    # Add filename to end of new filepath
+    #new_filepath = (new_filepath+slashes+file)
+    
+    return (src_filepath, dst_filepath)
+
+    # DEBUG
+    print(f'src_dirpath: {src_dirpath}\n')
+    print(f'dst_dirpath: {dst_dirpath}\n')
+    print(f'src_filepath: {src_filepath}\n')
+    print(f'dst_filepath: {dst_filepath}\n')
+
+
+# Define function that will retrieve the timestamp
+def get_timestamp(fullpath):
+    # Use os.stat to get file metadata
+    stat = os.stat(fullpath)
+    # Convert timestamp to datetime object, 'stat.st_mtime' is the time of the
+    # last file modification
+    timestamp = datetime.fromtimestamp(stat.st_mtime)
+    return timestamp
+
+
 # OVERWRITE FILES BLOCK - we first overwrite files that already exist in both
 # directories, only if the timestamps don't match
-
-# Finish this later
 
 # Define function that will copy and/or overwrite the files as needed;
 # Arguments: source, destination, source directory, destination directory
 #def overwrite_files(dict1, dict2, path1, path2):
-def overwrite_files(src_times, dst_times, src_files, dst_times):
+def overwrite_files(src_files, dst_files):
     for file in src_parent_files:
         if file in dst_parent_files:
+            (src_filepath, dst_filepath) = get_filepaths(file, src_files, dst_files) 
+            if src_filepath not dst_filepath:
+                get_timestamp(src_filepath, dst_filepath)
             if timestamp[src_file] > timestamp[dst_file]:
                 overwrite dst_file with src_file
 

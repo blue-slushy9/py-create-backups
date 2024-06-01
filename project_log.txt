@@ -1,6 +1,8 @@
 # 5/31/24
 
+Left off at overwrite_files() function. Think I have most of the steps down. I think I am may be able to retrieve the timestamp for each file within that function rather than build an entire second dictionary just for the filepaths and timestamps. We'll see if it works...
 
+Have to figure out how I'm going to create the dictionary that stores the timestamps as values. Think I may be able to use the code I wrote in the copy_files() function.
 
 # 5/30/24
 
