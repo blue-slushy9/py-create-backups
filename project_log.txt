@@ -1,3 +1,9 @@
+# 6/3/24
+
+Sadly, I went off on a tangent trying to set up a Python debugger in Vim. Couldn't get it to work and I lost time. Next time, think I will just use Code OSS...
+
+Created a new program file, create_backups5.py, since I have to make changes to some older and more foundational parts of the program. The problem seems to be with the structures we are passing to the copy_files() function, src_parent_files and dst_parent_files.
+
 # 6/1/24
 
 Actually, upon investigating copy_files() and some of the output in the program, I think the problem is going to further up the call stack; as those structures get assembled in earlier functions. I think it is something to do with me passing subdict1 and subdict2 as arguments to find_dirs() or find_files() instead of the directory structures in their entirety.
