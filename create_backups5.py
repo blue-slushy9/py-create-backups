@@ -240,7 +240,8 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
                 temp_dict = dict
                 temp_dict[item] = '11:11' # Is this where the subdicts problem lies? 
                 print(f'temp_dict1: {temp_dict}\n')
-            # Else, if the item is a directory we add it to our new list
+            # Else, if the item is a directory we add it to our parent_dirs 
+            # dictionary, as well as our new list
             else:
                 # Add directory to parent_dirs dictionary
                 parent_dirs[item] = new_fullpath
@@ -507,9 +508,18 @@ print(f'dict2: {dict2}\n')
 print('/# FIND_FILES() DICT2 BLOCK\n')
 
 # DEBUG
+def print_keys(dict):
+    for key in dict:
+        print(key)
+
+# DEBUG
 print(f'src_parent_dirs: {src_parent_dirs}\n') # 5/22/24 - extracted both structures
+print_keys(src_parent_dirs)
+print()
 print(f'src_parent_files: {src_parent_files}\n') # 5/22/24 - extracted both structures
 print(f'dst_parent_dirs: {dst_parent_dirs}\n')
+print_keys(dst_parent_dirs)
+print()
 print(f'dst_parent_files: {dst_parent_files}\n')
 
 # Define function that retrieves the full filepaths, then we'll use these

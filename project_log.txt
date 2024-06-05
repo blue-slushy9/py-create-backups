@@ -1,3 +1,18 @@
+# 6/4/24
+
+Might have found the problem: I didn't include any code in find_files1() that
+would add anything contained therein to my structures. Since find_files1()
+deals with the topmost directory in both A/ and B/, that would explain why
+the A*.txt files and the a* directories weren't showing up in my structures.
+
+Looking at the tree structure for A/, there are a total of 10 files therein.
+My structure only seems to contain 7 files, so 3 of them are getting lost
+somewhere. There should also be a total of 8 subdirectories inside of A/,
+but I only see 4 in the tree structure.
+
+I found that the part of the program where the parent_files structure gets 
+built is inside of the find_files2() function.
+
 # 6/3/24
 
 Sadly, I went off on a tangent trying to set up a Python debugger in Vim. Couldn't get it to work and I lost time. Next time, think I will just use Code OSS...
