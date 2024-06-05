@@ -1,5 +1,10 @@
 # 6/4/24
 
+Added the few lines of code to find_files1() that adds the files and
+directories in the topmost directory in A/ and B/ to their respective
+structures---now we have a new bug! The filepaths for the A*.txt files are
+printing out incorrectly, somewhere around lines 634/635 and 643/644.
+
 Might have found the problem: I didn't include any code in find_files1() that
 would add anything contained therein to my structures. Since find_files1()
 deals with the topmost directory in both A/ and B/, that would explain why

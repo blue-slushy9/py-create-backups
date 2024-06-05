@@ -168,6 +168,8 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
         # os.path.isdir() expects a path as argument, not a string
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
+            # Add file to parent_files dictionary
+            parent_files[item] = new_fullpath
             # 11:11 is just a generic timestamp for debugging purposes;
             dict[item] = '11:11' # BUG: need exact dict & subdict?
             # Once the item/file is added to the dictionary, we need to remove
@@ -176,6 +178,8 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
             print(f'updated items: {items}\n')
         # Else, if item is a directory...
         else:
+            # Add directory to parent_dirs dictionary
+            parent_dirs[item] = new_fullpath
             # The below line may not be correct, we don't really want to add
             # a nested sub-list for every sub-directory in the outermost
             # directory; 
@@ -609,7 +613,7 @@ def overwrite_files(src_files, dst_files):
                       'manually.')
     # User notification of no overwrites
     if n == 0:
-        print('No files were overwritten.')
+        print(f'No files were overwritten.\n')
 
 # Call function
 overwrite_files(src_parent_files, dst_parent_files)
