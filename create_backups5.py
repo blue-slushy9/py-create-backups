@@ -169,7 +169,7 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
             # Add file to parent_files dictionary
-            parent_files[item] = new_fullpath
+            parent_files[item] = fullpath # 6/5/24 - changed to 'fullpath' from 'new_fullpath'
             # 11:11 is just a generic timestamp for debugging purposes;
             dict[item] = '11:11' # BUG: need exact dict & subdict?
             # Once the item/file is added to the dictionary, we need to remove

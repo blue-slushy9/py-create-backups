@@ -1,3 +1,14 @@
+# 6/5/24
+
+-Upon further inspection, all of the filepaths in the structures from the
+topmost directory are showing the same type of error, i.e. filename at end of
+filepath.
+
+-In src_parent_files, the parent directories for the A*.txt files include the 
+filenames at the end for some reason.
+
+-For some reason, A3.txt got added to the structure for directories.
+
 # 6/4/24
 
 Added the few lines of code to find_files1() that adds the files and
