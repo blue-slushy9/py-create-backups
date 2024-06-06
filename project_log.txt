@@ -1,4 +1,12 @@
+# PROJECT LOG -- most recent updates are at the top
+
 # 6/5/24
+
+-Started writing a Python script to help me write to files at random. It is
+almost finished, I will use it to test my overwrite function, which uses
+timestamps to decide to which files to write.
+
+-Fixed those bugs! All files and directories are going where they should. Now I need to do what? Can't remember...
 
 -Upon further inspection, all of the filepaths in the structures from the
 topmost directory are showing the same type of error, i.e. filename at end of
