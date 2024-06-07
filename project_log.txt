@@ -1,5 +1,11 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/6/24
+
+The Python script for writing to random files works, but the timestamps are
+still not updating. Started looking at the get_timestamp() function in my
+program. Will have to continue researching and troubleshooting tomorrow...
+
 # 6/5/24
 
 -Started writing a Python script to help me write to files at random. It is

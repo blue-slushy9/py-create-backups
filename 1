@@ -73,7 +73,9 @@ for random_file in random_files:
     # Verify file was written to using read method
     with open(random_file, 'r') as file:
         contents = file.read()
-        print(f'[{random_file}]')
+        print(random_file)
         print(contents)
         print()
+
+# Use write() method to write some text to the three randomly selected files
 

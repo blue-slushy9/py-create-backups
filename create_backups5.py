@@ -591,8 +591,11 @@ def overwrite_files(src_files, dst_files):
             #if src_filepath not dst_filepath:
             # Then retrieve the timestamp for each file using their filepaths    
             src_time = get_timestamp(src_filepath)
+            print(f'src_filepath: {src_filepath}')
             print(f'SRC file: {file}, Timestamp: {src_time}')
+            print()
             dst_time = get_timestamp(dst_filepath)
+            print(f'dst_filepath: {dst_filepath}')
             print(f'DST file: {file}, Timestamp: {dst_time}\n')
             # If source copy of file was modified before destination copy...
             if src_time > dst_time: 
