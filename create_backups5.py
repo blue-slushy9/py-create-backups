@@ -559,14 +559,22 @@ def get_filepaths(file, src_files, dst_files):
 
 # Define function that will retrieve the timestamp
 def get_timestamp(fullpath):
-    # Use os.stat to get file metadata
+    # Use os.stat to get file metadata, then assign to variable
     stat = os.stat(fullpath)
+    # Retrieve date and time of last file modification from the metadata, 
+    # then assign to variable
+    mod_time = stat.st_mtime
+    #print(f'mod_time: {mod_time}')
+    # Convert modification time to datetime object, otherwise it will not be
+    # human-readable
+    dt_mod_time = datetime.fromtimestamp(mod_time)
+    # DEBUG
+    #print(f'dt_mod_time: {dt_mod_time}')
+    return dt_mod_time 
     # Convert timestamp to datetime object, 'stat.st_mtime' is the time of the
     # last file modification
-    timestamp = datetime.fromtimestamp(stat.st_mtime)
-    # DEBUG
-    #print(f'timestamp: {timestamp}')
-    return timestamp
+    #timestamp = datetime.fromtimestamp(stat.st_mtime)
+
 
 
 # OVERWRITE FILES BLOCK - we first overwrite files that already exist in both
@@ -580,6 +588,8 @@ def get_timestamp(fullpath):
 def overwrite_files(src_files, dst_files):
     # This counter will keep track of how many total files were overwritten
     n = 0
+    # Create a list to keep track of our overwritten files
+    overwritten_files = []
     # Iterate over every file in source dictionary
     for file in src_parent_files:
         # If the file is also in the destination dictionary...
@@ -590,10 +600,11 @@ def overwrite_files(src_files, dst_files):
             # but the logic was flawed
             #if src_filepath not dst_filepath:
             # Then retrieve the timestamp for each file using their filepaths    
+            # Source timestamps
             src_time = get_timestamp(src_filepath)
             print(f'src_filepath: {src_filepath}')
-            print(f'SRC file: {file}, Timestamp: {src_time}')
-            print()
+            print(f'SRC file: {file}, Timestamp: {src_time}\n')
+            # Destination timestamps
             dst_time = get_timestamp(dst_filepath)
             print(f'dst_filepath: {dst_filepath}')
             print(f'DST file: {file}, Timestamp: {dst_time}\n')
@@ -604,9 +615,11 @@ def overwrite_files(src_files, dst_files):
                 print(f'Removed {dst_filepath}.')
                 # Copy the source file along with its metadata
                 copy2(src_filepath, dst_filepath)
-                print(f'Copied {file} to {dst_filepath}.')
+                print(f'Copied {file} to {dst_filepath}.\n')
                 # Increase counter by 1
                 n+=1
+                # Add file to list of overwritten files
+                overwritten_files.append(file)
             # If the copy of the file in the destination directory was modified
             # *after* the copy in the source directory, notify the user
             elif src_time < dst_time:
@@ -617,6 +630,15 @@ def overwrite_files(src_files, dst_files):
     # User notification of no overwrites
     if n == 0:
         print(f'No files were overwritten.\n')
+    elif n == 1:
+        print(f'{n} file in the destination directory was overwritten:\n')
+        # We use [0] to eliminate the brackets around the filename
+        print(overwritten_files[0])
+    else:
+        print(f'{n} files in the destination directory were overwritten:\n')
+        # Iterate over list of overwritten files and print them one by one
+        for ovrwrt_file in overwritten_files:
+            print(ovrwrt_file)
 
 # Call function
 overwrite_files(src_parent_files, dst_parent_files)

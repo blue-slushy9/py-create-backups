@@ -69,7 +69,12 @@ for random_file in random_files:
     # Use 'with' to automatically handle closing it after writing, open in
     # append mode ('a') to add text to file instead of truncating
     with open(random_file, 'a') as file:
-        file.write('testing...\n') 
+        file.write('testing...\n')
+        # Forces data in the buffer to be written to file on disk immediately
+        file.flush() # 6/7/24 - added to try to fix timestamps issue
+        # Forces OS to flush the file's in-memory buffers to the disk
+        os.fsync(file.fileno()) # 6/7/24 - added to try to fix timestamps issue
+
     # Verify file was written to using read method
     with open(random_file, 'r') as file:
         contents = file.read()

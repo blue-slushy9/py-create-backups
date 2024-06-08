@@ -1,5 +1,15 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/7/24
+
+My program works... except when I write to the files using my Python script.
+If I write to them manually, thus far using vim only, then the last
+modification times do get updated, my program is able to use them, and it does
+overwrite the files in destination if their timestamps are less recent than
+that of the same file in the source directory. Not sure if the Python write
+issue is a huge deal really, but I spent about 20 minutes trying to fix it
+tonight, to no avail...
+
 # 6/6/24
 
 The Python script for writing to random files works, but the timestamps are
