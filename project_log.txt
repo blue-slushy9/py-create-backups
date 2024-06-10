@@ -1,5 +1,13 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/9/24
+
+Created yet another copy of the create_backupsX.py file. Been testing it in a
+"production" environment, i.e. with some of my real files and directories. I
+have been facing some more bugs, but they seem to stem from the old code in
+the program that creates the nested directory structures. I think it is a good
+time to start deleting that code.
+
 # 6/7/24
 
 My program works... except when I write to the files using my Python script.
