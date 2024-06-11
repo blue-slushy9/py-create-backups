@@ -1,5 +1,26 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/10/14
+
+-Should maybe start with a simpler production environment for testing, then
+work my way up to more complex directory structures.
+
+-Actually, upon examining the error, code, and ouput again; I think the
+problem may be the logic I am using for where to stop adding parent
+directories to my par_dirs list, e.g. "Alex's PC" should not be added to that
+as it is the equivalent of the parent test directory, A. However, when I run
+version 5 of the program in my test environment, it runs fine. So there seems
+to be an issue with running it in production, i.e. my ~/test directory.
+
+-It seems there's a problem with the parent filepaths in my parent_dirs
+structures, but only for the topmost directory. The directory name gets added
+to the end of the filepath, which I think is what is causing the key error in
+both versions 5 and 6 of the program.
+
+-Started excising the code from create_backups6.py that has anything to do with
+my original dictionaries. I am hoping that getting rid of those structures
+will fix the issue I am seeing when running the program in production.
+
 # 6/9/24
 
 Created yet another copy of the create_backupsX.py file. Been testing it in a

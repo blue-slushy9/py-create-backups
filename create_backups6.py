@@ -98,7 +98,7 @@ print(f'destination: {destination}\n')
 # build the respective dictionaries;
 # Arguments: full filepath of directory, name of directory, dictionary to be
 # built
-def find_dirs(fullpath, name, dict):     
+def find_dirs(fullpath, name):     
     # This will create an items object (list) that can be looped through
     items = os.listdir(fullpath)
     # 'items' is a list that contains only strings,
@@ -123,21 +123,21 @@ def find_dirs(fullpath, name, dict):
         if os.path.isdir(new_fullpath):
             # DEBUG
             print(f'dir: {item}')
-            dict[item] = {}
-            new_dict = dict[item]
-            print(f'new_dict: {new_dict}')
+            #dict[item] = {}
+            #new_dict = dict[item]
+            #print(f'new_dict: {new_dict}')
             # This will create an items object (list) that can be looped through;
             new_items = os.listdir(new_fullpath)
             print(f'new_items: {new_items}')
             # Call function recursively
-            find_dirs(new_fullpath, name, new_dict)
+            find_dirs(new_fullpath, name)
 
     print('# /FIND_DIRS() BLOCK\n')
     return dict
 
 # We need to define a separate function for the first outer key because it is
 # the only one for which the respective dictionary keys will not match
-def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated arguments to include parent_dirs
+def find_files1(fullpath, parent_dirs, parent_files): # 5/22/24 - updated arguments to include parent_dirs
     #for dir in src_dict:
     items = os.listdir(fullpath)
     # We will use a second list to keep track of the items
@@ -170,7 +170,7 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
             # Add file to parent_files dictionary
             parent_files[item] = fullpath # 6/5/24 - changed to 'fullpath' from 'new_fullpath'
             # 11:11 is just a generic timestamp for debugging purposes;
-            dict[item] = '11:11' # BUG: need exact dict & subdict?
+            #dict[item] = '11:11' # BUG: need exact dict & subdict?
             # Once the item/file is added to the dictionary, we need to remove
             # it from the items list;
             #items.remove(item)
@@ -190,27 +190,16 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
             #dirs[0].append(item) # 5/14/24 - dirs[0] caused an IndexError
 
     # DEBUG
-    print('# INSIDE FUNCTION TEST PRINTS\n')
-    print(f'dict: {dict}\n')
-    #print(f'dict["A"]: {dict}\n')
-    #print(f'dict["A"]["a1"]: {dict["a1"]}\n')
-    #print(f'dict["A"]["a2"]: {dict["a2"]}\n')
-
     print('/# FIND_FILES1() BLOCK\n')
     
     # Initial values, only valid for first iteration
     i=0
     #new_dirs = []
     # Tentative version of FF2 where for loop is removed
-    def find_files2(dir, dirs, fullpath, dict, i, parent_dirs, parent_files): # 5/22/24 - added parent_dirs as argument
+    def find_files2(dir, dirs, fullpath, i, parent_dirs, parent_files): # 5/22/24 - added parent_dirs as argument
         # DEBUG 
         print(f'# FIND_FILES2() BLOCK\n')
         print(f'dirs1: {dirs}\n')
-        #print(f'new_dirs: {new_dirs}\n')
-        # We need to create this list and clear it after every recursive call
-        #new_dirs = []
-        #print(f'dirs: {dirs}\n')
-        #print(f'new_dirs: {new_dirs}\n')
         print(f'dir1: {dir}\n')
         print(f'fullpath1: {fullpath}\n')
         # Will have to find a way to get this to update for each while-loop
@@ -222,27 +211,17 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
         print(f'new_fullpath1: {new_fullpath}\n')     # issue with subdicts in dirs;
         items = os.listdir(new_fullpath)             # 3/30/24: this also seems to be
         print(f'items1: {items}\n')                   # where the bug is that preventing
-        #fullpaths.append(new_fullpath)              # a1a from being iterated through,
         for item in items:                           # i.e. its path ends in a1a/a1a
             print(f'item: {item}\n')
             #new_fullpath = new_fullpath
             print(f'new_fullpath2: {new_fullpath}\n')
             temp_fullpath = (new_fullpath+slashes+item)
             print(f'temp_fullpath1: {temp_fullpath}\n')
-            #global parent_dirs # 5/22/24 - commented out
-            #parent_dirs[item] = new_fullpath # 5/23/24 - commented out
             print(f'parent_dirs1: {parent_dirs}\n')
             # If the item is not a directory...
             if not os.path.isdir(temp_fullpath):
                 # Add file to parent_files dictionary
                 parent_files[item] = new_fullpath
-                # temp_dict is the current sub-dictionary that is being changed
-                #print(f'src_dict: {src_dict}\n')
-                #temp_dict = src_dict[source][dir]
-                print(f'pre-temp_dict dict: {dict}\n')
-                temp_dict = dict
-                temp_dict[item] = '11:11' # Is this where the subdicts problem lies? 
-                print(f'temp_dict1: {temp_dict}\n')
             # Else, if the item is a directory we add it to our parent_dirs 
             # dictionary, as well as our new list
             else:
@@ -262,16 +241,13 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
                 print(f'dirs[i]: {dirs[i]}\n')
 
 
-
-    #print('# BEGIN FIND_FILES2() INITIAL CALL\n')
-
     # These two nested functions will be called in ff2_while_loop()
 
     # Now the exclusive stop point will be the sublist that contains the dir
     def find_limit(dir):    
         for j in range(len(dirs)):
             if dir in dirs[j]:
-                # We need to add 1 because range is exclusive
+                # We need to add 1 because range is non-inclusive
                 limit = (j + 1)
                 # DEBUG
                 print(limit)
@@ -291,7 +267,6 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
         # (then we have to use +1 or the range (1, 1) would do nothing);
         for n in range(1, limit): # 5/14/24 - len(dirs) is NOT correct metric, you need the index of the sub-list of the dir
             temp_fullpath = parent_dirs[dir]
-            #print(f'n temp_fullpath: {temp_fullpath}\n')
             split_parents = temp_fullpath.split(slashes)
             print(f'n split_parents: {split_parents}\n')
             # n starts at 1 because -1 is the last element in a list
@@ -308,7 +283,9 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
     # This function uses the parents list to create parent dictionary keys for
     # our parallel dictionary
     def create_par_dicts(dir, par_dirs):
-        # First we assign our base dictionary to the variable in order to make
+        # Declare empty dictionary
+        dict = {}
+        # Next we assign our base dictionary to the variable in order to make
         # changes to it
         current_dict = dict
         # Now that the par_dirs list is complete, we can loop through it
@@ -337,11 +314,11 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
                     print(f'while loop parent_dirs: {parent_dirs}\n')
                     # The dict variable is static here because this for loop is
                     # only for the first directories list
-                    current_dict = dict[dir] # 4/13/24: this is fine because it's only for first iteration
+                    #current_dict = dict[dir] # 4/13/24: this is fine because it's only for first iteration
                     #dict = current_dict # Uncommented on 3/29/24
-                    print(f'current_dict: {current_dict}\n')
-                    find_files2(dir, dirs, fullpath, current_dict, i, parent_dirs, parent_files)
-                    print(f'After dict: {dict}\n')
+                    #print(f'current_dict: {current_dict}\n')
+                    find_files2(dir, dirs, fullpath, i, parent_dirs, parent_files)
+                    #print(f'After dict: {dict}\n')
                 i+=1
                 print(f'while loop i: {i}\n')
             
@@ -356,7 +333,7 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
                         #temp_fullpath = parent_dirs[dir]
                         #split_parents = temp_fullpath.split(slashes)
                         #par_dir = split_parents[-1]
-                        print(f'else dict: {dict}\n')
+                        #print(f'else dict: {dict}\n')
                         #print(f'else par_dir: {par_dir}\n')
                         print(f'else dir: {dir}\n')
                         #temp_fullpath = parent_dirs[dir]
@@ -381,8 +358,8 @@ def find_files1(dict, fullpath, parent_dirs, parent_files): # 5/22/24 - updated 
                         #current_dict = 
                         print(f'before FF2 current_dict: {current_dict}\n')
                         # 4/7/24: is current_dict the right argument?
-                        find_files2(dir, dirs, temp_fullpath, current_dict, i, parent_dirs, parent_files)
-                        print(f'else final dict: {dict}\n')
+                        find_files2(dir, dirs, temp_fullpath, i, parent_dirs, parent_files)
+                        #print(f'else final dict: {dict}\n')
                     i+=1
                     print(f'while loop i: {i}\n')
                     return i # 5/12/24 - added to try to fix the i bug
@@ -413,11 +390,11 @@ print(f'src_path_obj1: {src_abs_path}')
 #dictionary1 = {}
 # Define dict1, the dictionary that corresponds to the source; this layer is
 # really only there to encapsulate the actual dictionary
-dict1 = {}
+#dict1 = {}
 # Create subdictionary for the source directory, e.g. A
-dict1[source] = {}
+#dict1[source] = {}
 # For clarity, create a second variable that points to dict1[source]
-subdict1 = dict1[source]
+#subdict1 = dict1[source]
 # Create the parent directories dictionary, which will store the full parent
 # filepaths corresponding to subdirectory in the source
 src_parent_dirs = {}
@@ -429,9 +406,9 @@ src_parent_files = {}
 #print(f'dict1: {dict1}')
 # Arguments: fullpath of source directory, name of source directory, 
 # dictionary to be built
-find_dirs(src_abs_path, source, subdict1)
+find_dirs(src_abs_path, source)
 # DEBUG
-print(f'dict1: {dict1}\n')
+#print(f'dict1: {dict1}\n')
 print(f'src_parent_dirs: {src_parent_dirs}\n')
 
 # DESTINATION/DICT2 FIND_DIRS() BLOCK
@@ -447,11 +424,11 @@ print(f'dst_abs_path: {dst_abs_path}')
 #dictionary2 = {}
 # Define dictionary2, the destination;
 #dict2 = dictionary2
-dict2 = {}
+#dict2 = {}
 # Create subdictionary for the source directory, e.g. B
-dict2[destination] = {}
+#dict2[destination] = {}
 # For clarity, create a second variable that points to dict2[destination]
-subdict2 = dict2[destination]
+#subdict2 = dict2[destination]
 # Create the parent directories dictionary, which will store the full parent
 # filepaths corresponding to each subdirectory in the destination
 dst_parent_dirs = {}
@@ -462,35 +439,25 @@ dst_parent_files = {}
 #print(f'dict2: {dict2}')
 # Arguments: fullpath of destination directory, name of destination directory,
 # dictionary to be built
-find_dirs(dst_abs_path, destination, subdict2)
-print(f'dict2: {dict2}\n')
+find_dirs(dst_abs_path, destination)
+#print(f'dict2: {dict2}\n')
 print(f'dst_parent_dirs: {dst_parent_dirs}\n')
 
 # DICT1 FIND_FILES() BLOCK
-find_files1(subdict1, src_abs_path, src_parent_dirs, src_parent_files)
+find_files1(src_abs_path, src_parent_dirs, src_parent_files)
 print('# FIND_FILES() DICT1 BLOCK\n')
 
-'''# DEBUG
-print(f'dict1: {dict1}\n')
-print(f'dict1["A"]: {dict1["A"]}\n')
-print(f'dict1["A"]["a1"]: {dict1["A"]["a1"]}\n')
-print(f'dict1["A"]["a1"]["a1a"]: {dict1["A"]["a1"]["a1a"]}\n')
-print(f'dict1["A"]["a2"]: {dict1["A"]["a2"]}\n')
-print(f'dict1["A"]["a1"]["a1a"]["a1b"]: {dict1["A"]["a1"]["a1a"]["a1b"]}\n')
-print('/# FIND_FILES() DICT1 BLOCK\n')
-'''
-
 # DICT2 FIND_FILES() BLOCK
-find_files1(subdict2, dst_abs_path, dst_parent_dirs, dst_parent_files)
+find_files1(dst_abs_path, dst_parent_dirs, dst_parent_files)
 print('# FIND_FILES() DICT2 BLOCK\n')
 # DEBUG
-print(f'dict2: {dict2}\n')
+#print(f'dict2: {dict2}\n')
 print('/# FIND_FILES() DICT2 BLOCK\n')
 
-# DEBUG
-def print_keys(dict):
-    for key in dict:
-        print(key)
+## DEBUG
+#def print_keys(dict):
+#    for key in dict:
+#        print(key)
 
 # DEBUG
 print(f'src_parent_dirs: {src_parent_dirs}\n') # 5/22/24 - extracted both structures
