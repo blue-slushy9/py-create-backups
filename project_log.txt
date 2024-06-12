@@ -1,5 +1,22 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/11/24
+
+-For future reference, the directory where version 7 breaks down, at the point
+of create_par_dicts(), is "Log Analysis"; and the KeyError is in reference to
+"Alex's PC".
+
+-Might be a good idea to keep working on version 6 of the program, where I
+remove all code that builds or refers to my original nested dictionaries. I'm
+not sure, but I believe the create_par_dicts() function may refer to those
+structures, which I do not believe I actually need.
+
+-Investigating the error that I get when running in my ~/test directory, think
+there may be a problem with the get_pars_list() and possibly the find_limit()
+functions. The logic I am using the set the stop point for finding the file-
+path for the directory we are working with may be flawed; I am using numeric
+logic instead of something simpler, e.g. stopping at the "source" directory.
+
 # 6/10/14
 
 -Should maybe start with a simpler production environment for testing, then
