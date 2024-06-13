@@ -474,8 +474,9 @@ def get_timestamp(fullpath):
 def overwrite_files(src_files, dst_files):
     # This counter will keep track of how many total files were overwritten
     n = 0
-    # Create a list to keep track of our overwritten files
-    overwritten_files = []
+    # Create a dictionary to keep track of our overwritten files and their
+    # filepaths
+    overwritten_files = {}
     # Iterate over every file in source dictionary
     for file in src_parent_files:
         # If the file is also in the destination dictionary...
@@ -504,8 +505,9 @@ def overwrite_files(src_files, dst_files):
                 print(f'Copied {file} to {dst_filepath}.\n')
                 # Increase counter by 1
                 n+=1
-                # Add file to list of overwritten files
-                overwritten_files.append(file)
+                # Add file and its destination path to dictionary of over-
+                # written files
+                overwritten_files[file] = dst_filepath
             # If the copy of the file in the destination directory was modified
             # *after* the copy in the source directory, notify the user
             elif src_time < dst_time:
@@ -519,12 +521,15 @@ def overwrite_files(src_files, dst_files):
     elif n == 1:
         print(f'{n} file in the destination directory was overwritten:\n')
         # We use [0] to eliminate the brackets around the filename
-        print(overwritten_files[0])
+        print(f'Filename: {overwritten_files[file]}\n')
+        # BUG: this isn't the right filepath, we need to save it above somehow
+        print(f'Filepath: {overwritten_files[file]}\n')
     else:
         print(f'{n} files in the destination directory were overwritten:\n')
         # Iterate over list of overwritten files and print them one by one
         for ovrwrt_file in overwritten_files:
-            print(ovrwrt_file)
+            print(f'Filename: {ovrwrt_file}')
+            print(f'Filepath: {overwritten_files[ovrwrt_file]}\n')
 
 # Call function
 overwrite_files(src_parent_files, dst_parent_files)

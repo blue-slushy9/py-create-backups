@@ -2,6 +2,12 @@
 
 # 6/12/24
 
+-NOTE: current process is to work on the file in ~/test and then copy to the
+local GitHub repo as needed.
+
+-Working on some informational print messages to help the user keep track of
+which files have been overwritten, etc.
+
 -The old code has been excised and everything seems to be working
 "in production". However, I noticed an error in my parent_dirs structure;
 which is that for the topmost layer in the directory structure, the name of
