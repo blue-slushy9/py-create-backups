@@ -1,5 +1,18 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/12/24
+
+-The old code has been excised and everything seems to be working
+"in production". However, I noticed an error in my parent_dirs structure;
+which is that for the topmost layer in the directory structure, the name of
+the directory we are working with is being appended to the end of the paths of
+its parent directories. This error does not appear for directories further
+down in the directory structure. I'm surprised it hasn't caused any issues
+up to this point, but it definitely could in the future.
+
+-Version 6 of the program that I developed for the test directory seems to
+work. I removed all of the code that referred to my original dictionaries. 
+
 # 6/11/24
 
 -For future reference, the directory where version 7 breaks down, at the point

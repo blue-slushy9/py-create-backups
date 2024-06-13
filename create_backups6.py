@@ -240,67 +240,8 @@ def find_files1(fullpath, parent_dirs, parent_files): # 5/22/24 - updated argume
                 dirs[i].append(item)
                 print(f'dirs[i]: {dirs[i]}\n')
 
-# May not need this code as I am trying to phase out my original nested
-# dictionary structures
     
     # These two nested functions will be called in ff2_while_loop()
-'''
-    # Now the exclusive stop point will be the sublist that contains the dir
-    def find_limit(dir):    
-        for j in range(len(dirs)):
-            if dir in dirs[j]:
-                # We need to add 1 because range is non-inclusive
-                limit = (j + 1)
-                # DEBUG
-                print(limit)
-                return limit
-            else:
-                pass
-
-    # This function will create the list of parent directories
-    def get_pars_list(dir):
-        # We will need to keep track of the parent dirs for each
-        # directory moving forward
-        par_dirs = []
-        # Call the above function to get value for limit
-        limit = find_limit(dir)
-        # This for loop will be used to create the full filepath for
-        # each dir in dirs[i]; n would start at 0 if not for the 1,
-        # (then we have to use +1 or the range (1, 1) would do nothing);
-        for n in range(1, limit): # 5/14/24 - len(dirs) is NOT correct metric, you need the index of the sub-list of the dir
-            temp_fullpath = parent_dirs[dir]
-            split_parents = temp_fullpath.split(slashes)
-            print(f'n split_parents: {split_parents}\n')
-            # n starts at 1 because -1 is the last element in a list
-            par_dir = split_parents[-n]
-            print(f'n: {n}\n')
-            print(f'else par_dir: {par_dir}\n')
-            # insert allows for adding a list element at a specific
-            # index, in this case 0; we need to add the parent
-            # directories in the correct order
-            par_dirs.insert(0, par_dir)
-        print(f'else par_dirs: {par_dirs}\n')
-        return par_dirs
-   
-    # This function uses the parents list to create parent dictionary keys for
-    # our parallel dictionary
-    def create_par_dicts(dir, par_dirs):
-        # Declare empty dictionary
-        dict = {}
-        # Next we assign our base dictionary to the variable in order to make
-        # changes to it
-        current_dict = dict
-        # Now that the par_dirs list is complete, we can loop through it
-        for par in par_dirs:
-            # We add parent directories as keys, one by one, in correct order
-            current_dict = current_dict[par]
-        # Finally, we add our current directory as the final key so that we
-        # can move forward with updating its subdict in the following steps
-        current_dict = current_dict[dir]
-        # DEBUG
-        print(f'create_par_dicts() current_dict: {current_dict}\n')
-        return current_dict # 5/11/24 - need to return output to function call
-'''        
     # Initial dict value will work for first iteration of find_files2() only
     def ff2_while_loop1(i):
         print('# BEGIN FF2 WHILE LOOP\n')
@@ -343,13 +284,13 @@ def find_files1(fullpath, parent_dirs, parent_files): # 5/22/24 - updated argume
                         
                         # This function will create the list of parent directories
                         print('# BEGIN GET_PARS_LIST()\n')
-                        par_dirs = get_pars_list(dir)
+                        #par_dirs = get_pars_list(dir)
                         print('/# GET_PARS_LIST()\n')
                                                 
                         # This function uses the parents list to create parent
                         # dictionary keys
                         print('# BEGIN CREATE_PAR_DICTS()\n') 
-                        current_dict = create_par_dicts(dir, par_dirs) # 5/11/24 - need to capture output
+                        #current_dict = create_par_dicts(dir, par_dirs) # 5/11/24 - need to capture output
                         print('/# CREATE_PAR_DICTS()\n')          # to pass to find_files2() below
                                                 
                         # This line may be the problem, as it is not dynamic
@@ -358,7 +299,7 @@ def find_files1(fullpath, parent_dirs, parent_files): # 5/22/24 - updated argume
                         print(f'Before FF2 temp_fullpath: {temp_fullpath}\n')
                         # Update current_dict to point to correct subdict
                         #current_dict = 
-                        print(f'before FF2 current_dict: {current_dict}\n')
+                        #print(f'before FF2 current_dict: {current_dict}\n')
                         # 4/7/24: is current_dict the right argument?
                         find_files2(dir, dirs, temp_fullpath, i, parent_dirs, parent_files)
                         #print(f'else final dict: {dict}\n')
@@ -456,10 +397,10 @@ print('# FIND_FILES() DICT2 BLOCK\n')
 #print(f'dict2: {dict2}\n')
 print('/# FIND_FILES() DICT2 BLOCK\n')
 
-## DEBUG
-#def print_keys(dict):
-#    for key in dict:
-#        print(key)
+# DEBUG
+def print_keys(dict):
+    for key in dict:
+        print(key)
 
 # DEBUG
 print(f'src_parent_dirs: {src_parent_dirs}\n') # 5/22/24 - extracted both structures
