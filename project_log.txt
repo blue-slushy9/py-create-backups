@@ -1,5 +1,16 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/13/24
+
+-Continued doing test runs and debugging the program in ~/test, then I found
+the bug I was expecting! I was working with the "IT Tutorials/" subdirectory
+tonight, which has a "walkthrough" or a "walkthrough.txt" file inside each of
+its own subdirectories; this is because each subdirectory corresponds to a
+different tutorial. Ergo, since I haven't programmed a way for the computer
+to respond to files with the same filename, some of the "walkthrough" files
+are not being copied over to the destination directory. Will have to provide
+instructions for how to deal with multiple files with the same filename!
+
 # 6/12/24
 
 -NOTE: current process is to work on the file in ~/test and then copy to the

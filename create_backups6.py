@@ -520,16 +520,17 @@ def overwrite_files(src_files, dst_files):
         print(f'No files were overwritten.\n')
     elif n == 1:
         print(f'{n} file in the destination directory was overwritten:\n')
-        # We use [0] to eliminate the brackets around the filename
-        print(f'Filename: {overwritten_files[file]}\n')
-        # BUG: this isn't the right filepath, we need to save it above somehow
-        print(f'Filepath: {overwritten_files[file]}\n')
+        # There doesn't seem to be a way to print dictionary keys directly,
+        # so we have to loop through them even though there's only one
+        for file in overwritten_files:
+            print(f'Filename: {file}')
+            print(f'Filepath: {overwritten_files[file]}\n')
     else:
         print(f'{n} files in the destination directory were overwritten:\n')
         # Iterate over list of overwritten files and print them one by one
-        for ovrwrt_file in overwritten_files:
-            print(f'Filename: {ovrwrt_file}')
-            print(f'Filepath: {overwritten_files[ovrwrt_file]}\n')
+        for file in overwritten_files:
+            print(f'Filename: {file}')
+            print(f'Filepath: {overwritten_files[file]}\n')
 
 # Call function
 overwrite_files(src_parent_files, dst_parent_files)
