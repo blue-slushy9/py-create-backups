@@ -2,6 +2,12 @@
 
 # 6/14/24
 
+-Unfortunately, the dictionary structures I was using were so deeply embedded
+into my program that it is proving challenging getting it to work without
+them. I may need to scratch version 8 of the program and find a way to make
+version 6 work instead. I suppose I could always create an additional
+structure to store and manage files with the same filename.
+
 -Created version 8 of this program, wherein I phase out the dictionaries and
 use lists instead.
 
