@@ -1,5 +1,16 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/14/24
+
+-Created version 8 of this program, wherein I phase out the dictionaries and
+use lists instead.
+
+-ChatGPT says that dictionaries are mutable, so it seems the values
+(filepaths) are being overwritten when the filename (key) is the same. Maybe
+I should just use a list that stores the full filepath for each file instead?
+That seems bone-headed and inefficient, but perhaps is the best solution in
+this case.
+
 # 6/13/24
 
 -Continued doing test runs and debugging the program in ~/test, then I found

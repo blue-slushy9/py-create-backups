@@ -1,3 +1,7 @@
+# This version of the program phases out the dictionaries in favor of simple
+# lists, as there was the issue with multiple files with the same filename and
+# their values being overwritten in version 6
+
 # This is the production test version of this program; it worked in my test
 # environment, now I am going to try it with actual files and directories
 
@@ -340,10 +344,10 @@ print(f'src_path_obj1: {src_abs_path}')
 #subdict1 = dict1[source]
 # Create the parent directories dictionary, which will store the full parent
 # filepaths corresponding to subdirectory in the source
-src_parent_dirs = {}
+#src_parent_dirs = {}
 # Create the parent directories dictionary for files, which will store the
 # full parent filepaths corresponding to each file in the destination
-src_parent_files = {}
+#src_parent_files = {}
 #dict1[source] = None
 # DEBUG
 #print(f'dict1: {dict1}')
@@ -374,10 +378,10 @@ print(f'dst_abs_path: {dst_abs_path}')
 #subdict2 = dict2[destination]
 # Create the parent directories dictionary, which will store the full parent
 # filepaths corresponding to each subdirectory in the destination
-dst_parent_dirs = {}
+#dst_parent_dirs = {}
 # Create the parent directories dictionary for files, which will store the
 # full parent filepaths corresponding to each file in the destination
-dst_parent_files = {}
+#dst_parent_files = {}
 # DEBUG
 #print(f'dict2: {dict2}')
 # Arguments: fullpath of destination directory, name of destination directory,
@@ -386,11 +390,15 @@ find_dirs(dst_abs_path, destination)
 #print(f'dict2: {dict2}\n')
 print(f'dst_parent_dirs: {dst_parent_dirs}\n')
 
+
 # DICT1 FIND_FILES() BLOCK
+# This list will store the partial filepaths of all subdirectories
+src_list = []
 find_files1(src_abs_path, src_parent_dirs, src_parent_files)
 print('# FIND_FILES() DICT1 BLOCK\n')
 
 # DICT2 FIND_FILES() BLOCK
+dst_list = []
 find_files1(dst_abs_path, dst_parent_dirs, dst_parent_files)
 print('# FIND_FILES() DICT2 BLOCK\n')
 # DEBUG
