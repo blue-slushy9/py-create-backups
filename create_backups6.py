@@ -170,14 +170,14 @@ def find_files1(fullpath, parent_dirs, parent_files, repeat_files): # 5/22/24 - 
             # Verify whether filename is already in the parent_files structure
             if item not in parent_files:
                 # Add file to parent_files dictionary
-                parent_files[item] = fullpath # 6/5/24 - changed to 'fullpath' from 'new_fullpath'
+                parent_files[item] = fullpath 
             elif item in parent_files:
                 # Add the fullpath to the item to our list of repeat filenames
                 repeat_files.append(new_fullpath)    
             print(f'updated items: {items}\n')
         # Else, if item is a directory...
         else:
-            # Verify whether filename is already in the parent_files structure
+            # Verify whether filename is already in the parent_dirs structure
             if item not in parent_dirs:
                 # Add directory to parent_dirs dictionary
                 parent_dirs[item] = new_fullpath
@@ -201,22 +201,22 @@ def find_files1(fullpath, parent_dirs, parent_files, repeat_files): # 5/22/24 - 
     i=0
     #new_dirs = []
     # Tentative version of FF2 where for loop is removed
-    def find_files2(dir, dirs, fullpath, i, parent_dirs, parent_files): # 5/22/24 - added parent_dirs as argument
+    def find_files2(dir, dirs, fullpath, i, parent_dirs, parent_files): 
         # DEBUG 
         print(f'# FIND_FILES2() BLOCK\n')
         print(f'dirs1: {dirs}\n')
         print(f'dir1: {dir}\n')
         print(f'fullpath1: {fullpath}\n')
         # Will have to find a way to get this to update for each while-loop
-        # iteration as well
-        if i == 0: # 3/30/24: added this if-else statement to try to correct the below: 
-            new_fullpath = (fullpath+slashes+dir)    # Uncommented 3/29/24: fixed
+        # iteration as well?
+        if i == 0: 
+            new_fullpath = (fullpath+slashes+dir)    
         elif i > 0: 
             new_fullpath = fullpath
-        print(f'new_fullpath1: {new_fullpath}\n')     # issue with subdicts in dirs;
-        items = os.listdir(new_fullpath)             # 3/30/24: this also seems to be
-        print(f'items1: {items}\n')                   # where the bug is that preventing
-        for item in items:                           # i.e. its path ends in a1a/a1a
+        print(f'new_fullpath1: {new_fullpath}\n')             
+        items = os.listdir(new_fullpath)                     
+        print(f'items1: {items}\n') 
+        for item in items:                           
             print(f'item: {item}\n')
             #new_fullpath = new_fullpath
             print(f'new_fullpath2: {new_fullpath}\n')
@@ -225,14 +225,24 @@ def find_files1(fullpath, parent_dirs, parent_files, repeat_files): # 5/22/24 - 
             print(f'parent_dirs1: {parent_dirs}\n')
             # If the item is not a directory...
             if not os.path.isdir(temp_fullpath):
-                # Add file to parent_files dictionary
-                parent_files[item] = new_fullpath
+                # Verify whether filename is already in the parent_files structure
+                if item not in parent_files:
+                    # Add file to parent_files dictionary
+                    parent_files[item] = new_fullpath
+                elif item in parent_files:
+                    # Add fullpath to item to our list of repeat filenames
+                    repeat_files.append(new_fullpath) 
             # Else, if the item is a directory we add it to our parent_dirs 
             # dictionary, as well as our new list
             else:
-                # Add directory to parent_dirs dictionary
-                parent_dirs[item] = new_fullpath
-                # Increment i to create our next list of subdirectories
+                # Verify whether directory name is already in parent_dirs
+                if item not in parent_dirs:
+                    # Add directory to parent_dirs dictionary
+                    parent_dirs[item] = new_fullpath
+                elif item in parent_dirs:
+                    # Add fullpath to item to our list of repeat directory names
+                    repeat_dirs.append(new_fullpath) 
+                    # Increment i to create our next list of subdirectories
                 i+=1
                 print(f'else i: {i}\n')
                 # i starts at 0, len(dirs) does not; therefore to make them
@@ -619,9 +629,9 @@ copy_files(src_parent_files, dst_parent_files)
 # entire directory structure and files contained therein
 
 # DEBUG
-print(f'src_repeat_dirs:\n{src_repeat_dirs}\n')
+#print(f'src_repeat_dirs:\n{src_repeat_dirs}\n')
 print(f'src_repeat_files:\n{src_repeat_files}\n')
 
-print(f'dst_repeat_dirs:\n{dst_repeat_dirs}\n')
+#print(f'dst_repeat_dirs:\n{dst_repeat_dirs}\n')
 print(f'dst_repeat_files:\n{dst_repeat_files}\n')
 
