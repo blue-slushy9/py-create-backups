@@ -137,7 +137,7 @@ def find_dirs(fullpath, name):
 
 # We need to define a separate function for the first outer key because it is
 # the only one for which the respective dictionary keys will not match
-def find_files1(fullpath, parent_dirs, parent_files): # 5/22/24 - updated arguments to include parent_dirs
+def find_files1(fullpath, parent_dirs, parent_files, repeat_files): # 5/22/24 - updated arguments to include parent_dirs
     #for dir in src_dict:
     items = os.listdir(fullpath)
     # We will use a second list to keep track of the items
@@ -181,7 +181,7 @@ def find_files1(fullpath, parent_dirs, parent_files): # 5/22/24 - updated argume
             if item not in parent_dirs:
                 # Add directory to parent_dirs dictionary
                 parent_dirs[item] = new_fullpath
-            elif item in parent_files:
+            elif item in parent_dirs:
                 # Add fullpath to item to our list of repeat directory names
                 repeat_dirs.append(new_fullpath) 
             # The below line may not be correct, we don't really want to add
@@ -346,9 +346,6 @@ print(f'src_path_obj1: {src_abs_path}')
 # Create the parent directories dictionary, which will store the full parent
 # filepaths corresponding to subdirectory in the source
 src_parent_dirs = {}
-# Create the parent directories dictionary for files, which will store the
-# full parent filepaths corresponding to each file in the destination
-src_parent_files = {}
 #dict1[source] = None
 # DEBUG
 #print(f'dict1: {dict1}')
@@ -388,16 +385,28 @@ find_dirs(dst_abs_path, destination)
 #print(f'dict2: {dict2}\n')
 print(f'dst_parent_dirs: {dst_parent_dirs}\n')
 
-# DICT1 FIND_FILES() BLOCK
-find_files1(src_abs_path, src_parent_dirs, src_parent_files)
+# SOURCE FIND_FILES() BLOCK
+
+# Create the parent directories dictionary for files, which will store the
+# full parent filepaths corresponding to each file in the destination
+src_parent_files = {}
+# Create the list that will store files with the same filename; other than the
+# first instance, which will go in the respective parent_files structure
+src_repeat_files = []
+# Call find_files functions (FF2 is nested in FF1)
+find_files1(src_abs_path, src_parent_dirs, src_parent_files, src_repeat_files)
 print('# FIND_FILES() DICT1 BLOCK\n')
 
-# DICT2 FIND_FILES() BLOCK
+# DESTINATION FIND_FILES() BLOCK
+
+# Create the list that will store files with the same filename; other than the
+# first instance, which will go in the respective parent_files structure
+dst_repeat_files = []
 # Create the parent directories dictionary for files, which will store the
 # full parent filepaths corresponding to each file in the destination
 dst_parent_files = {}
 # Call find_files functions (FF2 is nested in FF1)
-find_files1(dst_abs_path, dst_parent_dirs, dst_parent_files)
+find_files1(dst_abs_path, dst_parent_dirs, dst_parent_files, dst_repeat_files)
 print('# FIND_FILES() DICT2 BLOCK\n')
 # DEBUG
 #print(f'dict2: {dict2}\n')
@@ -410,11 +419,13 @@ def print_keys(dict):
 
 # DEBUG
 print(f'src_parent_dirs: {src_parent_dirs}\n') # 5/22/24 - extracted both structures
+print('src_parent_dirs keys:')
 print_keys(src_parent_dirs)
 print()
 print(f'src_parent_files: {src_parent_files}\n') # 5/22/24 - extracted both structures
 print(f'dst_parent_dirs: {dst_parent_dirs}\n')
-print_keys(f'dst_parent_dirs keys: {dst_parent_dirs}\n')
+print('dst_parent_keys:')
+print_keys(dst_parent_dirs)
 print()
 print(f'dst_parent_files: {dst_parent_files}\n')
 
@@ -606,3 +617,11 @@ copy_files(src_parent_files, dst_parent_files)
 # Not sure if this is really needed anymore due to the os.makedirs() method?
 # COPYTREE - finally if a directory exists in A but not in B, we can copy its
 # entire directory structure and files contained therein
+
+# DEBUG
+print(f'src_repeat_dirs:\n{src_repeat_dirs}\n')
+print(f'src_repeat_files:\n{src_repeat_files}\n')
+
+print(f'dst_repeat_dirs:\n{dst_repeat_dirs}\n')
+print(f'dst_repeat_files:\n{dst_repeat_files}\n')
+
