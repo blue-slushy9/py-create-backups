@@ -611,7 +611,7 @@ def copy_files(src_files, dst_files):
                 # 'os.path.dirname()' extracts only the directory portion of a
                 # filepath, we do this because os.makedirs() cannot work with
                 # filepaths that include a filename at the end
-                #dst_dirs = os.path.dirname(dst_filepath) # 5/28/24 - no longer necessary due to above changes
+                #dst_dirs = os.path.dirname(dst_filepath) 
                 # 'exist_ok=True' prevents the method from returning an error
                 # in the case that some of the directories in the argument
                 # filepath already exist

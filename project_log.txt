@@ -1,6 +1,37 @@
 # PROJECT LOG -- most recent updates are at the top
 
-# 6/16/24 
+# 6/16/24
+
+-As such, I think I will continue working on version 8 and try to iron out the
+issues I was encountering there.
+
+-Neither the source dictionary nor the destination dictionary will ever be
+complete if there are multiple files with the same filename, because the value
+for that will be overwritten with the filepath of the last instance of the
+file with that filename. Therefore, it may be necessary to use partial file-
+paths as the file identifiers, with the filepaths starting at the level of the
+source and destination directories; since their filepaths should be identical
+up to that point.
+
+-Trying to work through this error:
+
+'''
+File "/home/slushy/test/create_backups6.py", line 476, in get_timestamp
+    stat = os.stat(fullpath)
+           ^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: "/home/slushy/test/
+Alex's PC 2/IT Tutorials/Debian 11 DNS Issue (Permanent Fix)/walkthrough"
+'''
+
+There doesn't really seem to be an easy way to store multiple filepaths for
+files with identical filenames. If I had originally used lists with full file-
+paths, it could be done; however, it would be too onerous to excise the
+dictionary structures from my program at this point.
+
+Perhaps I can use both the original dictionary structures, as well as lists on
+the side? That is to say, would it be possible to use the original dictionaries
+only up to the point where we absolutely need the lists, then at that point
+create the lists?
 
 -Started writing the code that creates the additional list structures for the
 repeat files. The new code does not, at the very least, appear to be causing
