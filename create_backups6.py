@@ -167,18 +167,23 @@ def find_files1(fullpath, parent_dirs, parent_files): # 5/22/24 - updated argume
         # os.path.isdir() expects a path as argument, not a string
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
-            # Add file to parent_files dictionary
-            parent_files[item] = fullpath # 6/5/24 - changed to 'fullpath' from 'new_fullpath'
-            # 11:11 is just a generic timestamp for debugging purposes;
-            #dict[item] = '11:11' # BUG: need exact dict & subdict?
-            # Once the item/file is added to the dictionary, we need to remove
-            # it from the items list;
-            #items.remove(item)
+            # Verify whether filename is already in the parent_files structure
+            if item not in parent_files:
+                # Add file to parent_files dictionary
+                parent_files[item] = fullpath # 6/5/24 - changed to 'fullpath' from 'new_fullpath'
+            elif item in parent_files:
+                # Add the fullpath to the item to our list of repeat filenames
+                repeat_files.append(new_fullpath)    
             print(f'updated items: {items}\n')
         # Else, if item is a directory...
         else:
-            # Add directory to parent_dirs dictionary
-            parent_dirs[item] = new_fullpath
+            # Verify whether filename is already in the parent_files structure
+            if item not in parent_dirs:
+                # Add directory to parent_dirs dictionary
+                parent_dirs[item] = new_fullpath
+            elif item in parent_files:
+                # Add fullpath to item to our list of repeat directory names
+                repeat_dirs.append(new_fullpath) 
             # The below line may not be correct, we don't really want to add
             # a nested sub-list for every sub-directory in the outermost
             # directory; 
@@ -375,9 +380,6 @@ print(f'dst_abs_path: {dst_abs_path}')
 # Create the parent directories dictionary, which will store the full parent
 # filepaths corresponding to each subdirectory in the destination
 dst_parent_dirs = {}
-# Create the parent directories dictionary for files, which will store the
-# full parent filepaths corresponding to each file in the destination
-dst_parent_files = {}
 # DEBUG
 #print(f'dict2: {dict2}')
 # Arguments: fullpath of destination directory, name of destination directory,
@@ -391,6 +393,10 @@ find_files1(src_abs_path, src_parent_dirs, src_parent_files)
 print('# FIND_FILES() DICT1 BLOCK\n')
 
 # DICT2 FIND_FILES() BLOCK
+# Create the parent directories dictionary for files, which will store the
+# full parent filepaths corresponding to each file in the destination
+dst_parent_files = {}
+# Call find_files functions (FF2 is nested in FF1)
 find_files1(dst_abs_path, dst_parent_dirs, dst_parent_files)
 print('# FIND_FILES() DICT2 BLOCK\n')
 # DEBUG
