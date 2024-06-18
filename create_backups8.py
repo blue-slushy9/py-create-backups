@@ -120,6 +120,7 @@ def find_dirs(fullpath, name, dirs_list):
         # Update the fullpath variable to include the item name
         new_fullpath = os.path.abspath(fullpath+slashes+item)
         #new_fullpath = fullpath+slashes+item
+
         # DEBUG
         print(f'new_fullpath: {new_fullpath}')
         # If full filepath points to a directory...
@@ -127,9 +128,23 @@ def find_dirs(fullpath, name, dirs_list):
         if os.path.isdir(new_fullpath):
             # DEBUG
             print(f'dir: {item}')
+            # Split the fullpath to get only the partial path starting at source 
+            # or destination (name determines which)
+            split_path = new_fullpath.split(name)
+            # The local path to directory will always be element 1
+            local_path = split_path[1]
+            # Because of the way the split() method works, we have to glue the
+            # pieces back together
+            part_path = (slashes+name+local_path)
+            # First we make sure the directory isn't already in the list
+            if part_path not in dirs_list:
+                # Add the split path to the dirs_list
+                dirs_list.append(part_path)
+            else:
+                pass
             # If item is a subdirectory, append its fullpath to our list of
             # subdirectories
-            dirs_list.append(new_fullpath)
+            #dirs_list.append(new_fullpath)
             # DEBUG
             print(f'dirs_list: {dirs_list}\n')
             #dict[item] = {}
@@ -150,7 +165,7 @@ def find_dirs(fullpath, name, dirs_list):
 
 # We need to define a separate function for the first outer key because it is
 # the only one for which the respective dictionary keys will not match
-def find_files1(fullpath, dirs_list, files_list): # 5/22/24 - updated arguments to include parent_dirs
+def find_files1(fullpath, dirs_list, files_list):
     #for dir in src_dict:
     items = os.listdir(fullpath)
     # We will use a second list to keep track of the items
@@ -209,7 +224,7 @@ def find_files1(fullpath, dirs_list, files_list): # 5/22/24 - updated arguments 
     i=0
     #new_dirs = []
     # Tentative version of FF2 where for loop is removed
-    def find_files2(dir, dirs, fullpath, i, parent_dirs, parent_files): # 5/22/24 - added parent_dirs as argument
+    def find_files2(dir, dirs, fullpath, i, parent_dirs, parent_files): 
         # DEBUG 
         print(f'# FIND_FILES2() BLOCK\n')
         print(f'dirs1: {dirs}\n')
@@ -217,14 +232,14 @@ def find_files1(fullpath, dirs_list, files_list): # 5/22/24 - updated arguments 
         print(f'fullpath1: {fullpath}\n')
         # Will have to find a way to get this to update for each while-loop
         # iteration as well
-        if i == 0: # 3/30/24: added this if-else statement to try to correct the below: 
-            new_fullpath = (fullpath+slashes+dir)    # Uncommented 3/29/24: fixed
+        if i == 0: 
+            new_fullpath = (fullpath+slashes+dir)    
         elif i > 0: 
             new_fullpath = fullpath
-        print(f'new_fullpath1: {new_fullpath}\n')     # issue with subdicts in dirs;
-        items = os.listdir(new_fullpath)             # 3/30/24: this also seems to be
-        print(f'items1: {items}\n')                   # where the bug is that preventing
-        for item in items:                           # i.e. its path ends in a1a/a1a
+        print(f'new_fullpath1: {new_fullpath}\n')     
+        items = os.listdir(new_fullpath)             
+        print(f'items1: {items}\n')                   
+        for item in items:                           
             print(f'item: {item}\n')
             #new_fullpath = new_fullpath
             print(f'new_fullpath2: {new_fullpath}\n')
@@ -270,8 +285,8 @@ def find_files1(fullpath, dirs_list, files_list): # 5/22/24 - updated arguments 
                     #print(f'while loop parent_dirs: {parent_dirs}\n')
                     # The dict variable is static here because this for loop is
                     # only for the first directories list
-                    #current_dict = dict[dir] # 4/13/24: this is fine because it's only for first iteration
-                    #dict = current_dict # Uncommented on 3/29/24
+                    #current_dict = dict[dir] 
+                    #dict = current_dict 
                     #print(f'current_dict: {current_dict}\n')
                     find_files2(dir, dirs, fullpath, i, dirs_list, files_list)
                     #print(f'After dict: {dict}\n')
@@ -303,10 +318,10 @@ def find_files1(fullpath, dirs_list, files_list): # 5/22/24 - updated arguments 
                         # This function uses the parents list to create parent
                         # dictionary keys
                         print('# BEGIN CREATE_PAR_DICTS()\n') 
-                        #current_dict = create_par_dicts(dir, par_dirs) # 5/11/24 - need to capture output
-                        print('/# CREATE_PAR_DICTS()\n')          # to pass to find_files2() below
+                        #current_dict = create_par_dicts(dir, par_dirs) 
+                        print('/# CREATE_PAR_DICTS()\n') 
                                                 
-                        # This line may be the problem, as it is not dynamic
+                        # Needs to be removed as it references parent_dirs
                         temp_fullpath = (parent_dirs[dir]+slashes+dir)
                         print(f'Before FF2 dir: {dir}\n')
                         print(f'Before FF2 temp_fullpath: {temp_fullpath}\n')
@@ -335,6 +350,11 @@ def find_files1(fullpath, dirs_list, files_list): # 5/22/24 - updated arguments 
 # SOURCE/DICT1 FIND_DIRS() BLOCK
 src_local_path = ('.'+slashes+source)
 src_abs_path = os.path.abspath(src_local_path)
+# Split the source absolute path to get only the partial path starting at 
+# source
+split_path = src_abs_path.split(source)
+# The path leading up to, but not including, the source is element 0
+root_path = split_path[0]
 # Define the path as a string, which will be converted to a list below;
 #src_path =
 # Convert the path string into a path object (list);

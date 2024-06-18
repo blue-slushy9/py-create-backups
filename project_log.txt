@@ -1,5 +1,14 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/17/24
+
+-Started working on the change over to lists, so far so good. Still on the
+find_dirs() function.
+
+-Think I am going to need to use the debugger in VSCode in order to see what
+parts of the code base I need to change in order to be able to implement the
+wholesale shift over to lists instead of dictionaries.
+
 # 6/16/24
 
 -As such, I think I will continue working on version 8 and try to iron out the
