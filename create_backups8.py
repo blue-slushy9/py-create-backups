@@ -5,8 +5,10 @@
 # This is the production test version of this program; it worked in my test
 # environment, now I am going to try it with actual files and directories
 
-# Used for file and path operations;
+# Used for file and path operations
 import os # At end of program, maybe import only the modules actually used?
+# re.split() is used to split a string but keep the delimiter
+#import re
 # Used for timestamp conversion
 from datetime import datetime
 # copy2 attempts to preserve as much metadata as possible, e.g. timestamps;
@@ -135,11 +137,11 @@ def find_dirs(fullpath, name, dirs_list):
             local_path = split_path[1]
             # Because of the way the split() method works, we have to glue the
             # pieces back together
-            part_path = (slashes+name+local_path)
+            #part_path = (slashes+name+local_path)
             # First we make sure the directory isn't already in the list
-            if part_path not in dirs_list:
+            if local_path not in dirs_list:
                 # Add the split path to the dirs_list
-                dirs_list.append(part_path)
+                dirs_list.append(local_path)
             else:
                 pass
             # If item is a subdirectory, append its fullpath to our list of
@@ -195,8 +197,10 @@ def find_files1(fullpath, dirs_list, files_list):
         # os.path.isdir() expects a path as argument, not a string
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
+            # Add file to files_list
+            files_list.append
             # Add file to parent_files dictionary
-            parent_files[item] = fullpath # 6/5/24 - changed to 'fullpath' from 'new_fullpath'
+            #parent_files[item] = fullpath # 6/5/24 - changed to 'fullpath' from 'new_fullpath'
             # 11:11 is just a generic timestamp for debugging purposes;
             #dict[item] = '11:11' # BUG: need exact dict & subdict?
             # Once the item/file is added to the dictionary, we need to remove
@@ -349,12 +353,18 @@ def find_files1(fullpath, dirs_list, files_list):
 
 # SOURCE/DICT1 FIND_DIRS() BLOCK
 src_local_path = ('.'+slashes+source)
+# The root path is also the src_abs_path
 src_abs_path = os.path.abspath(src_local_path)
+# Use split() from re to split the string but retain the delimiter;
+# Arguments: delimiter, string to be split
+#split_path = re.split(source, src_abs_path)
 # Split the source absolute path to get only the partial path starting at 
 # source
-split_path = src_abs_path.split(source)
+#split_path = src_abs_path.split(source)
 # The path leading up to, but not including, the source is element 0
-root_path = split_path[0]
+#root_path = (split_path[0]+split_path[1])
+# DEBUG
+#print(f'root_path: {root_path}\n')
 # Define the path as a string, which will be converted to a list below;
 #src_path =
 # Convert the path string into a path object (list);

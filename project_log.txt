@@ -1,5 +1,17 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/18/24
+
+-Left off at debugging find_files1().
+
+-The find_dirs() function seems to work for both source and destination. Might
+need to create a variable to capture the output of the function, which is
+dirs_list; but I'm not sure if I need to do that since I think I may have
+defined those as global variables.
+
+-I don't think we need our source and destination directory names in our
+lists, it is redundant and takes up unnecessary memory.
+
 # 6/17/24
 
 -Started working on the change over to lists, so far so good. Still on the
