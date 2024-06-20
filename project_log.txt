@@ -1,5 +1,14 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/19/24
+
+-Still working on find_files1(), also defined and tested the new function,
+split_append(); it seems to be working fine.
+
+-The lines of code I am using to split the filepaths and then add the second
+half thereof to the files or dirs list should be its own function so I don't
+write it over and over again.
+
 # 6/18/24
 
 -Left off at debugging find_files1().

@@ -99,6 +99,23 @@ destination = my_destination.input()
 # DEBUG
 print(f'destination: {destination}\n')
 
+# Split filepaths and then add the second half to the dirs or files list;
+# Arguments: full filepath to directory or file, name of source or destination,
+# the source or destination list that is being built (dirs or files)
+def split_append(fullpath, name, liszt):
+    # Split fullpath to get only the partial path starting at source
+    # or destination (name determines which)
+    split_path = fullpath.split(name)
+    # The local path to directory will always be element 1
+    local_path = split_path[1]
+    # Because of the way the split() method works, we have to glue the
+    # pieces back together
+    #part_path = (slashes+name+local_path)
+    # First we make sure the directory isn't already in the list
+    if local_path not in liszt:
+        # Add the split path to the dirs_list
+        liszt.append(local_path)
+    return liszt
 
 # This function will be called on every file in the source and destination to
 # build the respective dictionaries;
@@ -114,7 +131,7 @@ def find_dirs(fullpath, name, dirs_list):
         # DEBUG
         print('\n# FIND_DIRS() BLOCK')
         print(f'item: {item}')
-        # Reset the fullpath variable after every iteration;
+        # Reset the fullpath variable after every iteration
         print(f'Before fullpath: {fullpath}')
         fullpath = fullpath
         print(f'After fullpath: {fullpath}')
@@ -129,26 +146,30 @@ def find_dirs(fullpath, name, dirs_list):
         # os.path.isdir() expects a path as argument, not a string;
         if os.path.isdir(new_fullpath):
             # DEBUG
-            print(f'dir: {item}')
-            # Split the fullpath to get only the partial path starting at source 
+            print(f'dir: {item}\n')
+            # Arguments: full filepath to directory or file, name of source or 
+            # destination directory, the source or destination list that is 
+            # being built (dirs or files)
+            dirs_list = split_append(new_fullpath, name, dirs_list)
+            # Split fullpath to get only the partial path starting at source 
             # or destination (name determines which)
-            split_path = new_fullpath.split(name)
+            #split_path = new_fullpath.split(name)
             # The local path to directory will always be element 1
-            local_path = split_path[1]
+            #local_path = split_path[1]
             # Because of the way the split() method works, we have to glue the
             # pieces back together
             #part_path = (slashes+name+local_path)
             # First we make sure the directory isn't already in the list
-            if local_path not in dirs_list:
+            #if local_path not in dirs_list:
                 # Add the split path to the dirs_list
-                dirs_list.append(local_path)
-            else:
-                pass
+                #dirs_list.append(local_path)
+            #else:
+                #pass
             # If item is a subdirectory, append its fullpath to our list of
             # subdirectories
             #dirs_list.append(new_fullpath)
             # DEBUG
-            print(f'dirs_list: {dirs_list}\n')
+            print(f'{name} dirs_list:\n{dirs_list}\n')
             #dict[item] = {}
             #new_dict = dict[item]
             #print(f'new_dict: {new_dict}')
@@ -197,8 +218,24 @@ def find_files1(fullpath, dirs_list, files_list):
         # os.path.isdir() expects a path as argument, not a string
         if not os.path.isdir(new_fullpath):
             print(f'file: {item}\n')
+            # Arguments: full filepath to directory or file, name of source or 
+            # destination directory, the source or destination list that is 
+            # being built (dirs or files)
+            files_list = split_append(new_fullpath, name, files_list)
+            # Split fullpath to get only the partial path starting at source 
+            # or destination (name determines which)
+            #split_path = new_fullpath.split(name)
+            # The local path to directory will always be element 1
+            #local_path = split_path[1]
+            # Because of the way the split() method works, we have to glue the
+            # pieces back together
+            #part_path = (slashes+name+local_path)
+            # First we make sure the directory isn't already in the list
+            #if local_path not in files_list:
+                # Add the split path to the dirs_list
+                #files_list.append(local_path)
             # Add file to files_list
-            files_list.append
+            #files_list.append
             # Add file to parent_files dictionary
             #parent_files[item] = fullpath # 6/5/24 - changed to 'fullpath' from 'new_fullpath'
             # 11:11 is just a generic timestamp for debugging purposes;
@@ -209,6 +246,7 @@ def find_files1(fullpath, dirs_list, files_list):
             print(f'updated items: {items}\n')
         # Else, if item is a directory...
         else:
+            
             # Add directory to parent_dirs dictionary
             dirs_list.append(new_fullpath)
             # The below line may not be correct, we don't really want to add
