@@ -1,5 +1,11 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/20/24
+
+-Getting down into find_files2() and FF2_while_loop1() and I am getting some
+strange output---however, that doesn't necessarily mean there are bugs
+associated with this output.
+
 # 6/19/24
 
 -Still working on find_files1(), also defined and tested the new function,

@@ -113,7 +113,7 @@ def split_append(fullpath, name, liszt):
     #part_path = (slashes+name+local_path)
     # First we make sure the directory isn't already in the list
     if local_path not in liszt:
-        # Add the split path to the dirs_list
+        # Add the split path to the dirs or files list
         liszt.append(local_path)
     return liszt
 
@@ -188,7 +188,7 @@ def find_dirs(fullpath, name, dirs_list):
 
 # We need to define a separate function for the first outer key because it is
 # the only one for which the respective dictionary keys will not match
-def find_files1(fullpath, dirs_list, files_list):
+def find_files1(fullpath, files_list, dirs_list, name):
     #for dir in src_dict:
     items = os.listdir(fullpath)
     # We will use a second list to keep track of the items
@@ -245,10 +245,13 @@ def find_files1(fullpath, dirs_list, files_list):
             #items.remove(item)
             print(f'updated items: {items}\n')
         # Else, if item is a directory...
-        else:
-            
+        elif os.path.isdir(new_fullpath):
+            # Arguments: full filepath to directory or file, name of source or 
+            # destination directory, the source or destination list that is 
+            # being built (dirs or files)
+            dirs_list = split_append(new_fullpath, name, dirs_list)
             # Add directory to parent_dirs dictionary
-            dirs_list.append(new_fullpath)
+            #dirs_list.append(new_fullpath)
             # The below line may not be correct, we don't really want to add
             # a nested sub-list for every sub-directory in the outermost
             # directory; 
@@ -258,6 +261,8 @@ def find_files1(fullpath, dirs_list, files_list):
             # later use
             dirs[0].append(item)
             #dirs[0].append(item) # 5/14/24 - dirs[0] caused an IndexError
+        else:
+            pass
 
     # DEBUG
     print('/# FIND_FILES1() BLOCK\n')
@@ -266,7 +271,7 @@ def find_files1(fullpath, dirs_list, files_list):
     i=0
     #new_dirs = []
     # Tentative version of FF2 where for loop is removed
-    def find_files2(dir, dirs, fullpath, i, parent_dirs, parent_files): 
+    def find_files2(dir, dirs, fullpath, i, dirs_list, files_list):
         # DEBUG 
         print(f'# FIND_FILES2() BLOCK\n')
         print(f'dirs1: {dirs}\n')
@@ -287,16 +292,26 @@ def find_files1(fullpath, dirs_list, files_list):
             print(f'new_fullpath2: {new_fullpath}\n')
             temp_fullpath = (new_fullpath+slashes+item)
             print(f'temp_fullpath1: {temp_fullpath}\n')
-            print(f'parent_dirs1: {parent_dirs}\n')
+            print(f'dirs_list: {dirs_list}\n')
             # If the item is not a directory...
             if not os.path.isdir(temp_fullpath):
+                # Arguments: full filepath to directory or file, name of source or 
+                # destination directory, the source or destination list that is 
+                # being built (dirs or files)
+                files_list = split_append(temp_fullpath, name, files_list)
                 # Add file to parent_files dictionary
-                files_list.append(new_fullpath)
+                #files_list.append(new_fullpath)
             # Else, if the item is a directory we add it to our parent_dirs 
             # dictionary, as well as our new list
-            else:
+            #else:
+            # Else, if item is a directory...
+            elif os.path.isdir(temp_fullpath):
+                # Arguments: full filepath to directory or file, name of source or 
+                # destination directory, the source or destination list that is 
+                # being built (dirs or files)
+                dirs_list = split_append(temp_fullpath, name, dirs_list)
                 # Add directory to parent_dirs dictionary
-                dirs_list.append(new_fullpath)
+                #dirs_list.append(new_fullpath)
                 # Increment i to create our next list of subdirectories
                 i+=1
                 print(f'else i: {i}\n')
@@ -309,7 +324,8 @@ def find_files1(fullpath, dirs_list, files_list):
                 # and we can append the current item
                 dirs[i].append(item)
                 print(f'dirs[i]: {dirs[i]}\n')
-
+            else:
+                pass
     
     # These two nested functions will be called in ff2_while_loop()
     # Initial dict value will work for first iteration of find_files2() only
@@ -353,15 +369,15 @@ def find_files1(fullpath, dirs_list, files_list):
                         #print(f'n temp_fullpath: {temp_fullpath}\n')
                         
                         # This function will create the list of parent directories
-                        print('# BEGIN GET_PARS_LIST()\n')
+                        #print('# BEGIN GET_PARS_LIST()\n')
                         #par_dirs = get_pars_list(dir)
-                        print('/# GET_PARS_LIST()\n')
+                        #print('/# GET_PARS_LIST()\n')
                                                 
                         # This function uses the parents list to create parent
                         # dictionary keys
-                        print('# BEGIN CREATE_PAR_DICTS()\n') 
+                        #print('# BEGIN CREATE_PAR_DICTS()\n') 
                         #current_dict = create_par_dicts(dir, par_dirs) 
-                        print('/# CREATE_PAR_DICTS()\n') 
+                        #print('/# CREATE_PAR_DICTS()\n') 
                                                 
                         # Needs to be removed as it references parent_dirs
                         temp_fullpath = (parent_dirs[dir]+slashes+dir)
@@ -474,15 +490,16 @@ find_dirs(dst_abs_path, destination, dst_dirs)
 #print(f'dst_parent_dirs: {dst_parent_dirs}\n')
 
 
-# DICT1 FIND_FILES() BLOCK
+# SOURCE FIND_FILES() BLOCK
 # This list will store the partial filepaths of all files within our source 
 # directory
 src_files = []
 # Same as above, except for subdirectories
 #src_dirs = []
-# Arguments: absolute filepath of source directory, list of all sub-
-# directories and files contained within the source directory
-find_files1(src_abs_path, src_files, src_dirs)
+# Arguments: absolute filepath of source directory, list of all files in the 
+# source directory, list of all sub-directories in the source directory, name
+# of source directory
+find_files1(src_abs_path, src_files, src_dirs, source)
 print('# FIND_FILES() DICT1 BLOCK\n')
 
 # DICT2 FIND_FILES() BLOCK
