@@ -257,9 +257,16 @@ def find_files1(fullpath, files_list, dirs_list, name):
             # directory; 
             # Created nested list by appending an empty list to dirs
             #dirs.append([]) # 5/14/24 - commented out to try to fix sub-lists issue
+            # Arguments: full filepath to directory or file, name of source or 
+            # destination directory, the source or destination list that is 
+            # being built (in this case, the subdirectories to be iterated
+            # through later)
+            dirs[0] = split_append(new_fullpath, name, dirs[0])
+            # DEBUG
+            print(f'dirs[{0}]: {dirs[0]}\n')
             # If item is a directory, add it to our first nested sub-list for
             # later use
-            dirs[0].append(item)
+            #dirs[0].append(item)
             #dirs[0].append(item) # 5/14/24 - dirs[0] caused an IndexError
         else:
             pass
@@ -283,7 +290,7 @@ def find_files1(fullpath, files_list, dirs_list, name):
             new_fullpath = (fullpath+slashes+dir)    
         elif i > 0: 
             new_fullpath = fullpath
-        print(f'new_fullpath1: {new_fullpath}\n')     
+        print(f'new_fullpath1: {new_fullpath}\n')  
         items = os.listdir(new_fullpath)             
         print(f'items1: {items}\n')                   
         for item in items:                           
@@ -320,10 +327,17 @@ def find_files1(fullpath, files_list, dirs_list, name):
                 if i == (len(dirs)):
                     dirs.append([])
                     print(f'else dirs: {dirs}\n')
+                
                 # If i is less than len(dirs), we are in the correct sub-list
                 # and we can append the current item
-                dirs[i].append(item)
-                print(f'dirs[i]: {dirs[i]}\n')
+                elif i < (len(dirs)):
+                    # Arguments: full filepath to directory or file, name of source or 
+                    # destination directory, the source or destination list that is 
+                    # being built (in this case, the subdirectories to be iterated
+                    # through later)
+                    dirs[i] = split_append(new_fullpath, name, dirs[i])
+                    #dirs[i].append(item)
+                    print(f'dirs[{i}]: {dirs[i]}\n')
             else:
                 pass
     
@@ -333,6 +347,7 @@ def find_files1(fullpath, files_list, dirs_list, name):
         print('# BEGIN FF2 WHILE LOOP\n')
         # i starts at 0, len starts at 1; ergo we have to subtract 1
         while i <= (len(dirs)-1):
+            # i == 0 is when FF2WL1 runs, after that only FF2WL2 will run; 
             # while loop behavior is going to be different for first iteration
             if i == 0:
                 # Call function for first time on every element in dirs[0]
@@ -387,7 +402,7 @@ def find_files1(fullpath, files_list, dirs_list, name):
                         #current_dict = 
                         #print(f'before FF2 current_dict: {current_dict}\n')
                         # 4/7/24: is current_dict the right argument?
-                        find_files2(dir, dirs, temp_fullpath, i, parent_dirs, parent_files)
+                        find_files2(dir, dirs, temp_fullpath, i, dirs_list, files_list)
                         #print(f'else final dict: {dict}\n')
                     i+=1
                     print(f'while loop i: {i}\n')

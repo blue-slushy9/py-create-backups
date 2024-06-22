@@ -1,5 +1,17 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/21/24
+
+-Left off at implementing split_append() inside of find_files2(), there seems
+to be an issue with the function adding an extra forward-slash after
+"Alex's PC/".
+
+-Upon further debugging and inspecting the code, I think that when the sub-
+directories get added to the dirs list, their partial filepaths (everything
+after the original source or destination names) needs to get added. Then, when
+it comes time to use the full filepath of the directory, we can simply glue
+the filepath components together.
+
 # 6/20/24
 
 -Getting down into find_files2() and FF2_while_loop1() and I am getting some
