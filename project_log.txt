@@ -1,5 +1,39 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/22/24
+
+-Left off at the bottom of ff2_while_loop2(), everything is going swimmingly!
+
+-Once the program reaches 'dirs[1]', everything definitely starts to break
+down and '/IT Tutorials' keeps getting added to every subsequent empty sub-
+list. Therefore, I think I will have to start making the change over to using
+src_dirs and dst_dirs now.
+
+-I wonder if I even need the 'dirs' list, since I do all of my directory
+discovery within the find_dirs() function. In addition to this, the src_dirs
+or dst_dirs list contains all of the local filepaths to every subdirectory
+within source or destination. Ergo, instead of putting together the 'dirs'
+list inside of the find_files functions, I could just iterate over the src_dirs
+and dst_dirs lists instead. Would be much easier, methinks...
+
+
+-These lines (324-333) are a problem because, in version 8 of the program,
+'i == len(dirs)' seems to always be true; so an empty sublist is being created
+unnecessarily during each iteration of find_files2().
+
+'''
+# Add directory to parent_dirs dictionary
+#dirs_list.append(new_fullpath)
+# Increment i to create our next list of subdirectories
+i+=1
+print(f'else i: {i}\n')
+# i starts at 0, len(dirs) does not; therefore to make them
+# equal we append a new empty list in the next line 
+if i == (len(dirs)):
+    dirs.append([])
+    print(f'else dirs: {dirs}\n')
+'''
+
 # 6/21/24
 
 -Left off at implementing split_append() inside of find_files2(), there seems
