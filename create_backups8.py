@@ -286,7 +286,7 @@ def find_files1(fullpath, files_list, dirs_list, name):
     def find_files2(dir, fullpath, i, dirs_list, files_list):
         # DEBUG 
         print(f'# FIND_FILES2() BLOCK\n')
-        print(f'dirs1: {dirs}\n')
+        print(f'dirs_list1: {dirs_list}\n')
         print(f'dir1: {dir}\n')
         print(f'fullpath1: {fullpath}\n')
         # Will have to find a way to get this to update for each while-loop
@@ -315,6 +315,8 @@ def find_files1(fullpath, files_list, dirs_list, name):
                 # destination directory, the source or destination list that is 
                 # being built (dirs or files)
                 files_list = split_append(temp_fullpath, name, files_list)
+                # DEBUG
+                print(f'{name} files_list:\n{files_list}\n')
                 # Add file to parent_files dictionary
                 #files_list.append(new_fullpath)
             # Else, if the item is a directory we add it to our parent_dirs 
@@ -411,8 +413,9 @@ def find_files1(fullpath, files_list, dirs_list, name):
                         #current_dict = create_par_dicts(dir, par_dirs) 
                         #print('/# CREATE_PAR_DICTS()\n') 
                                                 
+                        # Glue together the pieces of the full filepath
+                        temp_fullpath = (fullpath+slashes+current_dir)
                         # Needs to be removed as it references parent_dirs
-                        temp_fullpath = root_path+name+
                         #temp_fullpath = (parent_dirs[dir]+slashes+dir)
                         print(f'Before FF2 dir: {current_dir}\n')
                         print(f'Before FF2 temp_fullpath: {temp_fullpath}\n')
@@ -420,7 +423,7 @@ def find_files1(fullpath, files_list, dirs_list, name):
                         #current_dict = 
                         #print(f'before FF2 current_dict: {current_dict}\n')
                         # 4/7/24: is current_dict the right argument?
-                        find_files2(dir, dirs, temp_fullpath, i, dirs_list, files_list)
+                        find_files2(current_dir, temp_fullpath, i, dirs_list, files_list)
                         #print(f'else final dict: {dict}\n')
                     i+=1
                     print(f'while loop i: {i}\n')
@@ -438,7 +441,7 @@ def find_files1(fullpath, files_list, dirs_list, name):
 
 # FUNCTION CALLS
 
-# SOURCE/DICT1 FIND_DIRS() BLOCK
+# SOURCE FIND_DIRS() BLOCK
 src_local_path = ('.'+slashes+source)
 # The root path is also the src_abs_path
 src_abs_path = os.path.abspath(src_local_path)
@@ -487,7 +490,7 @@ find_dirs(src_abs_path, source, src_dirs)
 #print(f'dict1: {dict1}\n')
 #print(f'src_parent_dirs: {src_parent_dirs}\n')
 
-# DESTINATION/DICT2 FIND_DIRS() BLOCK
+# DESTINATION FIND_DIRS() BLOCK
 dst_path = ('.'+slashes+destination)
 dst_abs_path = os.path.abspath(dst_path)
 # Define the path as a string, which will be converted to a list below;

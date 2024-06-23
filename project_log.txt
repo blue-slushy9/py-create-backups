@@ -1,5 +1,12 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/23/24
+
+-I just realized that there may sometimes be files in the destination
+directory that aren't meant to be in source, e.g. .swp files. There should be
+a prompt notifying the user and asking if they want the file deleted from
+destination, as presumably it would already have been deleted from source.
+
 # 6/22/24
 
 -Left off at the bottom of ff2_while_loop2(), everything is going swimmingly!
