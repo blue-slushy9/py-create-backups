@@ -186,6 +186,39 @@ def find_dirs(fullpath, name, dirs_list):
     print('# /FIND_DIRS() BLOCK\n')
     return dirs_list
 
+# Tentative new find_files() function that iterates over the dirs_list using a
+# for loop
+def find_files(dirs_list, fullpath, name, files_list):
+    #DEBUG
+    print('# BEGIN NEW FIND_FILES() FUNCTION')
+    for subdir in dirs_list:
+        # We need to glue together the various components of the full filepath
+        subdir_fullpath = (fullpath+subdir)
+        # Now we can pass the full filepath to the os.listdir() method
+        subdir_items = os.listdir(subdir_fullpath)
+        # Now iterate over the list of directory items
+        for item in subdir_items:
+            item_fullpath = (subdir_fullpath+slashes+item)
+            # DEBUG
+            print(f'{name} item_fullpath: {item_fullpath}\n')
+            # If full filepath does not point to a directory...
+            # Arguments: full filepath strongly recommended
+            if not os.path.isdir(item_fullpath):
+                print(f'file: {item}\n')
+                # Arguments: full filepath to directory or file, name of source or 
+                # destination directory, the source or destination list that is 
+                # being built (dirs or files)
+                files_list = split_append(item_fullpath, name, files_list)
+                # DEBUG
+                print(f'{name} files_list:\n{files_list}\n')
+            # Else if item is a directory, we can skip over it
+            elif os.path.isdir(item_fullpath):
+                pass
+    # DEBUG
+    print('/# NEW FIND_FILES() FUNCTION')
+    return files_list
+
+'''
 # We need to define a separate function for the first outer key because it is
 # the only one for which the respective dictionary keys will not match
 def find_files1(fullpath, files_list, dirs_list, name):
@@ -286,7 +319,7 @@ def find_files1(fullpath, files_list, dirs_list, name):
     def find_files2(dir, fullpath, i, dirs_list, files_list):
         # DEBUG 
         print(f'# FIND_FILES2() BLOCK\n')
-        print(f'dirs_list1: {dirs_list}\n')
+        print(f'{name} dirs_list:\n{dirs_list}\n')
         print(f'dir1: {dir}\n')
         print(f'fullpath1: {fullpath}\n')
         # Will have to find a way to get this to update for each while-loop
@@ -308,8 +341,8 @@ def find_files1(fullpath, files_list, dirs_list, name):
             print(f'new_fullpath2: {new_fullpath}\n')
             temp_fullpath = (new_fullpath+slashes+item)
             print(f'temp_fullpath1: {temp_fullpath}\n')
-            print(f'dirs_list: {dirs_list}\n')
-            # If the item is not a directory, i.e. a file...
+            print(f'{name} dirs_list:\n{dirs_list}\n')
+            # If the item is not a directory, i.e. if it is a file...
             if not os.path.isdir(temp_fullpath):
                 # Arguments: full filepath to directory or file, name of source or 
                 # destination directory, the source or destination list that is 
@@ -437,7 +470,7 @@ def find_files1(fullpath, files_list, dirs_list, name):
     i=0
     ff2_while_loop1(i)
     print('/# FIND_FILES2() INITIAL CALL\n')
-
+'''
 
 # FUNCTION CALLS
 
@@ -532,11 +565,14 @@ find_dirs(dst_abs_path, destination, dst_dirs)
 src_files = []
 # Same as above, except for subdirectories
 #src_dirs = []
+print('# FIND_FILES() SOURCE BLOCK\n')
 # Arguments: absolute filepath of source directory, list of all files in the 
 # source directory, list of all sub-directories in the source directory, name
 # of source directory
-find_files1(src_abs_path, src_files, src_dirs, source)
-print('# FIND_FILES() DICT1 BLOCK\n')
+find_files(src_dirs, src_abs_path, source, src_files)
+# FF1 may now be deprecated
+#find_files1(src_abs_path, src_files, src_dirs, source)
+print('/# FIND_FILES() SOURCE BLOCK\n')
 
 # DICT2 FIND_FILES() BLOCK
 # This list will store the partial filepaths of all files within our source 
@@ -544,13 +580,13 @@ print('# FIND_FILES() DICT1 BLOCK\n')
 dst_files = []
 # Same as above, except for subdirectories
 #dst_dirs = []
+print('# FIND_FILES() DESTINATION BLOCK\n')
 # Arguments: absolute filepath of destination directory, list of all sub-
 # directories and files contained within the destination directory
 find_files1(dst_abs_path, dst_files, dst_dirs)
-print('# FIND_FILES() DICT2 BLOCK\n')
 # DEBUG
 #print(f'dict2: {dict2}\n')
-print('/# FIND_FILES() DICT2 BLOCK\n')
+print('/# FIND_FILES() DESTINATION BLOCK\n')
 
 # DEBUG
 def print_keys(dict):

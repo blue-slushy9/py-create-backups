@@ -2,6 +2,16 @@
 
 # 6/23/24
 
+-The new function, find_files(), seems to be working prefectly. Will continue
+testing and debugging.
+
+-Confirmed, things definitely start to break after completing the iteration
+through all of the subdirectories in src_list/dirs_list. Have to go through
+and program a 'for loop' instead of the current 'while loop' contingent on the
+value of 'i'.
+
+-I think I really just need to get rid of the 'i' components altogether.
+
 -I just realized that there may sometimes be files in the destination
 directory that aren't meant to be in source, e.g. .swp files. There should be
 a prompt notifying the user and asking if they want the file deleted from
