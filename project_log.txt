@@ -1,5 +1,11 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/24/24
+
+-Left off at the copy_files() function down at the bottom; specifically,
+trying to split the full filepath to get the parent directories only. The code
+should be ready for testing now...
+
 # 6/23/24
 
 -The new function, find_files(), seems to be working prefectly. Will continue

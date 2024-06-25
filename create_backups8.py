@@ -574,7 +574,7 @@ find_files(src_dirs, src_abs_path, source, src_files)
 #find_files1(src_abs_path, src_files, src_dirs, source)
 print('/# FIND_FILES() SOURCE BLOCK\n')
 
-# DICT2 FIND_FILES() BLOCK
+# DESTINATION FIND_FILES() BLOCK
 # This list will store the partial filepaths of all files within our source 
 # directory
 dst_files = []
@@ -583,11 +583,12 @@ dst_files = []
 print('# FIND_FILES() DESTINATION BLOCK\n')
 # Arguments: absolute filepath of destination directory, list of all sub-
 # directories and files contained within the destination directory
-find_files1(dst_abs_path, dst_files, dst_dirs)
+find_files(dst_dirs, dst_abs_path, destination, dst_files)
+#find_files1(dst_abs_path, dst_files, dst_dirs)
 # DEBUG
 #print(f'dict2: {dict2}\n')
 print('/# FIND_FILES() DESTINATION BLOCK\n')
-
+'''
 # DEBUG
 def print_keys(dict):
     for key in dict:
@@ -602,42 +603,43 @@ print(f'dst_parent_dirs: {dst_parent_dirs}\n')
 print_keys(f'dst_parent_dirs keys: {dst_parent_dirs}\n')
 print()
 print(f'dst_parent_files: {dst_parent_files}\n')
-
+'''
 # Define function that retrieves the full filepaths, then we'll use these
 # paths to retrieve the timestamp for each file
-def get_filepaths(file, src_files, dst_files):
+def get_fullpaths(filepath, src_files, dst_files):
     # Since the file does not exist in dst_parent_files, we take the
     # full filepath from src_parent_dirs and change only the name of
     # source directory to the name of the destination directory,
     # e.g. 'A' to 'B'
-    src_dirpath = (src_parent_files[file]+slashes)
-    src_filepath = (src_dirpath+file)
+    #src_dirpath = (src_parent_files[file]+slashes)
+    # Filenames are stored with partial filepaths that include everything
+    # after the source or destination directory name
+    src_filepath = (src_abs_path+filepath)
     #src_filepath = (src_parent_files[file]+slashes+file) # 5/28/24 - trying out line above instead
     # We need to make sure we match the right substring in the path,
     # so we sandwich the source directory name between two slashes
-    src_dir = (slashes+source+slashes)
+    #src_dir = (slashes+source+slashes)
     # Same concept as above, except for the destination directory
-    dst_dir = (slashes+destination+slashes)
+    #dst_dir = (slashes+destination+slashes)
     # Replace source directory name and assign new path to variable
-    dst_dirpath = src_dirpath.replace(src_dir, dst_dir)
-    dst_filepath = (dst_dirpath+file)
+    #dst_dirpath = src_dirpath.replace(src_dir, dst_dir)
+    dst_filepath = (dst_abs_path+filepath)
     #dst_filepath = src_filepath.replace(src_dir, dst_dir) # 5/28/24 - trying out line above
     # Add filename to end of new filepath
     #new_filepath = (new_filepath+slashes+file)
-    
     return (src_filepath, dst_filepath)
 
     # DEBUG
-    print(f'src_dirpath: {src_dirpath}\n')
-    print(f'dst_dirpath: {dst_dirpath}\n')
+    #print(f'src_dirpath: {src_dirpath}\n')
+    #print(f'dst_dirpath: {dst_dirpath}\n')
     print(f'src_filepath: {src_filepath}\n')
     print(f'dst_filepath: {dst_filepath}\n')
 
 
 # Define function that will retrieve the timestamp
-def get_timestamp(fullpath):
+def get_timestamp(full_filepath):
     # Use os.stat to get file metadata, then assign to variable
-    stat = os.stat(fullpath)
+    stat = os.stat(full_filepath)
     # Retrieve date and time of last file modification from the metadata, 
     # then assign to variable
     mod_time = stat.st_mtime
@@ -660,20 +662,20 @@ def get_timestamp(fullpath):
 # Define function that will copy and/or overwrite the files as needed;
 # Arguments: source, destination, source directory, destination directory
 #def overwrite_files(dict1, dict2, path1, path2):
-# Arguments: source files dictionary, destination files dictionary (the ones
-# with the parent directory filepaths)
+# Arguments: source files list, destination files list, absolute path to
+# source directory, absolute path to destination directory
 def overwrite_files(src_files, dst_files):
     # This counter will keep track of how many total files were overwritten
     n = 0
-    # Create a dictionary to keep track of our overwritten files and their
-    # filepaths
-    overwritten_files = {}
+    # Create a list to keep track of all overwritten filepaths (beginning from
+    # source or destination only)
+    overwritten_files = []
     # Iterate over every file in source dictionary
-    for file in src_parent_files:
+    for filepath in src_files:
         # If the file is also in the destination dictionary...
-        if file in dst_parent_files:
+        if filepath in dst_files:
             # Retrieve the full filepaths for the file
-            (src_filepath, dst_filepath) = get_filepaths(file, src_files, dst_files) 
+            (src_filepath, dst_filepath) = get_fullpaths(filepath, src_files, dst_files) 
             # This was intended to make sure they are in fact different files,
             # but the logic was flawed
             #if src_filepath not dst_filepath:
@@ -681,11 +683,11 @@ def overwrite_files(src_files, dst_files):
             # Source timestamps
             src_time = get_timestamp(src_filepath)
             print(f'src_filepath: {src_filepath}')
-            print(f'SRC file: {file}, Timestamp: {src_time}\n')
+            print(f'Timestamp: {src_time}\n')
             # Destination timestamps
             dst_time = get_timestamp(dst_filepath)
             print(f'dst_filepath: {dst_filepath}')
-            print(f'DST file: {file}, Timestamp: {dst_time}\n')
+            print(f'Timestamp: {dst_time}\n')
             # If source copy of file was modified before destination copy...
             if src_time > dst_time: 
                 # Delete the copy of the file in destination
@@ -693,12 +695,12 @@ def overwrite_files(src_files, dst_files):
                 print(f'Removed {dst_filepath}.')
                 # Copy the source file along with its metadata
                 copy2(src_filepath, dst_filepath)
-                print(f'Copied {file} to {dst_filepath}.\n')
+                print(f'Copied {src_filepath} to {dst_filepath}.\n')
                 # Increase counter by 1
                 n+=1
-                # Add file and its destination path to dictionary of over-
-                # written files
-                overwritten_files[file] = dst_filepath
+                # Add partial (not including source, destination, or anything 
+                # before them) filepath to list of overwritten filepaths
+                overwritten_files.append(filepath)
             # If the copy of the file in the destination directory was modified
             # *after* the copy in the source directory, notify the user
             elif src_time < dst_time:
@@ -706,57 +708,39 @@ def overwrite_files(src_files, dst_files):
                       'was found to have been modified after the source\n'
                       'file. It is recommended that you review these changes\n'
                       'manually.')
+            # If neither timestamp is greater than the other, skip the file
+            else:
+                pass
     # User notification of no overwrites
     if n == 0:
         print(f'No files were overwritten.\n')
     elif n == 1:
-        print(f'{n} file in the destination directory was overwritten:\n')
-        # There doesn't seem to be a way to print dictionary keys directly,
-        # so we have to loop through them even though there's only one
-        for file in overwritten_files:
-            print(f'Filename: {file}')
-            print(f'Filepath: {overwritten_files[file]}\n')
+        print(f'{n} file in the destination directory was overwritten:')
+        print(f'Filepath: {overwritten_files[0]}\n')
     else:
         print(f'{n} files in the destination directory were overwritten:\n')
         # Iterate over list of overwritten files and print them one by one
         for file in overwritten_files:
-            print(f'Filename: {file}')
-            print(f'Filepath: {overwritten_files[file]}\n')
+            print(f'Filepath: {file}')
 
 # Call function
-overwrite_files(src_parent_files, dst_parent_files)
+overwrite_files(src_files, dst_files)
 
 # COPY FILES BLOCK - if a file exists in source but not in destination, copy it;
 # Arguments: dictionary of all files/keys in source and their filepaths/values,
 # dictionary of all files/keys in destination and their filepaths/values
 def copy_files(src_files, dst_files):
-    # Iterate over all files/keys in source files dictionary
-    for file in src_parent_files:
+    # Iterate over all files/keys in source files list
+    for filepath in src_files:
         # Potential issue: there may be multiple files in the source and/or 
         # destination directory with the same filename
-        if file not in dst_parent_files:
-            # Since the file does not exist in dst_parent_files, we take the
-            # full filepath from src_parent_dirs and change only the name of
-            # source directory to the name of the destination directory,
-            # e.g. 'A' to 'B'
-            src_dirpath = (src_parent_files[file]+slashes)
-            src_filepath = (src_dirpath+file)
-            #src_filepath = (src_parent_files[file]+slashes+file) # 5/28/24 - trying out line above instead
-            # We need to make sure we match the right substring in the path,
-            # so we sandwich the source directory name between two slashes
-            src_dir = (slashes+source+slashes)
-            # Same concept as above, except for the destination directory
-            dst_dir = (slashes+destination+slashes)
-            # Replace source directory name and assign new path to variable
-            dst_dirpath = src_dirpath.replace(src_dir, dst_dir)
-            dst_filepath = (dst_dirpath+file)
-            #dst_filepath = src_filepath.replace(src_dir, dst_dir) # 5/28/24 - trying out line above
-            # Add filename to end of new filepath
-            #new_filepath = (new_filepath+slashes+file)
+        if filepath not in dst_files:
+            # Retrieve the full filepaths for the file
+            (src_filepath, dst_filepath) = get_fullpaths(filepath, src_files, dst_files)
             
             # DEBUG
-            print(f'src_dirpath: {src_dirpath}\n')
-            print(f'dst_dirpath: {dst_dirpath}\n')
+            #print(f'src_dirpath: {src_dirpath}\n')
+            #print(f'dst_dirpath: {dst_dirpath}\n')
             print(f'src_filepath: {src_filepath}\n')
             print(f'dst_filepath: {dst_filepath}\n')
             
@@ -764,6 +748,13 @@ def copy_files(src_files, dst_files):
             # filepath (NOT including the filename itself) actually exists---
             # in order for copy2() to work, the parent directories must already 
             # be in place
+            # Excise the filename from the end of the full filepath
+            split_fullpath = dst_filepath.rsplit('/', 1)
+            print(f'split_fullpath: {split_fullpath}\n')
+            # pop() removes the last element in the list, which is the filename
+            split_fullpath.pop()
+            dst_dirpath = join(split_fullpath)
+            print(dst_dirpath)
             if os.path.exists(dst_dirpath): # 5/28/24 - implementing above changes
                 # copy2() copies files *and* their metadata 
                 # Arguments: full filepath for source file, full filepath for 
@@ -787,7 +778,8 @@ def copy_files(src_files, dst_files):
 # Call function
 copy_files(src_parent_files, dst_parent_files)
 
+# 6/24/24 - I think I will go through with creating a function that copies
+# empty directories from source to destination, since they may still be needed
 
-# Not sure if this is really needed anymore due to the os.makedirs() method?
 # COPYTREE - finally if a directory exists in A but not in B, we can copy its
 # entire directory structure and files contained therein
