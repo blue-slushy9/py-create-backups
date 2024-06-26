@@ -1,5 +1,10 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 6/25/24
+
+-Left off at the new copy_dirs() function at the bottom of the version 8
+program file. Testing for the other two functions went swimmingly. Will hopefully be finished soon, then I can move onto Java...
+
 # 6/24/24
 
 -Left off at the copy_files() function down at the bottom; specifically,
