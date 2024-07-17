@@ -810,19 +810,21 @@ copy_files(src_files, dst_files)
 
 # COPYTREE - finally if a directory exists in A but not in B, we can copy its
 # entire directory structure and files contained therein
-print("test")
+#print("test\n")
 
 # This function will copy empty directories from source to destination
 def copy_dirs(src_dirs, dst_dirs):
     # This counter will keep track of how many total files were copied
     n = 0
-    # Create a list to keep track of all overwritten filepaths (beginning from
+    # Create a list to keep track of all overwritten filepaths (beginning after
     # source or destination only)
     copied_dirs = []
     # Iterate over all directory paths in our source directories list
     for dirpath in src_dirs:
         # If the directory isn't in the destination, then we want to copy it
-        if dirpath not in dst_files:
+        if dirpath not in dst_dirs:
+            # DEBUG
+            print(f'{dirpath}\n')
             # Retrieve the full filepaths for the directory
             (src_dirpath, dst_dirpath) = get_fullpaths(dirpath, src_dirs, dst_dirs)
             # DEBUG
@@ -831,17 +833,23 @@ def copy_dirs(src_dirs, dst_dirs):
             # copytree() has the ability to copy entire directory structures,
             # but in this case it will only be used for empty directories
             copytree(src_dirpath, dst_dirpath)
+            # Append dirpath to list, but do not include source or destination
+            # name
+            copied_dirs.append(dirpath)
             # Increase counter by 1
             n+=1
     # User notification of no copies
     if n == 0:
         print(f'No empty directories were copied.\n')
     elif n == 1:
-        print(f'{n} directory was copied to the destination directory:')
-        print(f'Directory path: {copied_dirs[0]}\n')
+        print(f'{n} empty directory was copied to the destination:')
+        print(f'{copied_dirs[0]}\n')
     elif n > 1:
-        print(f'{n} empty directories were copied to the destination directory:\n')
+        print(f'{n} empty directories were copied to the destination:\n')
         # Iterate over list of overwritten files and print them one by one
         for copied_dir in copied_dirs:
-            print(f'Partial dirpath: {copied_dir}\n')
+            print(f'{copied_dir}\n')
+
+# Call function
+copy_dirs(src_dirs, dst_dirs) 
 

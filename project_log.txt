@@ -1,5 +1,37 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 7/16/24
+
+-Took a break from this project to try to finish what I thought would be a
+quick side project, but that turned out to be an entire ordeal all to itself.
+
+-Thought I was finished with the copy_dirs() function in create_backups8.py,
+but upon deleting the entire contents of the destination directory and running
+the script again, I got this error:
+
+
+/AoC Walkthroughs
+
+src_dirpath: /home/slushy/test/Alex's PC/AoC Walkthroughs
+
+dst_dirpath: /home/slushy/test/Alex's PC 2/AoC Walkthroughs
+
+Traceback (most recent call last):
+  File "/home/slushy/test/create_backups8.py", line 854, in <module>
+    copy_dirs(src_dirs, dst_dirs) 
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/slushy/test/create_backups8.py", line 835, in copy_dirs
+    copytree(src_dirpath, dst_dirpath)
+  File "/usr/lib/python3.12/shutil.py", line 600, in copytree
+    return _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shutil.py", line 498, in _copytree
+    os.makedirs(dst, exist_ok=dirs_exist_ok)
+  File "<frozen os>", line 225, in makedirs
+FileExistsError: [Errno 17] File exists: "/home/slushy/test/Alex's PC 2/AoC Walkthroughs"
+
+
+
 # 6/25/24
 
 -Left off at the new copy_dirs() function at the bottom of the version 8
