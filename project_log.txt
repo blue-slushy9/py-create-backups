@@ -1,5 +1,33 @@
 # PROJECT LOG -- most recent updates are at the top
 
+# 7/23/24
+
+-Is it empty because the directory discovery step isn't repeated between the
+function calls of the three copy functions? For directories, the function is
+find_dirs. Perhaps the find_dirs function can be called again before calling
+copy_dirs, in order to get an updated list of what is in the destination
+directory, after overwriting and copying files? If I remember correctly,
+I have also configured the copy arguments for the files to copy any missing
+parent directories over to the destination.
+
+-One of the issues seems to be that, at the point of calling the copy_dirs
+function, the dst_dirs structure seems to be empty; ergo, every directory
+in src_dirs will be copytree'd over to dst_dirs even when it doesn't need to
+be copied. 
+
+Why is dst_dirs empty?
+
+-Added the 'dirs_exist_ok=True' argument to the copytree method call in 
+copy_dirs, like so
+
+copytree(src, dst, dirs_exist_ok=True)
+
+That got rid of the error message I pasted below, but now the script thinks
+Test_Dir and Test_Dir2 are empty directories, and is copying them to the
+destination as empty directories---when a cursory examination of Test_Dir
+shows that it contains a text file. Not sure what is going on...
+
+
 # 7/16/24
 
 -Took a break from this project to try to finish what I thought would be a

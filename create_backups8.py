@@ -831,8 +831,10 @@ def copy_dirs(src_dirs, dst_dirs):
             print(f'src_dirpath: {src_dirpath}\n')
             print(f'dst_dirpath: {dst_dirpath}\n')
             # copytree() has the ability to copy entire directory structures,
-            # but in this case it will only be used for empty directories
-            copytree(src_dirpath, dst_dirpath)
+            # but in this case it will only be used for empty directories;
+            # 7/23/24 -- added 'dirs_exist_ok=True' to try to fix the bug 
+            # with /AoC Walkthroughs
+            copytree(src_dirpath, dst_dirpath, dirs_exist_ok=True)
             # Append dirpath to list, but do not include source or destination
             # name
             copied_dirs.append(dirpath)
@@ -851,5 +853,5 @@ def copy_dirs(src_dirs, dst_dirs):
             print(f'{copied_dir}\n')
 
 # Call function
-copy_dirs(src_dirs, dst_dirs) 
+copy_dirs(src_dirs, dst_dirs)
 
