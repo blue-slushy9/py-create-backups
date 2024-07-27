@@ -130,23 +130,23 @@ def find_dirs(fullpath, name, dirs_list):
     for item in items:
         # DEBUG
         #print('\n# FIND_DIRS() BLOCK')
-        print(f'item: {item}')
+        #print(f'item: {item}')
         # Reset the fullpath variable after every iteration
-        print(f'Before fullpath: {fullpath}')
+        #print(f'Before fullpath: {fullpath}')
         fullpath = fullpath
-        print(f'After fullpath: {fullpath}')
+        #print(f'After fullpath: {fullpath}')
         #print(item)
         # Update the fullpath variable to include the item name
         new_fullpath = os.path.abspath(fullpath+slashes+item)
         #new_fullpath = fullpath+slashes+item
 
         # DEBUG
-        print(f'new_fullpath: {new_fullpath}')
+        #print(f'new_fullpath: {new_fullpath}')
         # If full filepath points to a directory...
         # os.path.isdir() expects a path as argument, not a string;
         if os.path.isdir(new_fullpath):
             # DEBUG
-            print(f'dir: {item}\n')
+            #print(f'dir: {item}\n')
             # Arguments: full filepath to directory or file, name of source or 
             # destination directory, the source or destination list that is 
             # being built (dirs or files)
@@ -169,13 +169,13 @@ def find_dirs(fullpath, name, dirs_list):
             # subdirectories
             #dirs_list.append(new_fullpath)
             # DEBUG
-            print(f'{name} dirs_list:\n{dirs_list}\n')
+            #print(f'{name} dirs_list:\n{dirs_list}\n')
             #dict[item] = {}
             #new_dict = dict[item]
             #print(f'new_dict: {new_dict}')
             # This creates an items object (list) that can be looped through
             new_items = os.listdir(new_fullpath)
-            print(f'new_items: {new_items}')
+            #print(f'new_items: {new_items}')
             # Call function recursively, this time with the updated filepath
             # that includes the subdirectory we discovered
             find_dirs(new_fullpath, name, dirs_list)
@@ -604,6 +604,7 @@ def copy_dirs(src_dirs, dst_dirs):
 # dictionary to be built
 find_dirs(dst_abs_path, destination, dst_dirs)
 
-# Call function
+# Now we can copy any empty directories that weren't copied over by the
+# copy_files function
 copy_dirs(src_dirs, dst_dirs)
 
