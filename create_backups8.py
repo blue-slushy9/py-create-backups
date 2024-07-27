@@ -129,7 +129,7 @@ def find_dirs(fullpath, name, dirs_list):
     # Now loop through it;
     for item in items:
         # DEBUG
-        print('\n# FIND_DIRS() BLOCK')
+        #print('\n# FIND_DIRS() BLOCK')
         print(f'item: {item}')
         # Reset the fullpath variable after every iteration
         print(f'Before fullpath: {fullpath}')
@@ -183,7 +183,7 @@ def find_dirs(fullpath, name, dirs_list):
         # functions; find_dirs() only deals with directories
         else:
             pass
-    print('# /FIND_DIRS() BLOCK\n')
+    #print('# /FIND_DIRS() BLOCK\n')
     return dirs_list
 
 # Tentative new find_files() function that iterates over the dirs_list using a
@@ -218,259 +218,6 @@ def find_files(dirs_list, fullpath, name, files_list):
     print('/# NEW FIND_FILES() FUNCTION')
     return files_list
 
-'''
-# We need to define a separate function for the first outer key because it is
-# the only one for which the respective dictionary keys will not match
-def find_files1(fullpath, files_list, dirs_list, name):
-    #for dir in src_dict:
-    items = os.listdir(fullpath)
-    # We will use a second list to keep track of the items
-    # that are directories
-    dirs = []
-    # 5/14/24 - we need to append an empty sub-list to 'dirs' in order for
-    # subsequent code to work correctly
-    dirs.append([])
-    #dirs[0] = []
-    # DEBUG
-    print(f'items: {items}')
-    for item in items:
-        # DEBUG
-        print('\n# FIND_FILES1() BLOCK')
-        print(f'item: {item}')
-        # Reset the fullpath variable after every iteration
-        print(f'Before fullpath: {fullpath}')
-        fullpath = fullpath
-        print(f'After fullpath: {fullpath}')
-        #print(item)
-        # Update the fullpath variable to include the item name
-        new_fullpath = os.path.abspath(fullpath+slashes+item)
-        #new_fullpath = fullpath+slashes+item
-        # DEBUG
-        print(f'new_fullpath: {new_fullpath}\n')
-        # If full filepath does not point to a directory...
-        # Arguments: full filepath strongly recommended
-        if not os.path.isdir(new_fullpath):
-            print(f'file: {item}\n')
-            # Arguments: full filepath to directory or file, name of source or 
-            # destination directory, the source or destination list that is 
-            # being built (dirs or files)
-            files_list = split_append(new_fullpath, name, files_list)
-            # Split fullpath to get only the partial path starting at source 
-            # or destination (name determines which)
-            #split_path = new_fullpath.split(name)
-            # The local path to directory will always be element 1
-            #local_path = split_path[1]
-            # Because of the way the split() method works, we have to glue the
-            # pieces back together
-            #part_path = (slashes+name+local_path)
-            # First we make sure the directory isn't already in the list
-            #if local_path not in files_list:
-                # Add the split path to the dirs_list
-                #files_list.append(local_path)
-            # Add file to files_list
-            #files_list.append
-            # Add file to parent_files dictionary
-            #parent_files[item] = fullpath # 6/5/24 - changed to 'fullpath' from 'new_fullpath'
-            # 11:11 is just a generic timestamp for debugging purposes;
-            #dict[item] = '11:11' # BUG: need exact dict & subdict?
-            # Once the item/file is added to the dictionary, we need to remove
-            # it from the items list;
-            #items.remove(item)
-            print(f'updated items: {items}\n')
-        # Else, if item is a directory...
-        elif os.path.isdir(new_fullpath):
-            # We have already discovered all subdirectories of source or
-            # destination with find_dirs(), so we can pass
-            pass
-            # Arguments: full filepath to directory or file, name of source or 
-            # destination directory, the source or destination list that is 
-            # being built (dirs or files)
-            #dirs_list = split_append(new_fullpath, name, dirs_list)
-            # Add directory to parent_dirs dictionary
-            #dirs_list.append(new_fullpath)
-            # The below line may not be correct, we don't really want to add
-            # a nested sub-list for every sub-directory in the outermost
-            # directory; 
-            # Created nested list by appending an empty list to dirs
-            #dirs.append([]) # 5/14/24 - commented out to try to fix sub-lists issue
-            # Arguments: full filepath to directory or file, name of source or 
-            # destination directory, the source or destination list that is 
-            # being built (in this case, the subdirectories to be iterated
-            # through later)
-            #dirs[0] = split_append(new_fullpath, name, dirs[0])
-            # DEBUG
-            #print(f'dirs[{0}]: {dirs[0]}\n')
-            # If item is a directory, add it to our first nested sub-list for
-            # later use
-            #dirs[0].append(item)
-            #dirs[0].append(item) # 5/14/24 - dirs[0] caused an IndexError
-        # Not sure what other kinds of directory objects exist besides sub-
-        # directories and files, but just in case we can use an else: pass
-        else:
-            pass
-
-    # DEBUG
-    print('/# FIND_FILES1() BLOCK\n')
-    
-    # Initial values, only valid for first iteration
-    i=0
-    #new_dirs = []
-    # Tentative version of FF2 where for loop is removed
-    def find_files2(dir, fullpath, i, dirs_list, files_list):
-        # DEBUG 
-        print(f'# FIND_FILES2() BLOCK\n')
-        print(f'{name} dirs_list:\n{dirs_list}\n')
-        print(f'dir1: {dir}\n')
-        print(f'fullpath1: {fullpath}\n')
-        # Will have to find a way to get this to update for each while-loop
-        # iteration as well
-        if i == 0:
-            # We don't need the 'slashes' anymore because it is included in
-            # the directory name, as we are using the entire local path now,
-            # i.e. everything that comes after 'source' or 'destination'
-            new_fullpath = (fullpath+dir)
-            #new_fullpath = (fullpath+slashes+dir)  
-        elif i > 0: 
-            new_fullpath = fullpath
-        print(f'new_fullpath1: {new_fullpath}\n')
-        items = os.listdir(new_fullpath)             
-        print(f'items1: {items}\n')                   
-        for item in items:                           
-            print(f'item: {item}\n')
-            #new_fullpath = new_fullpath
-            print(f'new_fullpath2: {new_fullpath}\n')
-            temp_fullpath = (new_fullpath+slashes+item)
-            print(f'temp_fullpath1: {temp_fullpath}\n')
-            print(f'{name} dirs_list:\n{dirs_list}\n')
-            # If the item is not a directory, i.e. if it is a file...
-            if not os.path.isdir(temp_fullpath):
-                # Arguments: full filepath to directory or file, name of source or 
-                # destination directory, the source or destination list that is 
-                # being built (dirs or files)
-                files_list = split_append(temp_fullpath, name, files_list)
-                # DEBUG
-                print(f'{name} files_list:\n{files_list}\n')
-                # Add file to parent_files dictionary
-                #files_list.append(new_fullpath)
-            # Else, if the item is a directory we add it to our parent_dirs 
-            # dictionary, as well as our new list
-            #else:
-            # Else, if item is a directory...
-            elif os.path.isdir(temp_fullpath):
-                # We have already discovered all subdirectories of source or
-                # destination with find_dirs(), so we can pass
-                pass
-                # Arguments: full filepath to directory or file, name of source or 
-                # destination directory, the source or destination list that is 
-                # being built (dirs or files)
-                #dirs_list = split_append(temp_fullpath, name, dirs_list)
-                # Add directory to parent_dirs dictionary
-                #dirs_list.append(new_fullpath)
-                # Increment i to create our next list of subdirectories
-                #i+=1
-                #print(f'else i: {i}\n')
-                # i starts at 0, len(dirs) does not; therefore to make them
-                # equal we append a new empty list in the next line 
-                #if i == (len(dirs)):
-                #    dirs.append([])
-                #    print(f'else dirs: {dirs}\n')
-                
-                # If i is less than len(dirs), we are in the correct sub-list
-                # and we can append the current item
-                # elif i < (len(dirs)):
-                #     # Arguments: full filepath to directory or file, name of source or 
-                #     # destination directory, the source or destination list that is 
-                #     # being built (in this case, the subdirectories to be iterated
-                #     # through later)
-                #     dirs[i] = split_append(new_fullpath, name, dirs[i])
-                #     #dirs[i].append(item)
-                #     print(f'dirs[{i}]: {dirs[i]}\n')
-            # Not sure what other kinds of directory objects exist besides sub-
-            # directories and files, but just in case we can use an else: pass
-            else:
-                pass
-    
-    # These two nested functions will be called in ff2_while_loop()
-    # Initial dict value will work for first iteration of find_files2() only
-    def ff2_while_loop1(i):
-        print('# BEGIN FF2 WHILE LOOP\n')
-        # i starts at 0, len starts at 1; ergo we have to subtract 1
-        while i <= (len(dirs_list)-1):
-            # i == 0 is when FF2WL1 runs, after that only FF2WL2 will run; 
-            # while loop behavior is going to be different for first iteration
-            if i == 0:
-                # Call function for first time on every element in dirs_list
-                for current_dir in dirs_list:
-                # Call function for first time on every element in dirs[0]
-                #for dir in dirs[i]:
-                    print(f'dir: {current_dir}\n')
-                    print(f'dirs: {dirs_list}\n')
-                    #print(f'dirs[i]: {dirs[i]}\n')
-                    #print(f'while loop parent_dirs: {parent_dirs}\n')
-                    # The dict variable is static here because this for loop is
-                    # only for the first directories list
-                    #current_dict = dict[dir] 
-                    #dict = current_dict 
-                    #print(f'current_dict: {current_dict}\n')
-                    find_files2(current_dir, fullpath, i, dirs_list, files_list)
-                    #print(f'After dict: {dict}\n')
-                i+=1
-                print(f'while loop i: {i}\n')
-            
-            
-                # This function will run for all iterations after first
-                def ff2_while_loop2(i):
-                    for current_dir in dirs_list:
-                    #for dir in dirs[i]:
-                        print(f'dir: {current_dir}\n')
-                        print(f'dirs: {dirs_list}\n')
-                        #print(f'dirs[i]: {dirs[i]}\n')
-                        #print(f'while loop parent_dirs: {parent_dirs}\n')
-                        #temp_fullpath = parent_dirs[dir]
-                        #split_parents = temp_fullpath.split(slashes)
-                        #par_dir = split_parents[-1]
-                        #print(f'else dict: {dict}\n')
-                        #print(f'else par_dir: {par_dir}\n')
-                        print(f'else dir: {current_dir}\n')
-                        #temp_fullpath = parent_dirs[dir]
-                        #print(f'n temp_fullpath: {temp_fullpath}\n')
-                        
-                        # This function will create the list of parent directories
-                        #print('# BEGIN GET_PARS_LIST()\n')
-                        #par_dirs = get_pars_list(dir)
-                        #print('/# GET_PARS_LIST()\n')
-                                                
-                        # This function uses the parents list to create parent
-                        # dictionary keys
-                        #print('# BEGIN CREATE_PAR_DICTS()\n') 
-                        #current_dict = create_par_dicts(dir, par_dirs) 
-                        #print('/# CREATE_PAR_DICTS()\n') 
-                                                
-                        # Glue together the pieces of the full filepath
-                        temp_fullpath = (fullpath+slashes+current_dir)
-                        # Needs to be removed as it references parent_dirs
-                        #temp_fullpath = (parent_dirs[dir]+slashes+dir)
-                        print(f'Before FF2 dir: {current_dir}\n')
-                        print(f'Before FF2 temp_fullpath: {temp_fullpath}\n')
-                        # Update current_dict to point to correct subdict
-                        #current_dict = 
-                        #print(f'before FF2 current_dict: {current_dict}\n')
-                        # 4/7/24: is current_dict the right argument?
-                        find_files2(current_dir, temp_fullpath, i, dirs_list, files_list)
-                        #print(f'else final dict: {dict}\n')
-                    i+=1
-                    print(f'while loop i: {i}\n')
-                    return i # 5/12/24 - added to try to fix the i bug
-            
-            # Else for all subsequent iterations of the while loop...
-            elif i > 0:
-                i = ff2_while_loop2(i) # 5/12/24 - added 'i =' to try to fix i bug
-    
-    # This kicks off the find_files2() while loop
-    i=0
-    ff2_while_loop1(i)
-    print('/# FIND_FILES2() INITIAL CALL\n')
-'''
 
 # FUNCTION CALLS
 
@@ -851,6 +598,11 @@ def copy_dirs(src_dirs, dst_dirs):
         # Iterate over list of overwritten files and print them one by one
         for copied_dir in copied_dirs:
             print(f'{copied_dir}\n')
+
+# Call the find_dirs() function again in order to update directory structure;
+# Arguments: fullpath of destination directory, name of destination directory,
+# dictionary to be built
+find_dirs(dst_abs_path, destination, dst_dirs)
 
 # Call function
 copy_dirs(src_dirs, dst_dirs)
