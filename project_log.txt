@@ -1,0 +1,559 @@
+# PROJECT LOG -- most recent updates are at the top
+
+# 7/23/24
+
+-Is it empty because the directory discovery step isn't repeated between the
+function calls of the three copy functions? For directories, the function is
+find_dirs. Perhaps the find_dirs function can be called again before calling
+copy_dirs, in order to get an updated list of what is in the destination
+directory, after overwriting and copying files? If I remember correctly,
+I have also configured the copy arguments for the files to copy any missing
+parent directories over to the destination.
+
+-One of the issues seems to be that, at the point of calling the copy_dirs
+function, the dst_dirs structure seems to be empty; ergo, every directory
+in src_dirs will be copytree'd over to dst_dirs even when it doesn't need to
+be copied. 
+
+Why is dst_dirs empty?
+
+-Added the 'dirs_exist_ok=True' argument to the copytree method call in 
+copy_dirs, like so
+
+copytree(src, dst, dirs_exist_ok=True)
+
+That got rid of the error message I pasted below, but now the script thinks
+Test_Dir and Test_Dir2 are empty directories, and is copying them to the
+destination as empty directories---when a cursory examination of Test_Dir
+shows that it contains a text file. Not sure what is going on...
+
+
+# 7/16/24
+
+-Took a break from this project to try to finish what I thought would be a
+quick side project, but that turned out to be an entire ordeal all to itself.
+
+-Thought I was finished with the copy_dirs() function in create_backups8.py,
+but upon deleting the entire contents of the destination directory and running
+the script again, I got this error:
+
+
+/AoC Walkthroughs
+
+src_dirpath: /home/slushy/test/Alex's PC/AoC Walkthroughs
+
+dst_dirpath: /home/slushy/test/Alex's PC 2/AoC Walkthroughs
+
+Traceback (most recent call last):
+  File "/home/slushy/test/create_backups8.py", line 854, in <module>
+    copy_dirs(src_dirs, dst_dirs) 
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/slushy/test/create_backups8.py", line 835, in copy_dirs
+    copytree(src_dirpath, dst_dirpath)
+  File "/usr/lib/python3.12/shutil.py", line 600, in copytree
+    return _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shutil.py", line 498, in _copytree
+    os.makedirs(dst, exist_ok=dirs_exist_ok)
+  File "<frozen os>", line 225, in makedirs
+FileExistsError: [Errno 17] File exists: "/home/slushy/test/Alex's PC 2/AoC Walkthroughs"
+
+
+
+# 6/25/24
+
+-Left off at the new copy_dirs() function at the bottom of the version 8
+program file. Testing for the other two functions went swimmingly. Will hopefully be finished soon, then I can move onto Java...
+
+# 6/24/24
+
+-Left off at the copy_files() function down at the bottom; specifically,
+trying to split the full filepath to get the parent directories only. The code
+should be ready for testing now...
+
+# 6/23/24
+
+-The new function, find_files(), seems to be working prefectly. Will continue
+testing and debugging.
+
+-Confirmed, things definitely start to break after completing the iteration
+through all of the subdirectories in src_list/dirs_list. Have to go through
+and program a 'for loop' instead of the current 'while loop' contingent on the
+value of 'i'.
+
+-I think I really just need to get rid of the 'i' components altogether.
+
+-I just realized that there may sometimes be files in the destination
+directory that aren't meant to be in source, e.g. .swp files. There should be
+a prompt notifying the user and asking if they want the file deleted from
+destination, as presumably it would already have been deleted from source.
+
+# 6/22/24
+
+-Left off at the bottom of ff2_while_loop2(), everything is going swimmingly!
+
+-Once the program reaches 'dirs[1]', everything definitely starts to break
+down and '/IT Tutorials' keeps getting added to every subsequent empty sub-
+list. Therefore, I think I will have to start making the change over to using
+src_dirs and dst_dirs now.
+
+-I wonder if I even need the 'dirs' list, since I do all of my directory
+discovery within the find_dirs() function. In addition to this, the src_dirs
+or dst_dirs list contains all of the local filepaths to every subdirectory
+within source or destination. Ergo, instead of putting together the 'dirs'
+list inside of the find_files functions, I could just iterate over the src_dirs
+and dst_dirs lists instead. Would be much easier, methinks...
+
+
+-These lines (324-333) are a problem because, in version 8 of the program,
+'i == len(dirs)' seems to always be true; so an empty sublist is being created
+unnecessarily during each iteration of find_files2().
+
+'''
+# Add directory to parent_dirs dictionary
+#dirs_list.append(new_fullpath)
+# Increment i to create our next list of subdirectories
+i+=1
+print(f'else i: {i}\n')
+# i starts at 0, len(dirs) does not; therefore to make them
+# equal we append a new empty list in the next line 
+if i == (len(dirs)):
+    dirs.append([])
+    print(f'else dirs: {dirs}\n')
+'''
+
+# 6/21/24
+
+-Left off at implementing split_append() inside of find_files2(), there seems
+to be an issue with the function adding an extra forward-slash after
+"Alex's PC/".
+
+-Upon further debugging and inspecting the code, I think that when the sub-
+directories get added to the dirs list, their partial filepaths (everything
+after the original source or destination names) needs to get added. Then, when
+it comes time to use the full filepath of the directory, we can simply glue
+the filepath components together.
+
+# 6/20/24
+
+-Getting down into find_files2() and FF2_while_loop1() and I am getting some
+strange output---however, that doesn't necessarily mean there are bugs
+associated with this output.
+
+# 6/19/24
+
+-Still working on find_files1(), also defined and tested the new function,
+split_append(); it seems to be working fine.
+
+-The lines of code I am using to split the filepaths and then add the second
+half thereof to the files or dirs list should be its own function so I don't
+write it over and over again.
+
+# 6/18/24
+
+-Left off at debugging find_files1().
+
+-The find_dirs() function seems to work for both source and destination. Might
+need to create a variable to capture the output of the function, which is
+dirs_list; but I'm not sure if I need to do that since I think I may have
+defined those as global variables.
+
+-I don't think we need our source and destination directory names in our
+lists, it is redundant and takes up unnecessary memory.
+
+# 6/17/24
+
+-Started working on the change over to lists, so far so good. Still on the
+find_dirs() function.
+
+-Think I am going to need to use the debugger in VSCode in order to see what
+parts of the code base I need to change in order to be able to implement the
+wholesale shift over to lists instead of dictionaries.
+
+# 6/16/24
+
+-As such, I think I will continue working on version 8 and try to iron out the
+issues I was encountering there.
+
+-Neither the source dictionary nor the destination dictionary will ever be
+complete if there are multiple files with the same filename, because the value
+for that will be overwritten with the filepath of the last instance of the
+file with that filename. Therefore, it may be necessary to use partial file-
+paths as the file identifiers, with the filepaths starting at the level of the
+source and destination directories; since their filepaths should be identical
+up to that point.
+
+-Trying to work through this error:
+
+'''
+File "/home/slushy/test/create_backups6.py", line 476, in get_timestamp
+    stat = os.stat(fullpath)
+           ^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: "/home/slushy/test/
+Alex's PC 2/IT Tutorials/Debian 11 DNS Issue (Permanent Fix)/walkthrough"
+'''
+
+There doesn't really seem to be an easy way to store multiple filepaths for
+files with identical filenames. If I had originally used lists with full file-
+paths, it could be done; however, it would be too onerous to excise the
+dictionary structures from my program at this point.
+
+Perhaps I can use both the original dictionary structures, as well as lists on
+the side? That is to say, would it be possible to use the original dictionaries
+only up to the point where we absolutely need the lists, then at that point
+create the lists?
+
+-Started writing the code that creates the additional list structures for the
+repeat files. The new code does not, at the very least, appear to be causing
+any errors---however, I was thinking I might just be able to use a try-except
+block (or something similar) inside overwrite_files() to create the filepath
+inside of the destination directory that already exists in the source
+directory. I'm not entirely sure if that will work, but I wanted to write it
+down.
+
+# 6/14/24
+
+-Unfortunately, the dictionary structures I was using were so deeply embedded
+into my program that it is proving challenging getting it to work without
+them. I may need to scratch version 8 of the program and find a way to make
+version 6 work instead. I suppose I could always create an additional
+structure to store and manage files with the same filename.
+
+-Created version 8 of this program, wherein I phase out the dictionaries and
+use lists instead.
+
+-ChatGPT says that dictionaries are mutable, so it seems the values
+(filepaths) are being overwritten when the filename (key) is the same. Maybe
+I should just use a list that stores the full filepath for each file instead?
+That seems bone-headed and inefficient, but perhaps is the best solution in
+this case.
+
+# 6/13/24
+
+-Continued doing test runs and debugging the program in ~/test, then I found
+the bug I was expecting! I was working with the "IT Tutorials/" subdirectory
+tonight, which has a "walkthrough" or a "walkthrough.txt" file inside each of
+its own subdirectories; this is because each subdirectory corresponds to a
+different tutorial. Ergo, since I haven't programmed a way for the computer
+to respond to files with the same filename, some of the "walkthrough" files
+are not being copied over to the destination directory. Will have to provide
+instructions for how to deal with multiple files with the same filename!
+
+# 6/12/24
+
+-NOTE: current process is to work on the file in ~/test and then copy to the
+local GitHub repo as needed.
+
+-Working on some informational print messages to help the user keep track of
+which files have been overwritten, etc.
+
+-The old code has been excised and everything seems to be working
+"in production". However, I noticed an error in my parent_dirs structure;
+which is that for the topmost layer in the directory structure, the name of
+the directory we are working with is being appended to the end of the paths of
+its parent directories. This error does not appear for directories further
+down in the directory structure. I'm surprised it hasn't caused any issues
+up to this point, but it definitely could in the future.
+
+-Version 6 of the program that I developed for the test directory seems to
+work. I removed all of the code that referred to my original dictionaries. 
+
+# 6/11/24
+
+-For future reference, the directory where version 7 breaks down, at the point
+of create_par_dicts(), is "Log Analysis"; and the KeyError is in reference to
+"Alex's PC".
+
+-Might be a good idea to keep working on version 6 of the program, where I
+remove all code that builds or refers to my original nested dictionaries. I'm
+not sure, but I believe the create_par_dicts() function may refer to those
+structures, which I do not believe I actually need.
+
+-Investigating the error that I get when running in my ~/test directory, think
+there may be a problem with the get_pars_list() and possibly the find_limit()
+functions. The logic I am using the set the stop point for finding the file-
+path for the directory we are working with may be flawed; I am using numeric
+logic instead of something simpler, e.g. stopping at the "source" directory.
+
+# 6/10/14
+
+-Should maybe start with a simpler production environment for testing, then
+work my way up to more complex directory structures.
+
+-Actually, upon examining the error, code, and ouput again; I think the
+problem may be the logic I am using for where to stop adding parent
+directories to my par_dirs list, e.g. "Alex's PC" should not be added to that
+as it is the equivalent of the parent test directory, A. However, when I run
+version 5 of the program in my test environment, it runs fine. So there seems
+to be an issue with running it in production, i.e. my ~/test directory.
+
+-It seems there's a problem with the parent filepaths in my parent_dirs
+structures, but only for the topmost directory. The directory name gets added
+to the end of the filepath, which I think is what is causing the key error in
+both versions 5 and 6 of the program.
+
+-Started excising the code from create_backups6.py that has anything to do with
+my original dictionaries. I am hoping that getting rid of those structures
+will fix the issue I am seeing when running the program in production.
+
+# 6/9/24
+
+Created yet another copy of the create_backupsX.py file. Been testing it in a
+"production" environment, i.e. with some of my real files and directories. I
+have been facing some more bugs, but they seem to stem from the old code in
+the program that creates the nested directory structures. I think it is a good
+time to start deleting that code.
+
+# 6/7/24
+
+My program works... except when I write to the files using my Python script.
+If I write to them manually, thus far using vim only, then the last
+modification times do get updated, my program is able to use them, and it does
+overwrite the files in destination if their timestamps are less recent than
+that of the same file in the source directory. Not sure if the Python write
+issue is a huge deal really, but I spent about 20 minutes trying to fix it
+tonight, to no avail...
+
+# 6/6/24
+
+The Python script for writing to random files works, but the timestamps are
+still not updating. Started looking at the get_timestamp() function in my
+program. Will have to continue researching and troubleshooting tomorrow...
+
+# 6/5/24
+
+-Started writing a Python script to help me write to files at random. It is
+almost finished, I will use it to test my overwrite function, which uses
+timestamps to decide to which files to write.
+
+-Fixed those bugs! All files and directories are going where they should. Now I need to do what? Can't remember...
+
+-Upon further inspection, all of the filepaths in the structures from the
+topmost directory are showing the same type of error, i.e. filename at end of
+filepath.
+
+-In src_parent_files, the parent directories for the A*.txt files include the 
+filenames at the end for some reason.
+
+-For some reason, A3.txt got added to the structure for directories.
+
+# 6/4/24
+
+Added the few lines of code to find_files1() that adds the files and
+directories in the topmost directory in A/ and B/ to their respective
+structures---now we have a new bug! The filepaths for the A*.txt files are
+printing out incorrectly, somewhere around lines 634/635 and 643/644.
+
+Might have found the problem: I didn't include any code in find_files1() that
+would add anything contained therein to my structures. Since find_files1()
+deals with the topmost directory in both A/ and B/, that would explain why
+the A*.txt files and the a* directories weren't showing up in my structures.
+
+Looking at the tree structure for A/, there are a total of 10 files therein.
+My structure only seems to contain 7 files, so 3 of them are getting lost
+somewhere. There should also be a total of 8 subdirectories inside of A/,
+but I only see 4 in the tree structure.
+
+I found that the part of the program where the parent_files structure gets 
+built is inside of the find_files2() function.
+
+# 6/3/24
+
+Sadly, I went off on a tangent trying to set up a Python debugger in Vim. Couldn't get it to work and I lost time. Next time, think I will just use Code OSS...
+
+Created a new program file, create_backups5.py, since I have to make changes to some older and more foundational parts of the program. The problem seems to be with the structures we are passing to the copy_files() function, src_parent_files and dst_parent_files.
+
+# 6/1/24
+
+Actually, upon investigating copy_files() and some of the output in the program, I think the problem is going to further up the call stack; as those structures get assembled in earlier functions. I think it is something to do with me passing subdict1 and subdict2 as arguments to find_dirs() or find_files() instead of the directory structures in their entirety.
+
+Found a bug! create_backups4.py is copying all of the files and directories *except* for the three text files that are in A/: A1.txt, A2.txt, A3.txt. Have to debug and get them over to B/, the problem should be found in the copy_files() function.
+
+Still working on overwrite_files() function. Think I might need a way to verify that, in the case that there are multiple files with the same filename, that they are in fact different files; this would be based on their full filepaths.
+
+# 5/31/24
+
+Left off at overwrite_files() function. Think I have most of the steps down. I think I am may be able to retrieve the timestamp for each file within that function rather than build an entire second dictionary just for the filepaths and timestamps. We'll see if it works...
+
+Have to figure out how I'm going to create the dictionary that stores the timestamps as values. Think I may be able to use the code I wrote in the copy_files() function.
+
+# 5/30/24
+
+Also created a Python script that accomplishes the same task, just to get more practice with Python. Should focus on my main program next time, though.
+
+Continued working on the zsh script that clears the B/ directory after copying items to it. The only issue is that it returns an error after the first condition if there are no items in the directory, or no items other than the .gitkeep file. Might have to use a try-except block or whatever the zsh equivalent is.
+
+# 5/29/24
+
+I think the next thing I will have to do is create a separate dictionary with all of the files as keys and their timestamps as values. The get_timestamp() function has been defined and seems like it will work.
+
+Created a little zsh script to clear the contents of B/ as needed. The copy_files() function seems to work thus far!
+
+# 5/28/24
+
+Continued working on my copy_files() function down at the bottom, should be ready for testing soon.
+
+# 5/27/24
+
+Created the file split.py to put together the code I need for the below steps.
+
+Basically, my next move is going to be determined by what is the most parsimonious approach, as far as system resources. There is no point copying directories and files, and only *then* running the get-timestamp function, etc. where it's clearly not needed.
+
+I was thinking I might be able to reuse the function I defined earlier to create the parent directories in backwards order based on the dictionary keys. This is in the case that we are trying to copy a file or directory whereof the parent directory or directories don't exist yet in the destination.
+
+Order in which items in source directory should be copied or overwritten to destination:
+
+1) files that already exist in both source and destination
+2) files that exist in source but not in destination
+3) entire directory structures, including files, that exist in source but not in destination
+
+# 5/24/24
+
+Using full filepaths for both the source and destinations in copy2() is
+working! The only problem is that it will only work if the parent directories
+for the specific file already exist, so I may rethink the order in which I
+want the copy and overwrite steps to be executed...
+
+# 5/23/24
+
+Left off on the copy_files() function, which im doing first just because i
+haven't integrated the timestamp feature yet. I left off at the point where I
+am trying to replace the name of the source directory in the full filepath for
+the file with the name of the destination directory in order to be able to
+copy from source to destination using copy2.
+
+Created a copy of create_backups3.py in order to make some changes to the
+structures I mentioned in the entry below. The changes may be significant, so
+I want to be able to roll back to create_backups3.py if something goes wrong.
+
+It occurs to me that perhaps I could create two separate dictionaries for each
+the source and destination, e.g. src_files and src_dirs. This is in order to
+separate the files from the directories, given that the files must be copied
+before directories, for the most efficient resource utilization. In order to
+do this, I think I would have to create these dictionaries at the point in the
+program where Python checks whether the item is a file or directory.
+
+# 5/22/24
+
+I was able to get both parent_dirs structures to print out correctly---
+although B doesn't actually have one yet as it only contains the .gitkeep file
+I created. But theoretically it should work. Next, I will have to figure out
+how to work with these structures to get the correct files and directories
+to be copied or overwritten from A to B.
+
+Started adding parent_dirs as argument to find_dirs().
+
+# 5/21/24
+
+I tried creating an if statement under find_files1() that creates either
+src_parent_dirs or dst_parent_dirs, but I don't think that's going to work as
+I need to work with the variable later in the program. I think I will have to
+handle the structures as function arguments, as I've done with fullpath, dict,
+etc.
+
+Trying to figure out how to create a different variable name for parent_dirs
+based on whether it is being created for the source or destination.
+
+# 5/20/24
+
+I was thinking I might be able to create a few classes for my two main
+function calls down at the bottom of the program file. They may not need to be
+new classes, I may be able to re-use the ones I defined near the top of the
+program file. This approach might also solve the problem of getting the two
+parent_dirs structures assigned to separate variables.
+
+# 5/19/24
+
+Trying to figure out how to get the respective parent_dirs structures to be
+assigned to two separate variables, e.g. src_parent_dirs and dst_parent_dirs.
+
+# 5/17/24
+
+Started writing the code in the final subsection of the program, but I am
+rather burned out now and think my brain needs rest...
+
+# 5/16/24
+
+The parent_dirs structure is going to be key to getting the overwrite and copy
+functions to work, have to figure out how to extract that structure from its
+local function(s) where it resides.
+
+For the parent_dirs structures, we might need to create separate structures
+for directories and for files, that would help with the process of identifying
+the files that need to be copied or overwritten.
+
+Started the prospective final program file. With respect to the overwrite()
+function, I think I will have to use the parent_dirs dictionaries for the
+overwrite process itself, as those dictionaries are the ones that store the
+full filepaths for the files.
+
+# 5/15/24
+
+Have to start going through create_backups.py and figuring out which parts I
+need to paste into my final program file. Think I will copy find_files3.py and
+start gluing all of the pieces together there, best to keep the old files
+intact in case I need them again later on.
+
+Finally got my source dictionary to print out correctly! The destination
+dictionary should also print out just fine. The next big step is going to be
+to integrate the functions that do the actually copying and overwriting of
+files based on the dictionaries. NOTE: the correct program file is
+find_files3.py
+
+# 5/14/24
+
+Wrote a new function to get the correct limit for the loop in get_pars_list(),
+haven't tested yet.
+
+Found a logic bug in get_pars_list(), instead of the len(dirs) it should be
+the index of the sub-list to which the dir in question belongs.
+
+The outermost level in the directory structure is being created as NOT its own
+sublist in 'dirs'. Need to make sure it is being created as its own sublist,
+which corresponds to dirs[0].
+
+For some reason, the dir variable isn't being assigned a value.
+
+Upon setting a new breakpoint earlier in the program file, I found that the
+empty sub-lists are perhaps being created in find_files1().
+
+# 5/13/24
+
+Created some new subdirectories to do more extensive testing, unfortunately it
+broke the program. The problem seems to be that a new empty sublist is getting
+created inside of dirs, which throws off the n value in the get_pars_list()
+function. The empty sublist is being created before it ever needs to be, it
+should only happen just before we are going to start adding next-layer sub-
+directories to it.
+
+I'm not sure yet, but the above bug seems to begin at find_files2().
+
+# 5/12/24
+
+Made changes to create_par_dicts(), have not tested yet.
+
+-----
+
+May have fixed the i bug. Now I am working around line 362, in the 
+create_par_dicts() function, to try to render the correct parent directories
+in my current_dict structures. It gets trickier the further down the directory
+tree you go.
+
+-----
+
+I seem to have fixed the bug (for now) that was rendering the wrong subdict
+for my functions with work with, now I have a new bug: i. 
+
+The value for i isn't consistent across the different functions, I think I
+will have to insert the proper return statements and variable assignments for
+i.
+
+-----
+
+Problem is line 373 in find_files3.py, which is part of the create_par_dicts()
+function. The subdict being assigned to the variable, current_dict, and then
+returned to the function call is incorrect.
+
+# 5/11/24
+
+Breakpoints in find_files3.py currently set at lines 452, 447, 380, and 372. 

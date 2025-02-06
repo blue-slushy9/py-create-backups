@@ -1,0 +1,23 @@
+# This is just to help me visualize the dictionary structures i am trying to
+# create in this program;
+
+# Every subdirectory should also be its own subdictionary;
+
+# Technically, every file is also its own subdictionary, but for clarity i
+# will not put curly brackets around files;
+
+
+# dict1
+
+{'A': 
+       {'blah.txt': ''},
+       {'blahblah.txt': ''},
+       {'blahblahblah.txt': ''},
+
+       {'a1': {'bleh.txt': ''},
+              {'a1a': {'bloh.txt': ''}}
+       },
+
+       {'a2': {'blih.txt': ''}}
+
+}
